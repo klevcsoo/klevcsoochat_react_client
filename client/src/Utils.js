@@ -3,15 +3,15 @@ import 'firebase/auth'; import 'firebase/functions'; import 'firebase/database'
 import cookie from 'react-cookies'
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAAFJdy_raRoVx1sbX8deEq5SWKql0Y80A",
-  authDomain: "klevchat-45a17.firebaseapp.com",
-  databaseURL: "https://klevchat-45a17.firebaseio.com",
-  projectId: "klevchat-45a17",
-  storageBucket: "klevchat-45a17.appspot.com",
-  messagingSenderId: "686878672535",
-  appId: "1:686878672535:web:2d65ea439c900f0cc0cbd2",
-  measurementId: "G-WKPVMVZ8CP"
-};
+  apiKey: "AIzaSyBLXTi7stlDNk1yGBXhS68N0_1TJeNxVNk",
+  authDomain: "klevcsoochat.firebaseapp.com",
+  databaseURL: "https://klevcsoochat.firebaseio.com",
+  projectId: "klevcsoochat",
+  storageBucket: "klevcsoochat.appspot.com",
+  messagingSenderId: "50687817478",
+  appId: "1:50687817478:web:018a66d95de74566619087",
+  measurementId: "G-QXXDDCBLL0"
+}
 
 export const firebaseHandler = {
   initializeApp: () => {
