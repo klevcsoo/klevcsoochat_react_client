@@ -28,7 +28,7 @@ const ChatroomPage = () => {
     }, (err) => {
       console.log(err)
     })
-  }, [])
+  }, [ roomId ])
 
   return (
     <div>
