@@ -1,7 +1,8 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
 import { firebaseHandler } from '../Utils'
 import { routes } from '../Contants'
+import cookie from 'react-cookies'
 
 // Components
 import AppTitle from '../components/AppTitle'
@@ -17,11 +18,13 @@ const HomePage = () => {
   const [ creating, setCreating ] = useState(false)
 
   const joinChatroom = () => {
+    saveUsername()
     history.push(routes.HOME.concat(roomId))
   }
 
   const createChatroom = () => {
     setCreating(true)
+    saveUsername()
     firebaseHandler.createChatroom((id) => {
       history.push(routes.HOME.concat(id))
     }, (err) => {
@@ -30,6 +33,23 @@ const HomePage = () => {
     })
   }
 
+  const saveUsername = () => {
+    if (!username) cookie.remove('username')
+    else cookie.save('username', username)
+    // else cookie.save('username', username, { path: '/', maxAge: 0 })
+
+    console.log(cookie.load('username'))
+  }
+
+  useEffect(() => {
+    let cachedUsername = cookie.load('username')
+
+    if (!!cachedUsername) {
+      setUsername(cachedUsername)
+      console.log(cachedUsername)
+    }
+  }, [])
+
   return (
     <div>
       <div style={{
@@ -37,7 +57,7 @@ const HomePage = () => {
         top: '25%', left: '50%',
         transform: 'translate(-50%, -50%)'
       }}>
-        <AppTitle text="Klevchat" />
+        <AppTitle text="Klevcsoochat" />
       </div>
       <div style={{
         position: 'absolute',
