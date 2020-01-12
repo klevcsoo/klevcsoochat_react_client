@@ -39,9 +39,13 @@ const ChatroomPage = () => {
         width: '100vw', height: 44,
         background: appColours.FOREGROUND,
         borderBottomLeftRadius: 20,
-        borderBottomRightRadius: 20
+        borderBottomRightRadius: 20,
+        display: 'grid',
+        gridTemplateRows: 'auto min-content auto'
       }}>
-        <AppSubtitle text={(<>Chat::<b>{roomId}</b></>)} />
+        <div style={{ gridRow: '2 / span 1' }}>
+          <AppSubtitle text={(<>Chat::<b>{roomId}</b></>)} noMargin />
+        </div>
       </div>
       <div style={{ height: 50 }}></div>
       {loading ? (
