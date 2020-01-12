@@ -1,0 +1,44 @@
+.app-message-card {
+  width: 100vw; height: auto;
+  min-height: 70px;
+  margin: 10px 0; padding: 0 10px;
+}
+.app-message-card > p {
+  margin: 0; padding: 0;
+  font-family: sans-serif;
+  font-size: 14px;
+  font-weight: 300;
+  text-transform: uppercase;
+  opacity: 0.8;
+}
+.app-message-card > div {
+  width: calc(100% - 20px); height: auto;
+  margin: 0;
+
+  display: grid;
+  grid-template-columns: 5px auto;
+
+  background: var(--colour-foreground);
+  border-radius: 2px 5px 5px 2px;
+}
+.app-message-card > div > div {
+  grid-column: 1 / span 1;
+  width: 5px; height: 100%;
+  background: var(--colour-primary);
+  border-radius: 2px 0 0 2px;
+}
+.app-message-card > div > p {
+  margin: 5px; padding: 0;
+  font-family: sans-serif;
+  font-size: 20px;
+  font-weight: 400;
+}
+
+.app-message-incoming > div {
+  background: var(--colour-background);
+  border: 1px solid var(--colour-foreground);
+  border-radius: 5px;
+}
+.app-message-incoming > div > p {
+  grid-column: 2 / span 1;
+}
