@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import './AppInput.css'
 
 const AppInput = ({ placeholder, defaultValue, onChange, inChat, reference }) => {
