@@ -2,7 +2,6 @@ import React, { useState, useEffect, useRef } from 'react'
 import './ChatroomPage.css'
 import { firebaseHandler } from '../../Utils'
 import { useRouteMatch } from 'react-router-dom'
-import { appColours } from '../../Contants'
 import cookie from 'react-cookies'
 
 // Components
@@ -11,12 +10,14 @@ import LoadingSpinner from '../../components/LoadingSpinner'
 import AppSendButton from '../../components/AppButton/AppSendButton'
 import AppMessageCardOG from '../../components/AppMessageCards/AppMessageCardOG'
 import AppMessageCardIC from '../../components/AppMessageCards/AppMessageCardIC'
+import ChatroomNamePopup from './ChatroomNamePopup'
 
 const ChatroomPage = () => {
   const roomId = useRouteMatch().params.chatroom_id
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
   const [ loading, setLoading ] = useState(true)
+  const [ sending, setSending ] = useState(false)
   const [ messages, setMessages ] = useState([])
   const [ currentMsg, setCurrentMsg ] = useState('')
 
@@ -31,6 +32,7 @@ const ChatroomPage = () => {
 
   return (
     <div>
+      <ChatroomNamePopup />
       <div className="chatroom-header">
         <div><h1 className="app-subtitle" style={{ margin: 0 }}>Chat::<b>{roomId}</b></h1></div>
       </div>
@@ -55,16 +57,20 @@ const ChatroomPage = () => {
         <AppInput inChat placeholder="Aa" defaultValue={currentMsg} onChange={(text) => {
           setCurrentMsg(text)
         }} reference={inputRef} />
-        <AppSendButton disabled={currentMsg.length === 0} onClick={() => {
-          if (inputRef.current) inputRef.current.focus()
-          firebaseHandler.sendMessage(roomId, currentMsg, () => {
-            console.log('Sent')
-            setCurrentMsg('')
-            if (bottomRef.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
-          }, (err) => {
-            console.log(err)
-          })
-        }} />
+        {sending ? <LoadingSpinner /> : (
+          <AppSendButton disabled={currentMsg.length === 0} onClick={() => {
+            setSending(true)
+            if (inputRef.current) inputRef.current.focus()
+            firebaseHandler.sendMessage(roomId, currentMsg, () => {
+              console.log('Sent')
+              setCurrentMsg('')
+              setSending(false)
+              if (bottomRef.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
+            }, (err) => {
+              console.log(err)
+            })
+          }} />
+        )}
       </div>
     </div>
   )

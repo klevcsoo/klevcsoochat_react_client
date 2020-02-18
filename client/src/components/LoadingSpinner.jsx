@@ -7,7 +7,7 @@ const LoadingSpinner = () => {
     <div style={{
       width: 40, height: 40,
       fill: appColours.TEXT,
-      margin: '10px auto'
+      margin: '5px auto'
     }}>
       <CircularProgress color="inherit" />
     </div>
