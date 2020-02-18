@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './ChatroomPage.css'
 import { firebaseHandler } from '../../Utils'
-import { useRouteMatch } from 'react-router-dom'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 import cookie from 'react-cookies'
 
 // Components
@@ -13,6 +13,7 @@ import AppMessageCardIC from '../../components/AppMessageCards/AppMessageCardIC'
 import ChatroomNamePopup from './ChatroomNamePopup'
 
 const ChatroomPage = () => {
+  const history = useHistory()
   const roomId = useRouteMatch().params.chatroom_id
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
@@ -27,8 +28,9 @@ const ChatroomPage = () => {
       setLoading(false)
     }, (err) => {
       console.log(err)
+      history.replace('/notfound')
     })
-  }, [ roomId ])
+  }, [ roomId, history ])
 
   useEffect(() => {
     if (bottomRef?.current) {

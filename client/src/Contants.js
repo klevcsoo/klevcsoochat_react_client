@@ -8,6 +8,6 @@ export const appColours = {
 
 export const routes = {
   HOME: '/',
-  CHATROOM: '/:chatroom_id',
+  CHATROOM: '/chat/:chatroom_id',
   SETTINGS: '/settings'
 }
