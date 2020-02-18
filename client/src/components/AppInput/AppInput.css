@@ -6,7 +6,7 @@
 
   background: var(--colour-background);
   border: 1px solid var(--colour-foreground);
-  border-radius: 20px;
+  border-radius: 10px;
   color: var(--colour-text);
 
   font-family: sans-serif;

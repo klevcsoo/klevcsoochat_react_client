@@ -41,7 +41,7 @@
   grid-template-columns: auto min-content auto;
 
   background: var(--colour-primary);
-  border-radius: 20px;
+  border-radius: 10px;
   box-shadow: 0 0 50px var(--colour-primary-shadow);
   cursor: pointer;
   transition: 200ms all ease-out;

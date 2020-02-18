@@ -70,8 +70,8 @@ const ChatroomPage = () => {
         width: '100vw', height: 50,
         paddingBottom: 34,
         background: appColours.FOREGROUND,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: 10,
+        borderTopRightRadius: 10,
         display: 'grid',
         gridTemplateColumns: 'auto min-content'
       }}>
