@@ -2,8 +2,8 @@
   --colour-background: #000000;
   --colour-foreground: #222222;
   --colour-text: #FFFFFF;
-  --colour-primary: #663AE2;
-  --colour-primary-shadow: #663AE288;
+  --colour-primary: linear-gradient(135deg, #24DBA3, #5BA7F3);
+  --colour-primary-shadow: #24DBA388;
 }
 
 * {
