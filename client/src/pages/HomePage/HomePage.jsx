@@ -5,11 +5,9 @@ import { routes } from '../../Contants'
 import cookie from 'react-cookies'
 
 // Components
-import AppTitle from '../../components/AppTitle'
 import AppButton from '../../components/AppButton/AppButton'
 import AppInput from '../../components/AppInput/AppInput'
 import LoadingSpinner from '../../components/LoadingSpinner'
-import AppSubtitle from '../../components/AppSubtitle'
 
 const HomePage = () => {
   const history = useHistory()
@@ -73,7 +71,6 @@ const HomePage = () => {
           setRoomId(text)
         }}  />
         <AppButton text="Csatlakozás a szobához" onClick={() => joinChatroom()} />
-        <AppSubtitle text="vagy" />
         {creating ? <LoadingSpinner /> : <AppButton text="Szoba létrehozása" onClick={() => createChatroom()}  />}
       </div>
     </div>

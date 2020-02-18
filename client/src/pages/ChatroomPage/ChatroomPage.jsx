@@ -7,7 +7,6 @@ import cookie from 'react-cookies'
 // Components
 import AppInput from '../../components/AppInput/AppInput'
 import LoadingSpinner from '../../components/LoadingSpinner'
-import AppSubtitle from '../../components/AppSubtitle'
 import AppSendButton from '../../components/AppButton/AppSendButton'
 import AppMessageCardOG from '../../components/AppMessageCards/AppMessageCardOG'
 import AppMessageCardIC from '../../components/AppMessageCards/AppMessageCardIC'
@@ -44,7 +43,7 @@ const ChatroomPage = () => {
         gridTemplateRows: 'auto min-content auto'
       }}>
         <div style={{ gridRow: '2 / span 1' }}>
-          <AppSubtitle text={(<>Chat::<b>{roomId}</b></>)} noMargin />
+          <h1 className="app-subtitle" style={{ margin: 0 }}>Chat::<b>{roomId}</b></h1>
         </div>
       </div>
       <div style={{ height: 50 }}></div>
