@@ -1,0 +1,30 @@
+.chatroom-header {
+  width: 100vw; height: 44px;
+  display: grid;
+  grid-template-rows: auto min-content auto;
+
+  position: fixed; z-index: 110;
+  top: 0px; left: 0px;
+  
+  background: var(--colour-foreground);
+  border-bottom-left-radius: 20px;
+  border-bottom-right-radius: 20px;
+}
+.chatroom-header > div {
+  grid-row: 2 / span 1;
+}
+
+.chatroom-message-composer {
+  width: 100vw; height: 50;
+  display: grid;
+  grid-template-columns: auto min-content;
+
+  position: fixed; z-index: 100;
+  bottom: 0; left: 0;
+
+  padding-bottom: 34px;
+  
+  background: var(--colour-foreground);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
