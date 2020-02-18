@@ -19,14 +19,14 @@ const HomePage = () => {
 
   const joinChatroom = () => {
     saveUsername()
-    history.push(routes.HOME.concat(roomId))
+    history.push(routes.HOME.concat(`chat/${roomId}`))
   }
 
   const createChatroom = () => {
     setCreating(true)
     saveUsername()
     firebaseHandler.createChatroom((id) => {
-      history.push(routes.HOME.concat(id))
+      history.push(routes.HOME.concat(`chat/${id}`))
     }, (err) => {
       alert(err)
       setCreating(false)
