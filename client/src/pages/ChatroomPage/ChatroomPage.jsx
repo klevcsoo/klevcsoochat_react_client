@@ -30,6 +30,26 @@ const ChatroomPage = () => {
     })
   }, [ roomId ])
 
+  useEffect(() => {
+    if (bottomRef?.current) {
+      bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
+    }
+  }, [ bottomRef ])
+
+  const sendMessage = () => {
+    setSending(true)
+    if (inputRef.current) inputRef.current.focus()
+    if (bottomRef.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
+    firebaseHandler.sendMessage(roomId, currentMsg, () => {
+      console.log('Sent')
+      setCurrentMsg('')
+      setSending(false)
+      if (bottomRef.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
+    }, (err) => {
+      console.log(err)
+    })
+  }
+
   return (
     <div>
       <ChatroomNamePopup />
@@ -56,20 +76,9 @@ const ChatroomPage = () => {
       <div className="chatroom-message-composer">
         <AppInput inChat placeholder="Aa" defaultValue={currentMsg} onChange={(text) => {
           setCurrentMsg(text)
-        }} reference={inputRef} />
+        }} reference={inputRef} onSubmit={() => sendMessage()} />
         {sending ? <LoadingSpinner /> : (
-          <AppSendButton disabled={currentMsg.length === 0} onClick={() => {
-            setSending(true)
-            if (inputRef.current) inputRef.current.focus()
-            firebaseHandler.sendMessage(roomId, currentMsg, () => {
-              console.log('Sent')
-              setCurrentMsg('')
-              setSending(false)
-              if (bottomRef.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
-            }, (err) => {
-              console.log(err)
-            })
-          }} />
+          <AppSendButton disabled={currentMsg.length === 0} onClick={() => sendMessage()} />
         )}
       </div>
     </div>
