@@ -19,6 +19,7 @@ export const firebaseHandler = {
 
     app.auth().signInAnonymously().then(({ user }) => {
       console.log(`User signed in with id ${user.uid}`)
+      console.log('Username:', cookie.load('username'))
     }).catch((err) => {
       console.log(`Couldn't sign in. Error: ${err}`)
     })
