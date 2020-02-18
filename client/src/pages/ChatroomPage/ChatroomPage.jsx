@@ -1,16 +1,16 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { firebaseHandler } from '../Utils'
+import { firebaseHandler } from '../../Utils'
 import { useRouteMatch } from 'react-router-dom'
-import { appColours } from '../Contants'
+import { appColours } from '../../Contants'
 import cookie from 'react-cookies'
 
 // Components
-import AppInput from '../components/AppInput/AppInput'
-import LoadingSpinner from '../components/LoadingSpinner'
-import AppSubtitle from '../components/AppSubtitle'
-import AppSendButton from '../components/AppButton/AppSendButton'
-import AppMessageCardOG from '../components/AppMessageCards/AppMessageCardOG'
-import AppMessageCardIC from '../components/AppMessageCards/AppMessageCardIC'
+import AppInput from '../../components/AppInput/AppInput'
+import LoadingSpinner from '../../components/LoadingSpinner'
+import AppSubtitle from '../../components/AppSubtitle'
+import AppSendButton from '../../components/AppButton/AppSendButton'
+import AppMessageCardOG from '../../components/AppMessageCards/AppMessageCardOG'
+import AppMessageCardIC from '../../components/AppMessageCards/AppMessageCardIC'
 
 const ChatroomPage = () => {
   const roomId = useRouteMatch().params.chatroom_id

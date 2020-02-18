@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import { useHistory } from 'react-router-dom'
-import { firebaseHandler } from '../Utils'
-import { routes } from '../Contants'
+import { firebaseHandler } from '../../Utils'
+import { routes } from '../../Contants'
 import cookie from 'react-cookies'
 
 // Components
-import AppTitle from '../components/AppTitle'
-import AppButton from '../components/AppButton/AppButton'
-import AppInput from '../components/AppInput/AppInput'
-import LoadingSpinner from '../components/LoadingSpinner'
-import AppSubtitle from '../components/AppSubtitle'
+import AppTitle from '../../components/AppTitle'
+import AppButton from '../../components/AppButton/AppButton'
+import AppInput from '../../components/AppInput/AppInput'
+import LoadingSpinner from '../../components/LoadingSpinner'
+import AppSubtitle from '../../components/AppSubtitle'
 
 const HomePage = () => {
   const history = useHistory()
@@ -57,7 +57,7 @@ const HomePage = () => {
         top: '25%', left: '50%',
         transform: 'translate(-50%, -50%)'
       }}>
-        <AppTitle text="Klevcsoochat" />
+        <h1 className="app-title">KlevcsooChat</h1>
       </div>
       <div style={{
         position: 'absolute',

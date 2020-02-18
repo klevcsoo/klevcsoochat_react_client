@@ -1,12 +1,11 @@
 import React from 'react'
-import './App.css'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import { routes } from './Contants'
 
 // Pages
-import HomePage from './pages/HomePage'
+import HomePage from './pages/HomePage/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
-import ChatroomPage from './pages/ChatroomPage'
+import ChatroomPage from './pages/ChatroomPage/ChatroomPage'
 import SettingPage from './pages/SettingPage'
 
 function App() {
