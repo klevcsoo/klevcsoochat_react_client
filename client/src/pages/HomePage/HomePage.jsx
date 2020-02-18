@@ -68,7 +68,7 @@ const HomePage = () => {
           }}  />
           <AppButton text="Csatlakozás a szobához" onClick={() => {
             if (!username) alert('Nincs megadva felhasználónév')
-            else joinChatroom()
+            else if (!!roomId) joinChatroom()
           }} />
         </div>
       </div>
