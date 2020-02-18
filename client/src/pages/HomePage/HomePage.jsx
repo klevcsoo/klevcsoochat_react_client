@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react'
+import './HomePage.css'
 import { useHistory } from 'react-router-dom'
 import { firebaseHandler } from '../../Utils'
 import { routes } from '../../Contants'
@@ -8,6 +9,7 @@ import cookie from 'react-cookies'
 import AppButton from '../../components/AppButton/AppButton'
 import AppInput from '../../components/AppInput/AppInput'
 import LoadingSpinner from '../../components/LoadingSpinner'
+import AppLogo from '../../components/AppLogo'
 
 const HomePage = () => {
   const history = useHistory()
@@ -26,7 +28,7 @@ const HomePage = () => {
     firebaseHandler.createChatroom((id) => {
       history.push(routes.HOME.concat(id))
     }, (err) => {
-      console.log(err) //TODO: Add popup
+      alert(err)
       setCreating(false)
     })
   }
@@ -34,44 +36,41 @@ const HomePage = () => {
   const saveUsername = () => {
     if (!username) cookie.remove('username')
     else cookie.save('username', username)
-    // else cookie.save('username', username, { path: '/', maxAge: 0 })
 
     console.log(cookie.load('username'))
   }
 
   useEffect(() => {
     let cachedUsername = cookie.load('username')
-
-    if (!!cachedUsername) {
-      setUsername(cachedUsername)
-      console.log(cachedUsername)
-    }
+    if (!!cachedUsername) setUsername(cachedUsername)
   }, [])
 
   return (
     <div>
-      <div style={{
-        position: 'absolute',
-        top: '25%', left: '50%',
-        transform: 'translate(-50%, -50%)'
-      }}>
-        <h1 className="app-title">KlevcsooChat</h1>
-      </div>
-      <div style={{
-        position: 'absolute',
-        top: '50%', left: '50%',
-        transform: 'translate(-50%, -50%)',
-        display: 'grid',
-        gridRow: 'repeat(5, auto)'
-      }}>
-        <AppInput placeholder="Felhasználónév (elhagyható)" defaultValue={username} onChange={(text) => {
-          setUsername(text)
-        }}  />
-        <AppInput placeholder="Chat azonosító" defaultValue={roomId} onChange={(text) => {
-          setRoomId(text)
-        }}  />
-        <AppButton text="Csatlakozás a szobához" onClick={() => joinChatroom()} />
-        {creating ? <LoadingSpinner /> : <AppButton text="Szoba létrehozása" onClick={() => createChatroom()}  />}
+      <div className="home-logo"><AppLogo/></div>
+      <div className="home-content-container">
+        <div><div>
+          <AppInput placeholder="Felhasználónév" defaultValue={username} onChange={(text) => {
+            setUsername(text)
+          }} />
+          {creating ? <LoadingSpinner /> : <AppButton text="Szoba létrehozása" onClick={() => {
+            if (!username) alert('Nincs megadva felhasználónév')
+            else createChatroom()
+          }}  />}
+          <div className="home-option-separator"></div>
+        </div></div>
+        <div>
+          <AppInput placeholder="Felhasználónév" defaultValue={username} onChange={(text) => {
+            setUsername(text)
+          }} />
+          <AppInput placeholder="Chat azonosító" defaultValue={roomId} onChange={(text) => {
+            setRoomId(text)
+          }}  />
+          <AppButton text="Csatlakozás a szobához" onClick={() => {
+            if (!username) alert('Nincs megadva felhasználónév')
+            else joinChatroom()
+          }} />
+        </div>
       </div>
     </div>
   )
