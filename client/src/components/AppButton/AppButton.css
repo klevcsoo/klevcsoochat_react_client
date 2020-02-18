@@ -28,6 +28,8 @@
   font-weight: 500;
   font-family: 'Rubik', sans-serif;
   text-align: center;
+
+  user-select: none;
 }
 
 .app-send-button {
