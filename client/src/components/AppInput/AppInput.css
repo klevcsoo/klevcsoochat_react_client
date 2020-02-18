@@ -2,6 +2,7 @@
   width: 260px; max-width: 260px;
   height: 38px; max-height: 38px;
   margin: 5px auto; padding: 0 20px;
+  display: block;
 
   background: var(--colour-background);
   border: 1px solid var(--colour-foreground);
@@ -16,7 +17,6 @@
   transition: 200ms all ease-out;
 }
 .app-input:focus {
-  border: 1px solid var(--colour-primary);
   box-shadow: 0 0 50px var(--colour-primary-shadow);
 }
 .app-input::placeholder {
