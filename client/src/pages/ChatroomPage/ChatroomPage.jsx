@@ -26,27 +26,21 @@ const ChatroomPage = () => {
     firebaseHandler.loadChatroom(roomId, (msgs) => {
       setMessages(msgs)
       setLoading(false)
+      if (bottomRef?.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
     }, (err) => {
       console.log(err)
       history.replace('/notfound')
     })
   }, [ roomId, history ])
 
-  useEffect(() => {
-    if (bottomRef?.current) {
-      bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
-    }
-  }, [ bottomRef ])
-
   const sendMessage = () => {
     setSending(true)
     if (inputRef.current) inputRef.current.focus()
-    if (bottomRef.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
     firebaseHandler.sendMessage(roomId, currentMsg, () => {
       console.log('Sent')
       setCurrentMsg('')
       setSending(false)
-      if (bottomRef.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
+      if (bottomRef?.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
     }, (err) => {
       console.log(err)
     })

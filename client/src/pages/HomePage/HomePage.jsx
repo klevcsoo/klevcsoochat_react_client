@@ -37,7 +37,7 @@ const HomePage = () => {
     if (!username) cookie.remove('username')
     else cookie.save('username', username)
 
-    console.log(cookie.load('username'))
+    console.log('Username saved:', cookie.load('username'))
   }
 
   useEffect(() => {
