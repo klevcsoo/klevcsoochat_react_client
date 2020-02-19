@@ -25,6 +25,16 @@ export const firebaseHandler = {
     })
   },
 
+  terminateApp: () => {
+    console.log('Deleting user...')
+    app.auth().currentUser.delete().then(() => {
+      console.log('Temporary user deleted')
+      console.log('Closing app...')
+    }).catch((err) => {
+      console.log('Failed to delete user. Err:', err)
+    })
+  },
+
   loadChatroom: (id, handler, onError) => {
     app.database().ref(`/chats/${id}`).on('value', async (snapshot) => {
       if (!snapshot.exists()) onError('A szoba nem létezik.')
