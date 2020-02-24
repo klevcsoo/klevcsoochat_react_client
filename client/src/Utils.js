@@ -36,25 +36,29 @@ export const firebaseHandler = {
   },
 
   loadChatroom: (id, handler, onError) => {
-    app.database().ref(`/chats/${id}`).on('value', async (snapshot) => {
-      if (!snapshot.exists()) onError('A szoba nem létezik.')
-
-      let chatroomMessages = []
-      snapshot.child('messages').forEach((message) => {
-        chatroomMessages.push({
-          author: message.child('author').val(),
-          content: message.child('content').val()
+    app.auth().onAuthStateChanged((user) => {
+      if (!!user) {
+        app.database().ref(`/chats/${id}`).on('value', async (snapshot) => {
+          if (!snapshot.exists()) onError('A szoba nem létezik.')
+    
+          let chatroomMessages = []
+          snapshot.child('messages').forEach((message) => {
+            chatroomMessages.push({
+              author: message.child('author').val(),
+              content: message.child('content').val()
+            })
+          })
+    
+          handler(chatroomMessages)
         })
-      })
-
-      handler(chatroomMessages)
+      }
     })
   },
 
   createChatroom: (handler, onError) => {
     if (!app.auth().currentUser) onError('Nem vagy bejelentkezve.')
 
-    app.database().ref('/chats').push({
+    app.database().ref('/chats/metadata').push({
       created: new Date().getTime()
     }).then((reference) => {
       handler(reference.key)
