@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './ChatroomPage.css'
-import { firebaseHandler } from '../../Utils'
+import { firebaseHandler, validateMessage } from '../../Utils'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 
 // Components
@@ -19,26 +19,34 @@ const ChatroomPage = () => {
   const [ sending, setSending ] = useState(false)
   const [ messages, setMessages ] = useState([])
   const [ currentMsg, setCurrentMsg ] = useState('')
+  
+  const scrollToBottom = () => {
+    if (bottomRef?.current) {
+      bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
+    }
+  }
 
   useEffect(() => {
     firebaseHandler.loadChatroom(roomId, (msgs) => {
       setMessages(msgs)
       setLoading(false)
-      if (bottomRef?.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
+      scrollToBottom()
     }, (err) => {
       console.log(err)
-      history.replace('/notfound')
+      history.replace(`/notfound/${roomId}`)
     })
   }, [ roomId, history ])
 
   const sendMessage = () => {
+    if (!validateMessage(currentMsg)) return
+
     setSending(true)
     if (inputRef.current) inputRef.current.focus()
     firebaseHandler.sendMessage(roomId, currentMsg, () => {
       console.log('Sent')
       setCurrentMsg('')
       setSending(false)
-      if (bottomRef?.current) bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
+      scrollToBottom()
     }, (err) => {
       console.log(err)
     })

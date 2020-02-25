@@ -2,6 +2,7 @@ import React from 'react'
 import './ChatroomPage.css'
 import AppInput from '../../components/AppInput/AppInput'
 import AppSendButton from '../../components/AppButton/AppSendButton'
+import { validateMessage } from '../../Utils'
 
 const ChatroomMessageComposer = ({ messageHandling, inputRef, isSending, sendMessage }) => {
   return (
@@ -10,7 +11,7 @@ const ChatroomMessageComposer = ({ messageHandling, inputRef, isSending, sendMes
         messageHandling.setCurrentMsg(text)
       }} reference={inputRef} onSubmit={() => sendMessage()} />
       <AppSendButton sending={isSending}
-      disabled={messageHandling.currentMsg.length === 0} onClick={() => sendMessage()} />
+      disabled={!validateMessage(messageHandling.currentMsg)} onClick={() => sendMessage()} />
     </div>
   )
 }
