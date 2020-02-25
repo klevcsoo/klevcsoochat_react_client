@@ -79,3 +79,10 @@ export const firebaseHandler = {
 
   getUid: () => app.auth().currentUser.uid
 }
+
+export const validateMessage = (message) => !(
+  // Check lenght
+  message.length === 0 ||
+  //Replace empty charaters
+  message.replace(/\s/g, '').length === 0
+)
