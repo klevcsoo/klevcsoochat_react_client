@@ -8,6 +8,7 @@ import LoadingSpinner from '../../components/LoadingSpinner'
 import ChatroomNamePopup from './ChatroomNamePopup'
 import ChatroomMessageList from './ChatroomMessageList'
 import ChatroomMessageComposer from './ChatroomMessageComposer'
+import ChatroomHeader from './ChatroomHeader'
 
 const ChatroomPage = () => {
   const history = useHistory()
@@ -47,9 +48,7 @@ const ChatroomPage = () => {
     <React.Fragment>
       <ChatroomNamePopup />
       <div>
-        <div className="chatroom-header">
-          <div><h1 className="app-subtitle" style={{ margin: 0 }}>Chat::<b>{roomId}</b></h1></div>
-        </div>
+        <ChatroomHeader roomId={roomId} />
         {loading ? (
           <div style={{
             position: 'fixed',
