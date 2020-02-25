@@ -1,3 +1,8 @@
+@keyframes sending-animation {
+  from { opacity: 100%; }
+  to { opacity: 20%; }
+}
+
 .app-button {
   width: 280px; max-width: 280px;
   height: auto; min-height: 30px;  
@@ -52,6 +57,9 @@
 .app-send-button.disabled {
   background: var(--colour-background);
   box-shadow: none;
+}
+.app-send-button.sending {
+  animation: sending-animation 800ms infinite ease-in-out alternate;
 }
 .app-send-button svg {
   grid-row: 2 / span 1;
