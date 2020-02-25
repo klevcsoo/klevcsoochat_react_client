@@ -1,9 +1,18 @@
 :root {
-  --colour-background: #000000;
-  --colour-foreground: #222222;
-  --colour-text: #FFFFFF;
+  --colour-background: #FFFFFF;
+  --colour-foreground: #FFFFFF;
+  --colour-text: rgb(0, 0, 0);
   --colour-primary: linear-gradient(135deg, #24DBA3, #5BA7F3);
   --colour-primary-shadow: #24DBA388;
+  --shadow-primary: 0 0 10px #00000042;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --colour-background: #000000;
+    --colour-foreground: #222222;
+    --colour-text: #FFFFFF;
+    --shadow-primary: none;
+  }
 }
 
 * {

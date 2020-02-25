@@ -18,6 +18,7 @@
 
   background: var(--colour-foreground);
   border-radius: 2px 5px 5px 2px;
+  box-shadow: var(--shadow-primary);
 }
 .app-message-card > div > div {
   grid-column: 1 / span 1;
