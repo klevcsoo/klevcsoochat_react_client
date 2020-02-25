@@ -1,6 +1,5 @@
 .app-message-card {
   width: calc(100vw - 20px); height: auto;
-  min-height: 70px;
   margin: 10px 0; padding: 0 10px;
 }
 .app-message-card > p {
