@@ -59,7 +59,8 @@ export const firebaseHandler = {
     if (!app.auth().currentUser) onError('Nem vagy bejelentkezve.')
 
     app.database().ref('/chats/metadata').push({
-      created: new Date().getTime()
+      created: new Date().getTime(),
+      creator: app.auth().currentUser.uid
     }).then((reference) => {
       handler(reference.key)
     })
