@@ -8,20 +8,22 @@ const ChatroomNamePopup = () => {
   const [ hasUsername, setHasUsername ] = useState(!!cookie.load('username'))
   const [ username, setUsername ] = useState('')
 
+  const saveUsername = () => {
+    if (!username) alert('Nincs megadva felhasználónév!')
+    else {
+      cookie.save('username', username)
+      console.log('Username updated: ', username)
+      setHasUsername(true)
+    }
+  }
+
   return hasUsername ? null : (
     <div className="chatroom-username-popup">
       <div>
         <AppInput placeholder="Felhasználónév" defaultValue={username} onChange={(text) => {
           setUsername(text)
-        }} />
-        <AppButton text="Tovább" onClick={() => {
-          if (!username) alert('Nincs megadva felhasználónév!')
-          else {
-            cookie.save('username', username)
-            console.log('Username: ', username)
-            setHasUsername(true)
-          }
-        }} />
+        }} onSubmit={() => saveUsername()} />
+        <AppButton text="Tovább" onClick={() => saveUsername()} />
       </div>
     </div>
   )

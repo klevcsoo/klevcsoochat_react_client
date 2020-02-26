@@ -32,7 +32,7 @@
 }
 
 .chatroom-username-popup {
-  position: absolute; z-index: 450;
+  position: fixed; z-index: 450;
   top: 0; left: 0; bottom: 0; right: 0;
 
   background: #000000c5;
