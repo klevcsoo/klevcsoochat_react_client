@@ -18,7 +18,7 @@
 
   background: var(--colour-foreground);
   border-radius: 2px 5px 5px 2px;
-  box-shadow: var(--shadow-primary);
+  box-shadow: var(--mono-shadow);
 }
 .app-message-card > div > div {
   grid-column: 1 / span 1;
@@ -37,6 +37,7 @@
   background: var(--colour-background);
   border: 1px solid var(--colour-foreground);
   border-radius: 5px;
+  box-shadow: none;
 }
 .app-message-incoming > div > p {
   grid-column: 2 / span 1;

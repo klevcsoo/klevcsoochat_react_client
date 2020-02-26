@@ -4,10 +4,11 @@
   margin: 5px auto; padding: 0 20px;
   display: block;
 
-  background: var(--colour-background);
-  border: 1px solid var(--colour-foreground);
+  background: var(--colour-foreground);
+  border: 1px solid transparent;
   border-radius: 10px;
-  box-shadow: var(--shadow-primary);
+  box-shadow: var(--mono-shadow);
+  -webkit-appearance: none; /* For Safari */
 
   font-family: sans-serif;
   font-size: 20px;
@@ -17,12 +18,18 @@
   transition: 200ms all ease-out;
 }
 .app-input:focus {
-  box-shadow: 0 0 50px var(--colour-primary-shadow);
+  box-shadow: var(--primary-shadow);
 }
 .app-input::placeholder {
   font-family: sans-serif;
   font-size: 20px;
   font-weight: 300;
+}
+@media(prefers-color-scheme: dark) {
+  .app-input {
+    background: var(--colour-background);
+    border: 1px solid var(--colour-foreground);
+  }
 }
 
 .app-chat-input {

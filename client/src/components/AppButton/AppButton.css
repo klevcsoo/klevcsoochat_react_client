@@ -13,13 +13,13 @@
 
   background: var(--colour-primary);
   border-radius: 10px;
-  box-shadow: var(--shadow-primary);
+  box-shadow: var(--mono-shadow);
 
   cursor: pointer;
   transition: 200ms all ease-out;
 }
 .app-button:hover {
-  box-shadow: 0 0 50px var(--colour-primary-shadow);
+  box-shadow: var(--primary-shadow);
 }
 .app-button:active {
   background: var(--colour-foreground);
@@ -47,7 +47,7 @@
 
   background: var(--colour-primary);
   border-radius: 10px;
-  box-shadow: 0 0 50px var(--colour-primary-shadow);
+  box-shadow: var(--primary-shadow);
   cursor: pointer;
   transition: 200ms all ease-out;
 }

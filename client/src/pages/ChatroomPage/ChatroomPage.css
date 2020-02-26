@@ -9,7 +9,7 @@
   background: var(--colour-foreground);
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
-  box-shadow: var(--shadow-primary);
+  box-shadow: var(--mono-shadow);
 }
 .chatroom-header > div {
   grid-row: 2 / span 1;
@@ -28,7 +28,7 @@
   background: var(--colour-foreground);
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
-  box-shadow: var(--shadow-primary);
+  box-shadow: var(--mono-shadow);
 }
 
 .chatroom-username-popup {

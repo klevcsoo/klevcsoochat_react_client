@@ -3,7 +3,8 @@ export const appColours = {
   FOREGROUND: 'var(--colour-foreground)',
   TEXT: 'var(--colour-text)',
   PRIMARY: 'var(--colour-primary)',
-  PRIMARY_SHADOW: 'var(--colour-primary-shadow)'
+  PRIMARY_SHADOW: 'var(--primary-shadow)',
+  MONO_SHADOW: 'var(--mono-shadow)'
 }
 
 export const routes = {
