@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './ChatroomPage.css'
-import { firebaseHandler, validateMessage } from '../../Utils'
+import { firebaseHandler } from '../../Utils'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 
 // Components
@@ -16,12 +16,8 @@ const ChatroomPage = () => {
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
   const [ loading, setLoading ] = useState(true)
-  const [ sending, setSending ] = useState(false)
   const [ messages, setMessages ] = useState([])
-  //const [ currentMsg, setCurrentMsg ] = useState('')
 
-  let currentMsg = ''
-  
   const scrollToBottom = () => {
     if (bottomRef?.current) {
       bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
@@ -39,20 +35,6 @@ const ChatroomPage = () => {
     })
   }, [ roomId, history ])
 
-  const sendMessage = () => {
-    if (!validateMessage(currentMsg)) return
-
-    setSending(true)
-    if (inputRef.current) inputRef.current.focus()
-    firebaseHandler.sendMessage(roomId, currentMsg, () => {
-      console.log('Sent')
-      setSending(false)
-      scrollToBottom()
-    }, (err) => {
-      console.log(err)
-    })
-  }
-
   return (
     <React.Fragment>
       <ChatroomNamePopup />
@@ -66,11 +48,8 @@ const ChatroomPage = () => {
           }}><LoadingSpinner /></div>
         ) : <ChatroomMessageList list={messages} />}
         <div style={{ height: 100 }} ref={bottomRef}></div>
-        <ChatroomMessageComposer messageHandling={{
-          message: currentMsg,
-          setMessage: (msg) => currentMsg = msg
-        }} inputRef={inputRef}
-        isSending={sending} sendMessage={sendMessage} />
+        <ChatroomMessageComposer scrollToBottom={scrollToBottom}
+        inputRef={inputRef} roomId={roomId} />
       </div>
     </React.Fragment>
   )

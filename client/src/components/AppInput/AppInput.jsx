@@ -12,7 +12,7 @@ const AppInput = ({ placeholder, defaultValue, onChange, onSubmit, inChat, refer
 
   useEffect(() => {
     if (!!onChange) onChange(value)
-  }, [ value ])
+  }, [ value, onChange ])
 
   return (
     <input
