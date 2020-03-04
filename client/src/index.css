@@ -4,6 +4,8 @@
   --colour-text: rgb(0, 0, 0);
   --colour-primary: linear-gradient(135deg, #24DBA3, #5BA7F3);
 
+  --gradient-message: linear-gradient(to bottom, #24DBA3 0%, #5BA7F3 100%);
+
   --primary-shadow: 0 0 50px #24DBA388;
   --mono-shadow: 0 0 6px #00000020;
 }
@@ -20,6 +22,7 @@
 * {
   scrollbar-width: 0;
   transition: 200ms ease-in-out all;
+  overflow-x: hidden;
 }
 *:focus, *:active {
   -webkit-tap-highlight-color: transparent;

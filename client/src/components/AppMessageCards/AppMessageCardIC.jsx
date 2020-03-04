@@ -3,11 +3,11 @@ import './AppMessageCard.css'
 
 const AppMessageCardIC = ({ author, content }) => {
   return (
-    <div className="app-message-card app-message-incoming">
-      <p>{author}</p>
+    <div className="app-message-card incoming">
       <div>
         <p>{content}</p>
       </div>
+      <p>{author}</p>
     </div>
   )
 }

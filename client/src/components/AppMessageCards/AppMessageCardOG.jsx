@@ -3,10 +3,9 @@ import './AppMessageCard.css'
 
 const AppMessageCardOG = ({ author, content }) => {
   return (
-    <div className="app-message-card app-message-outgoing">
+    <div className="app-message-card">
       <p>{author}</p>
       <div>
-        <div></div>
         <p>{content}</p>
       </div>
     </div>
