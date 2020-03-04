@@ -4,15 +4,14 @@ import AppInput from '../../components/AppInput/AppInput'
 import AppSendButton from '../../components/AppButton/AppSendButton'
 import { validateMessage } from '../../Utils'
 
-const ChatroomMessageComposer = ({ inputRef, isSending, sendMessage }) => {
-  let msg = inputRef.current?.value
-
+const ChatroomMessageComposer = ({ messageHandling, inputRef, isSending, sendMessage }) => {
   return (
     <div className="chatroom-message-composer">
-      <AppInput inChat placeholder="Aa" defaultValue={msg}
-      reference={inputRef} onSubmit={() => sendMessage()} />
+      <AppInput inChat placeholder="Aa" defaultValue={messageHandling.currentMsg} onChange={(text) => {
+        messageHandling.setCurrentMsg(text)
+      }} reference={inputRef} onSubmit={() => sendMessage()} />
       <AppSendButton sending={isSending}
-      disabled={!validateMessage(msg)} onClick={() => sendMessage()} />
+      disabled={!validateMessage(messageHandling.currentMsg)} onClick={() => sendMessage()} />
     </div>
   )
 }
