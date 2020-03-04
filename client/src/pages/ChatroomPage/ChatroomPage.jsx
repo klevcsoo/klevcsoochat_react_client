@@ -18,7 +18,6 @@ const ChatroomPage = () => {
   const [ loading, setLoading ] = useState(true)
   const [ sending, setSending ] = useState(false)
   const [ messages, setMessages ] = useState([])
-  const [ currentMsg, setCurrentMsg ] = useState('')
   
   const scrollToBottom = () => {
     if (bottomRef?.current) {
@@ -38,15 +37,13 @@ const ChatroomPage = () => {
   }, [ roomId, history ])
 
   const sendMessage = () => {
-    if (!validateMessage(currentMsg)) return
+    if (!validateMessage(inputRef.current?.value)) return
 
     setSending(true)
     if (inputRef.current) inputRef.current.focus()
-    firebaseHandler.sendMessage(roomId, currentMsg, () => {
-      console.log('Sent')
-      setCurrentMsg('')
-      setSending(false)
-      scrollToBottom()
+    firebaseHandler.sendMessage(roomId, inputRef.current?.value, () => {
+      setSending(false); scrollToBottom()
+      //TODO: Remove text from the input
     }, (err) => {
       console.log(err)
     })
@@ -65,7 +62,7 @@ const ChatroomPage = () => {
           }}><LoadingSpinner /></div>
         ) : <ChatroomMessageList list={messages} />}
         <div style={{ height: 100 }} ref={bottomRef}></div>
-        <ChatroomMessageComposer messageHandling={{ currentMsg, setCurrentMsg }} inputRef={inputRef}
+        <ChatroomMessageComposer inputRef={inputRef}
         isSending={sending} sendMessage={sendMessage} />
       </div>
     </React.Fragment>

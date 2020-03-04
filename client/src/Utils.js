@@ -81,6 +81,8 @@ export const firebaseHandler = {
 }
 
 export const validateMessage = (message) => !(
+  // Existence check
+  !message ||
   // Check lenght
   message.length === 0 ||
   //Replace empty charaters
