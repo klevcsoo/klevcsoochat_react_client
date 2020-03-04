@@ -18,7 +18,9 @@ const ChatroomPage = () => {
   const [ loading, setLoading ] = useState(true)
   const [ sending, setSending ] = useState(false)
   const [ messages, setMessages ] = useState([])
-  const [ currentMsg, setCurrentMsg ] = useState('')
+  //const [ currentMsg, setCurrentMsg ] = useState('')
+
+  let currentMsg = ''
   
   const scrollToBottom = () => {
     if (bottomRef?.current) {
@@ -44,7 +46,6 @@ const ChatroomPage = () => {
     if (inputRef.current) inputRef.current.focus()
     firebaseHandler.sendMessage(roomId, currentMsg, () => {
       console.log('Sent')
-      setCurrentMsg('')
       setSending(false)
       scrollToBottom()
     }, (err) => {
@@ -65,7 +66,10 @@ const ChatroomPage = () => {
           }}><LoadingSpinner /></div>
         ) : <ChatroomMessageList list={messages} />}
         <div style={{ height: 100 }} ref={bottomRef}></div>
-        <ChatroomMessageComposer messageHandling={{ currentMsg, setCurrentMsg }} inputRef={inputRef}
+        <ChatroomMessageComposer messageHandling={{
+          message: currentMsg,
+          setMessage: (msg) => currentMsg = msg
+        }} inputRef={inputRef}
         isSending={sending} sendMessage={sendMessage} />
       </div>
     </React.Fragment>

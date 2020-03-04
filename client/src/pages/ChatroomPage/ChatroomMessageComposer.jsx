@@ -7,11 +7,11 @@ import { validateMessage } from '../../Utils'
 const ChatroomMessageComposer = ({ messageHandling, inputRef, isSending, sendMessage }) => {
   return (
     <div className="chatroom-message-composer">
-      <AppInput inChat placeholder="Aa" defaultValue={messageHandling.currentMsg} onChange={(text) => {
-        messageHandling.setCurrentMsg(text)
+      <AppInput inChat placeholder="Aa" defaultValue={messageHandling.message} onChange={(text) => {
+        messageHandling.setMessage(text)
       }} reference={inputRef} onSubmit={() => sendMessage()} />
       <AppSendButton sending={isSending}
-      disabled={!validateMessage(messageHandling.currentMsg)} onClick={() => sendMessage()} />
+      disabled={!validateMessage(messageHandling.message)} onClick={() => sendMessage()} />
     </div>
   )
 }
