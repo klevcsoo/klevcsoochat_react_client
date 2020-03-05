@@ -10,6 +10,8 @@ import ChatroomMessageList from './ChatroomMessageList'
 import ChatroomMessageComposer from './ChatroomMessageComposer'
 import ChatroomHeader from './ChatroomHeader'
 
+let loadedMessages = []
+
 const ChatroomPage = () => {
   const history = useHistory()
   const roomId = useRouteMatch().params.chatroom_id
@@ -26,7 +28,14 @@ const ChatroomPage = () => {
 
   useEffect(() => {
     firebaseHandler.loadChatroom(roomId, (msgs) => {
+      msgs.forEach((m, i) => {
+        if (!loadedMessages[i]) m.animation = true
+        else m.animation = false
+      })
+
       setMessages(msgs)
+      loadedMessages = msgs
+
       setLoading(false)
       scrollToBottom()
     }, (err) => {
