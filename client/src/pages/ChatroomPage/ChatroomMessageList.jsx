@@ -9,9 +9,11 @@ const ChatroomMessageList = ({ list }) => {
   return (
     <div>
       {list.map((m) => {
+        let idKey = list.indexOf(m)
+
         if (m.author === cookie.load('username') || m.author === firebaseHandler.getUid()) {
-          return <AppMessageCardOG {...m} key={Math.random() * 10000}/>
-        } else return <AppMessageCardIC {...m} key={Math.random() * 10000}/>
+          return <AppMessageCardOG {...m} key={idKey}/>
+        } else return <AppMessageCardIC {...m} key={idKey}/>
       })}
     </div>
   )
