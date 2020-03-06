@@ -38,16 +38,17 @@
 }
 
 .app-send-button {
-  width: 40px; height: 40px;
+  width: 38px; height: 38px;
   margin: 5px; padding: 0;
 
   display: grid;
   grid-template-rows: auto min-content auto;
   grid-template-columns: auto min-content auto;
 
-  background: var(--colour-primary);
+  background: var(--colour-text);
+  border: 1px solid var(--colour-foreground);
   border-radius: 10px;
-  box-shadow: var(--primary-shadow);
+
   cursor: pointer;
   transition: 200ms all ease-out;
 }
@@ -56,7 +57,7 @@
 }
 .app-send-button.disabled {
   background: var(--colour-background);
-  box-shadow: none;
+  cursor: not-allowed;
 }
 .app-send-button.sending {
   animation: sending-animation 800ms infinite ease-in-out alternate;
@@ -64,10 +65,15 @@
 .app-send-button svg {
   grid-row: 2 / span 1;
   grid-column: 2 / span 1;
+
+  fill: var(--colour-background);
+}
+.app-send-button.disabled svg {
+  fill: var(--colour-text);
 }
 
 .app-link-switcher-button {
-  width: 40px; height: 40px;
+  width: 38px; height: 38px;
   margin: 5px; padding: 0;
 
   display: grid;
@@ -75,7 +81,9 @@
   grid-template-columns: auto min-content auto;
 
   background: var(--colour-background);
+  border: 1px solid var(--colour-foreground);
   border-radius: 10px;
+
   cursor: pointer;
   transition: 100ms all ease-out;
 }

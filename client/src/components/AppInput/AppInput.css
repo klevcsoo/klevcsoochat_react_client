@@ -5,7 +5,7 @@
   display: block;
 
   background: var(--colour-foreground);
-  border: 1px solid var(--colour-background);
+  border: 1px solid var(--colour-text);
   border-radius: 10px;
   -webkit-appearance: none; /* For Safari */
 
@@ -28,7 +28,7 @@
 @media(prefers-color-scheme: dark) {
   .app-input {
     background: var(--colour-background);
-    border: 1px solid var(--colour-background);
+    border: 1px solid var(--colour-foreground);
   }
 }
 

@@ -47,7 +47,7 @@ const ChatroomMessageComposer = ({ inputRef, scrollToBottom, roomId }) => {
   }, [ urlMode, inputRef ])
 
   return (
-    <div className="chatroom-message-composer">
+    <div className="chatroom-message-composer frosted-glass">
       <AppLinkSwitcherButton enabled={urlMode} onClick={() => setUrlMode(!urlMode)} />
       <AppInput inChat placeholder={urlMode ? 'Kép link' : 'Aa'} onChange={(text) => {
         setMessage(text)

@@ -9,7 +9,7 @@ const AppSendButton = ({ sending, disabled, onClick }) => {
   return (
     <div className={`app-send-button${disabled ? ' disabled' : ''}${sending ? ' sending' : ''}`}
     onClick={handleClick}>
-      <SendRounded />
+      <SendRounded color="inherit" />
     </div>
   )
 }
