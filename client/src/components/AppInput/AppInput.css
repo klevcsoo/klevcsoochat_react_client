@@ -5,9 +5,8 @@
   display: block;
 
   background: var(--colour-foreground);
-  border: 1px solid transparent;
+  border: 1px solid var(--colour-background);
   border-radius: 10px;
-  box-shadow: var(--mono-shadow);
   -webkit-appearance: none; /* For Safari */
 
   font-family: sans-serif;
@@ -19,6 +18,7 @@
 }
 .app-input:focus {
   box-shadow: var(--primary-shadow);
+  border: 1px solid transparent;
 }
 .app-input::placeholder {
   font-family: sans-serif;
@@ -28,12 +28,12 @@
 @media(prefers-color-scheme: dark) {
   .app-input {
     background: var(--colour-background);
-    border: 1px solid var(--colour-foreground);
+    border: 1px solid var(--colour-background);
   }
 }
 
 .app-chat-input {
-  width: calc(100% - 45px) !important;
+  width: initial !important;
   max-width: none;
-  margin: 5px !important;
+  margin: 5px 0 !important;
 }
