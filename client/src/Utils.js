@@ -77,6 +77,17 @@ export const firebaseHandler = {
     })
   },
 
+  sendImage: (roomId, url, handler, onError) => {
+    if (!app.auth().currentUser) onError('Nem vagy bejelentkezve.')
+
+    app.database().ref(`/chats/${roomId}/messages`).push({
+      author: cookie.load('username') || app.auth().currentUser.uid,
+      url: url,
+    }).then(() => {
+      handler()
+    })
+  },
+
   getUid: () => app.auth().currentUser.uid
 }
 
@@ -86,3 +97,9 @@ export const validateMessage = (message) => !(
   //Replace empty charaters
   message.replace(/\s/g, '').length === 0
 )
+
+export const validateImageUrl = (url, onValid, onError) => {
+  if (validateMessage(url) && !!(url.match(/\.(jpeg|jpg|gif|png)$/))) {
+    fetch(url).then(() => onValid()).catch((err) => onError(err))
+  } else onError('Failed at message validation')
+}

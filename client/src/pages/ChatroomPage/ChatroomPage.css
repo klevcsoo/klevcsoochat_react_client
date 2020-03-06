@@ -18,7 +18,7 @@
 .chatroom-message-composer {
   width: 100vw; height: 50;
   display: grid;
-  grid-template-columns: auto min-content;
+  grid-template-columns: min-content auto min-content;
 
   position: fixed; z-index: 100;
   bottom: 0; left: 0;
