@@ -37,42 +37,7 @@
   user-select: none;
 }
 
-.app-send-button {
-  width: 38px; height: 38px;
-  margin: 5px; padding: 0;
-
-  display: grid;
-  grid-template-rows: auto min-content auto;
-  grid-template-columns: auto min-content auto;
-
-  background: var(--colour-text);
-  border: 1px solid var(--colour-foreground);
-  border-radius: 10px;
-
-  cursor: pointer;
-  transition: 200ms all ease-out;
-}
-.app-send-button:active {
-  background: var(--colour-foreground);
-}
-.app-send-button.disabled {
-  background: var(--colour-background);
-  cursor: not-allowed;
-}
-.app-send-button.sending {
-  animation: sending-animation 800ms infinite ease-in-out alternate;
-}
-.app-send-button svg {
-  grid-row: 2 / span 1;
-  grid-column: 2 / span 1;
-
-  fill: var(--colour-background);
-}
-.app-send-button.disabled svg {
-  fill: var(--colour-text);
-}
-
-.app-link-switcher-button {
+.app-toggle-button {
   width: 38px; height: 38px;
   margin: 5px; padding: 0;
 
@@ -87,18 +52,24 @@
   cursor: pointer;
   transition: 100ms all ease-out;
 }
-.app-link-switcher-button:hover {
+.app-toggle-button:hover {
   background: var(--colour-foreground);
 }
-.app-link-switcher-button svg {
+.app-toggle-button svg {
   grid-row: 2 / span 1;
   grid-column: 2 / span 1;
 
   fill: var(--colour-text);
 }
-.app-link-switcher-button.enabled {
+.app-toggle-button.enabled {
   background: var(--colour-text);
 }
-.app-link-switcher-button.enabled svg {
+.app-toggle-button.enabled svg {
   fill: var(--colour-background);
+}
+
+.app-send-button { cursor: not-allowed; }
+.app-send-button.enabled { cursor: pointer; }
+.app-send-button.sending {
+  animation: sending-animation 800ms infinite ease-in-out alternate;
 }

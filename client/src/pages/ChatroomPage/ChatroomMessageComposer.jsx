@@ -3,7 +3,7 @@ import './ChatroomPage.css'
 import AppInput from '../../components/AppInput/AppInput'
 import AppSendButton from '../../components/AppButton/AppSendButton'
 import { validateMessage, firebaseHandler, validateImageUrl } from '../../Utils'
-import AppLinkSwitcherButton from '../../components/AppButton/AppLinkSwitcherButton'
+import AppURLModeSwitcherButton from '../../components/AppButton/AppURLModeSwitcherButton'
 
 const ChatroomMessageComposer = ({ inputRef, scrollToBottom, roomId }) => {
   const [ message, setMessage ] = useState('')
@@ -48,12 +48,12 @@ const ChatroomMessageComposer = ({ inputRef, scrollToBottom, roomId }) => {
 
   return (
     <div className="chatroom-message-composer frosted-glass">
-      <AppLinkSwitcherButton enabled={urlMode} onClick={() => setUrlMode(!urlMode)} />
+      <AppURLModeSwitcherButton enabled={urlMode} onClick={() => setUrlMode(!urlMode)} />
       <AppInput inChat placeholder={urlMode ? 'Kép link' : 'Aa'} onChange={(text) => {
         setMessage(text)
       }} reference={inputRef} onSubmit={() => sendMessage()} />
       <AppSendButton sending={sending}
-      disabled={!validateMessage(message)} onClick={() => sendMessage()} />
+      enabled={validateMessage(message)} onClick={() => sendMessage()} />
     </div>
   )
 }
