@@ -5,14 +5,15 @@ import cookie from 'react-cookies'
 import AppMessageCard from '../../components/AppMessageCards/AppMessageCard'
 import AppImageMessageCard from '../../components/AppMessageCards/AppImageMessageCard'
 
-const ChatroomMessageList = ({ list }) => {
+const ChatroomMessageList = ({ list, onImageClick }) => {
   return (
     <div>
       {list.map((m) => {
         let idKey = list.indexOf(m)
         return !!(m.url) ? (
           <AppImageMessageCard {...m} key={idKey}
-          incoming={!(m.author === cookie.load('username') || m.author === firebaseHandler.getUid())} />
+          incoming={!(m.author === cookie.load('username') || m.author === firebaseHandler.getUid())}
+          onClick={() => onImageClick(m.url)} />
         ) : (
           <AppMessageCard {...m} key={idKey}
           incoming={!(m.author === cookie.load('username') || m.author === firebaseHandler.getUid())} />

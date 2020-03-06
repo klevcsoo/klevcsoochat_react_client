@@ -9,6 +9,7 @@ import ChatroomNamePopup from './ChatroomNamePopup'
 import ChatroomMessageList from './ChatroomMessageList'
 import ChatroomMessageComposer from './ChatroomMessageComposer'
 import ChatroomHeader from './ChatroomHeader'
+import ChatroomImageInspect from './ChatroomImageInspect'
 
 let loadedMessages = []
 
@@ -19,6 +20,7 @@ const ChatroomPage = () => {
   const inputRef = useRef(null)
   const [ loading, setLoading ] = useState(true)
   const [ messages, setMessages ] = useState([])
+  const [ currentImage, setCurrentImage ] = useState(null)
 
   const scrollToBottom = () => {
     if (bottomRef?.current) {
@@ -47,6 +49,7 @@ const ChatroomPage = () => {
   return (
     <React.Fragment>
       <ChatroomNamePopup />
+      <ChatroomImageInspect url={currentImage} onClose={() => setCurrentImage(null)} />
       <div>
         <ChatroomHeader roomId={roomId} />
         {loading ? (
@@ -55,7 +58,7 @@ const ChatroomPage = () => {
             top: '50%', left: '50%',
             transform: 'translate(-50%, -50%)'
           }}><LoadingSpinner /></div>
-        ) : <ChatroomMessageList list={messages} />}
+        ) : <ChatroomMessageList list={messages} onImageClick={(url) => setCurrentImage(url)} />}
         <div style={{ height: 100 }} ref={bottomRef}></div>
         <ChatroomMessageComposer scrollToBottom={scrollToBottom}
         inputRef={inputRef} roomId={roomId} />
