@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import './ChatroomPage.css'
 import AppInput from '../../components/AppInput/AppInput'
 import AppSendButton from '../../components/AppButton/AppSendButton'
@@ -41,6 +41,10 @@ const ChatroomMessageComposer = ({ inputRef, scrollToBottom, roomId }) => {
       })
     }
   }
+
+  useEffect(() => {
+    if (inputRef.current) inputRef.current.focus()
+  }, [ urlMode, inputRef ])
 
   return (
     <div className="chatroom-message-composer">
