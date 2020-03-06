@@ -10,7 +10,6 @@ const ChatroomMessageList = ({ list }) => {
     <div>
       {list.map((m) => {
         let idKey = list.indexOf(m)
-        console.log(m)
         return !!(m.url) ? (
           <AppImageMessageCard {...m} key={idKey}
           incoming={!(m.author === cookie.load('username') || m.author === firebaseHandler.getUid())} />
