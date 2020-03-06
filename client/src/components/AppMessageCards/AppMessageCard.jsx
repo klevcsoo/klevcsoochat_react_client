@@ -1,9 +1,9 @@
 import React from 'react'
 import './AppMessageCard.css'
 
-const AppMessageCardIC = ({ author, content, animation }) => {
+const AppMessageCard = ({ author, content, animation, incoming }) => {
   return (
-    <div className="app-message-card incoming">
+    <div className={`app-message-card${incoming ? ' incoming' : ''}`}>
       <div className={animation ? ' anim' : ''}>
         <p>{content}</p>
       </div>
@@ -12,4 +12,4 @@ const AppMessageCardIC = ({ author, content, animation }) => {
   )
 }
 
-export default AppMessageCardIC
+export default AppMessageCard
