@@ -59,3 +59,13 @@
   border-radius: 20px 20px 20px 5px;
   box-shadow: none;
 }
+
+.app-message-card.image > div {
+  max-height: 250px;
+  padding: 0;
+}
+.app-message-card.image > div > img {
+  width: 250px; height: 250px;
+  object-fit: cover;
+  object-position: center;
+}

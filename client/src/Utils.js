@@ -43,10 +43,7 @@ export const firebaseHandler = {
     
           let chatroomMessages = []
           snapshot.child('messages').forEach((message) => {
-            chatroomMessages.push({
-              author: message.child('author').val(),
-              content: message.child('content').val()
-            })
+            chatroomMessages.push(message.val())
           })
     
           handler(chatroomMessages)
