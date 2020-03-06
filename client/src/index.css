@@ -6,7 +6,7 @@
 
   --gradient-message: linear-gradient(to bottom, #24DBA3 0%, #5BA7F3 100%);
 
-  --primary-shadow: 0 0 50px #24DBA388;
+  --primary-shadow: 0 0 50px #5BA7F388;
   --mono-shadow: 0 0 6px #00000020;
 }
 @media (prefers-color-scheme: dark) {
