@@ -1,6 +1,6 @@
 import app from 'firebase/app'
 import 'firebase/auth'; import 'firebase/functions'; import 'firebase/database'
-import cookie from 'react-cookies'
+import { useState, useEffect } from 'react'
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLXTi7stlDNk1yGBXhS68N0_1TJeNxVNk",
@@ -17,21 +17,29 @@ export const firebaseHandler = {
   initializeApp: () => {
     if (app.apps.length === 0) app.initializeApp(firebaseConfig)
 
-    app.auth().signInAnonymously().then(({ user }) => {
-      console.log(`User signed in with id ${user.uid}`)
-      console.log('Username:', cookie.load('username'))
-    }).catch((err) => {
-      console.log(`Couldn't sign in. Error: ${err}`)
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        console.log('Logged in as', user.displayName)
+        console.log('UserID:', user.uid)
+      } else {
+        console.log('Not logged in')
+      }
     })
   },
 
-  terminateApp: () => {
-    console.log('Deleting user...')
-    app.auth().currentUser.delete().then(() => {
-      console.log('Temporary user deleted')
-      console.log('Closing app...')
+  login: (email, password) => {
+    app.auth().signInWithEmailAndPassword(email, password).then(() => {
+      console.log('Login successful!')
     }).catch((err) => {
-      console.log('Failed to delete user. Err:', err)
+      console.error('Login failed:', err.message)
+    })
+  },
+
+  logout: () => {
+    app.auth().signOut().then(() => {
+      console.log('Logged out')
+    }).catch((err) => {
+      console.error('Failed to log out:', err.message)
     })
   },
 
@@ -67,7 +75,8 @@ export const firebaseHandler = {
     if (!app.auth().currentUser) onError('Nem vagy bejelentkezve.')
 
     app.database().ref(`/chats/${roomId}/messages`).push({
-      author: cookie.load('username') || app.auth().currentUser.uid,
+      author: app.auth().currentUser.displayName || app.auth().currentUser.uid,
+      authorPhoto: app.auth().currentUser.photoURL,
       content: message
     }).then(() => {
       handler()
@@ -78,7 +87,8 @@ export const firebaseHandler = {
     if (!app.auth().currentUser) onError('Nem vagy bejelentkezve.')
 
     app.database().ref(`/chats/${roomId}/messages`).push({
-      author: cookie.load('username') || app.auth().currentUser.uid,
+      author: app.auth().currentUser.displayName || app.auth().currentUser.uid,
+      authorPhoto: app.auth().currentUser.photoURL,
       url: url,
     }).then(() => {
       handler()
@@ -86,6 +96,21 @@ export const firebaseHandler = {
   },
 
   getUid: () => app.auth().currentUser.uid
+}
+
+export const useAuthUser = function() {
+  const [ user, setUser ] = useState(null)
+  const [ loading, setLoading ] = useState(true)
+
+  useEffect(() => {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) setUser(user)
+      else setUser(null)
+      setLoading(false)
+    })
+  }, [])
+
+  return [ user, loading ]
 }
 
 export const validateMessage = (message) => !(
