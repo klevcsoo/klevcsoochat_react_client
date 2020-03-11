@@ -8,8 +8,8 @@ import LoadingSpinner from '../../components/LoadingSpinner'
 import ChatroomNamePopup from './ChatroomNamePopup'
 import ChatroomMessageList from './ChatroomMessageList'
 import ChatroomMessageComposer from './ChatroomMessageComposer'
-import ChatroomHeader from './ChatroomHeader'
 import ChatroomImageInspect from './ChatroomImageInspect'
+import PageTitleHeader from '../../components/PageTitleHeader/PageTitleHeader'
 
 let loadedMessages = []
 
@@ -51,7 +51,7 @@ const ChatroomPage = () => {
       <ChatroomNamePopup />
       <ChatroomImageInspect url={currentImage} onClose={() => setCurrentImage(null)} />
       <div>
-        <ChatroomHeader roomId={roomId} />
+        <PageTitleHeader previousPage="home" nextPage="settings" title={roomId} />
         {loading ? (
           <div style={{
             position: 'fixed',
