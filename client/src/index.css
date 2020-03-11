@@ -66,8 +66,8 @@ h1.app-subtitle {
 /* DESKTOP OVERRIDE - Only blur background on desktop */
 @media only screen and (min-width: 600px) {
   .frosted-glass {
-    -webkit-backdrop-filter: blur(var(--value-frosted-glass));
-    backdrop-filter: blur(var(--value-frosted-glass));
+    -webkit-backdrop-filter: blur(var(--value-frosted-glass)) saturate(120%);
+    backdrop-filter: blur(var(--value-frosted-glass)) saturate(120%);
     background: var(--colour-frosted-glass);
     border: 1px solid var(--colour-frosted-glass);
   }
@@ -76,8 +76,8 @@ h1.app-subtitle {
 @media not all and (min-resolution:.001dpcm) {
   @supports (-webkit-appearance:none) and (stroke-color:transparent) {
     .frosted-glass {
-      -webkit-backdrop-filter: blur(var(--value-frosted-glass));
-      backdrop-filter: blur(var(--value-frosted-glass));
+      -webkit-backdrop-filter: blur(var(--value-frosted-glass)) saturate(120%);
+      backdrop-filter: blur(var(--value-frosted-glass)) saturate(120%);
       background: var(--colour-frosted-glass);
       border: 1px solid var(--colour-frosted-glass);
     }
