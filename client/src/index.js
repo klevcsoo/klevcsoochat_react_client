@@ -6,7 +6,3 @@ import { firebaseHandler } from './Utils'
 
 ReactDOM.render(<App />, document.getElementById('root'))
 firebaseHandler.initializeApp()
-window.addEventListener('beforeunload', (event) => {
-  event.preventDefault()
-  firebaseHandler.terminateApp()
-})
