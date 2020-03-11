@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import './AppInput.css'
 import { useEffect } from 'react'
 
-const AppInput = ({ placeholder, defaultValue, onChange, onSubmit, inChat, reference }) => {
+const AppInput = ({ placeholder, defaultValue, onChange, onSubmit, inChat, reference, pass }) => {
   const [ value, setValue ] = useState(defaultValue || '')
   
   const submit = () => {
@@ -16,6 +16,7 @@ const AppInput = ({ placeholder, defaultValue, onChange, onSubmit, inChat, refer
 
   return (
     <input
+      type={!!pass ? 'password' : 'text'}
       className={`app-input${inChat ? ' app-chat-input' : ''}`}
       placeholder={placeholder} value={value}
       onChange={(e) => setValue(e.target.value)}
