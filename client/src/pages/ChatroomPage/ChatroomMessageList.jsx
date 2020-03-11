@@ -7,7 +7,7 @@ import AppImageMessageCard from '../../components/AppMessageCards/AppImageMessag
 
 const ChatroomMessageList = ({ list, onImageClick }) => {
   return (
-    <div>
+    <div style={{ overflowX: 'hidden' }}>
       {list.map((m) => {
         let idKey = list.indexOf(m)
         return !!(m.url) ? (

@@ -26,7 +26,6 @@
 * {
   scrollbar-width: 0;
   transition: 200ms ease-in-out all;
-  overflow-x: hidden;
 }
 *:focus, *:active {
   -webkit-tap-highlight-color: transparent;

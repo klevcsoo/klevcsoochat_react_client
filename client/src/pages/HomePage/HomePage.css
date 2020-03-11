@@ -21,12 +21,14 @@
   }
   
   .home-content-container {
+    width: fit-content;
+
     position: absolute;
     top: 50%; left: 50%;
     transform: translate(-50%, -50%);
   
     display: grid;
-    grid-template-columns: 1fr 200px 1fr;
+    grid-template-columns: 1fr minmax(50px, auto) 1fr;
   }
   .home-content-container .home-option-separator {
     display: none; visibility: collapse;
