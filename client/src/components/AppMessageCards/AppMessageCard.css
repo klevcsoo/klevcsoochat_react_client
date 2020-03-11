@@ -24,9 +24,8 @@
   max-width: 250px;
   margin: 0; padding: 5px 15px;
 
-  background: var(--gradient-message) fixed;
+  background: var(--colour-primary);
   border-radius: 20px 20px 5px 20px;
-  box-shadow: var(--mono-shadow);
 }
 .app-message-card > div.anim {
   animation: new-message-animation 200ms forwards ease-out;
@@ -38,6 +37,7 @@
   line-height: 30px;
   word-break: break-word;
 
+  color: white;
   font-family: sans-serif;
   font-size: 20px;
   font-weight: 400;
@@ -55,18 +55,39 @@
   font-weight: 300;
 }
 .app-message-card.incoming > div {
-  background: var(--colour-foreground);
+  background: var(--colour-background);
+  box-shadow: 18px 18px 30px #D1D9E6, -18px -18px 10px #FFFFFF94;
   border-radius: 20px 20px 20px 5px;
-  box-shadow: none;
+}
+.app-message-card.incoming > div > p {
+  color: var(--colour-text);
 }
 
 .app-message-card.image > div {
   max-height: 250px;
   padding: 0;
+  background: var(--colour-background);
+  box-shadow: 18px 18px 30px #D1D9E6;
 }
 .app-message-card.image > div > img {
   width: 250px; height: 250px;
   object-fit: cover;
   object-position: center;
+  border-radius: 20px 20px 5px 20px;
   cursor: pointer;
+}
+.app-message-card.image.incoming > div > img {
+  border-radius: 20px 20px 20px 5px !important;
+}
+
+/* DARK MODE OVERRIDE */
+@media(prefers-color-scheme: dark) {
+  .app-message-card.incoming > div {
+    background: var(--colour-foreground);
+    box-shadow: none;
+  }
+  
+  .app-message-card.image > div {
+    box-shadow: none;
+  }
 }

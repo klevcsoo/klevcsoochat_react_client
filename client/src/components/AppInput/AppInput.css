@@ -5,7 +5,7 @@
   display: block;
 
   background: var(--colour-foreground);
-  border: 1px solid var(--colour-text);
+  border: none;
   border-radius: 10px;
   -webkit-appearance: none; /* For Safari */
 
@@ -25,15 +25,16 @@
   font-size: 20px;
   font-weight: 300;
 }
-@media(prefers-color-scheme: dark) {
-  .app-input {
-    background: var(--colour-background);
-    border: 1px solid var(--colour-foreground);
-  }
-}
 
 .app-chat-input {
   width: initial !important;
   max-width: none;
   margin: 5px 0 !important;
+}
+
+/* DARK MODE OVERRIDE */
+@media(prefers-color-scheme: dark) {
+  .app-input {
+    border: 1px solid #3D3D3D;
+  }
 }

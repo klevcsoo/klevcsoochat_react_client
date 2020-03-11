@@ -13,28 +13,28 @@
 
   background: var(--colour-primary);
   border-radius: 10px;
-  box-shadow: var(--mono-shadow);
+  box-shadow: none;
 
   cursor: pointer;
   transition: 200ms all ease-out;
 }
-.app-button:hover {
-  box-shadow: var(--primary-shadow);
-}
-.app-button:active {
-  background: var(--colour-foreground);
-}
+.app-button:hover { box-shadow: var(--primary-shadow); }
+.app-button:active { background: var(--colour-foreground); }
 .app-button h2 {
   grid-row: 2 / span 1;
   margin: 0; padding: 0;
 
-  color: black;
+  color: white;
   font-size: 22px;
   font-weight: 500;
   font-family: 'Rubik', sans-serif;
   text-align: center;
 
   user-select: none;
+}
+
+.app-warning-button {
+  background: var(--colour-warning);
 }
 
 .app-toggle-button {
@@ -52,18 +52,14 @@
   cursor: pointer;
   transition: 100ms all ease-out;
 }
-.app-toggle-button:hover {
-  background: var(--colour-foreground);
-}
+.app-toggle-button:hover { background: var(--colour-foreground); }
 .app-toggle-button svg {
   grid-row: 2 / span 1;
   grid-column: 2 / span 1;
 
   fill: var(--colour-text);
 }
-.app-toggle-button.enabled {
-  background: var(--colour-text);
-}
+.app-toggle-button.enabled { background: var(--colour-text); }
 .app-toggle-button.enabled svg {
   fill: var(--colour-background);
 }
