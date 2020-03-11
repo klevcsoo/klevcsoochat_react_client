@@ -31,17 +31,20 @@ const PageTitleHeader = ({ previousPage, nextPage, nextPath,  title }) => {
   }
 
   return (
-    <div className="page-title-header frosted-glass">
-      <div onClick={() => history.goBack()}>
-        <ArrowBackIosRounded color="inherit" />
-        {getPreviousIcon()}
+    <React.Fragment>
+      <div className="page-title-header frosted-glass">
+        <div onClick={() => history.goBack()}>
+          <ArrowBackIosRounded color="inherit" />
+          {getPreviousIcon()}
+        </div>
+        <h1>{title}</h1>
+        <div onClick={() => history.push(nextPath)}>
+          {getNextIcon()}
+          <ArrowForwardIosRounded color="inherit" />
+        </div>
       </div>
-      <h1>{title}</h1>
-      <div onClick={() => history.push(nextPath)}>
-        {getNextIcon()}
-        <ArrowForwardIosRounded color="inherit" />
-      </div>
-    </div>
+      <div style={{ height: 64 }}></div>
+    </React.Fragment>
   )
 }
 
