@@ -2,8 +2,27 @@
   margin: 20vh 0;
 }
 
-.home-content-container .home-option-separator {
+.home-option-separator {
   width: auto; height: 1px;
   margin: 30px 20vw;
   background: var(--colour-text);
+}
+
+.home-settings-link {
+  width: min-content; height: min-content;
+  margin: 5px auto; padding: 0;
+
+  display: flex;
+  align-items: center;
+
+  line-height: 24px;
+  font-size: 20px;
+
+  cursor: pointer;
+}
+.home-settings-link:hover {
+  text-decoration: underline;
+}
+.home-settings-link svg {
+  margin-right: 5px;
 }

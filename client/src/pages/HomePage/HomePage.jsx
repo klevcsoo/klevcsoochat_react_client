@@ -3,6 +3,7 @@ import './HomePage.css'
 import { useHistory } from 'react-router-dom'
 import { firebaseHandler, useAuthUser } from '../../Utils'
 import { routes } from '../../Contants'
+import { SettingsRounded } from '@material-ui/icons'
 
 // Components
 import AppLogo from '../../components/AppLogo'
@@ -47,6 +48,9 @@ const HomePage = () => {
               {user.email}<br/>
               {user.displayName}
             </h1>
+            <span className="home-settings-link" onClick={() => {
+              history.push(routes.USER_SETTINGS)
+            }}><SettingsRounded color="inherit" /> Beállítások</span>
             <div className="home-option-separator"></div>
             <div>
             <AppInput placeholder="Szoba azonosító" onChange={(text) => setRoomId(text)}
