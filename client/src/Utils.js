@@ -43,6 +43,32 @@ export const firebaseHandler = {
     })
   },
 
+  updateUserInfo: ({ photo, name, password }, onSuccess, onError) => {
+    const user = app.auth().currentUser
+
+    if (!!photo || !!name) user.updateProfile({
+      displayName: name || user.displayName,
+      photoURL: photo || user.photoURL
+    }).then(() => onSuccess()).catch((err) => onError(err))
+
+    if (!!password) user.updatePassword(password).then(() => {
+      onSuccess()
+    }).catch((err) => onError(err))
+  },
+
+  updateUserPassword: ({ currentPass, newPass }, onSuccess, onError) => {
+    const user = app.auth().currentUser
+    const creds = app.auth.EmailAuthProvider.credential(
+      user.email, currentPass
+    )
+
+    user.reauthenticateWithCredential(creds).then((reauthenticatedUser) => {
+      reauthenticatedUser.user.updatePassword(newPass).then(() => {
+        onSuccess()
+      }).catch((err) => onError(err))
+    }).catch((err) => onError(err))
+  },
+
   loadChatroom: (id, handler, onError) => {
     app.auth().onAuthStateChanged((user) => {
       if (!!user) {
