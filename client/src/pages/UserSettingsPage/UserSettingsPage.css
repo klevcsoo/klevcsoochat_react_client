@@ -1,0 +1,20 @@
+.user-settings-option-container {
+  width: calc(100vw - 52px); height: auto;
+  max-width: 343px;
+  margin: 30px auto; padding: 5px;
+
+  background: var(--colour-foreground);
+  border-radius: 10px;
+  box-shadow: 18px 18px 30px #D1D9E6, -18px -18px 10px #FFFFFF94;
+}
+.user-settings-option-container img {
+  width: 120px; height: 120px;
+  margin: 10px auto 0 auto; padding: 0;
+  display: block;
+
+  object-fit: contain;
+  object-position: center;
+
+  border: 1px solid var(--colour-background);
+  border-radius: 100%;
+}

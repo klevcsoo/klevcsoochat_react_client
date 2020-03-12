@@ -6,7 +6,7 @@ import { routes } from './Contants'
 import HomePage from './pages/HomePage/HomePage'
 import NotFoundPage from './pages/NotFoundPage'
 import ChatroomPage from './pages/ChatroomPage/ChatroomPage'
-import SettingPage from './pages/SettingPage'
+import UserSettingsPage from './pages/UserSettingsPage/UserSettingsPage'
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
       <BrowserRouter>
         <Switch>
           <Route exact path={routes.HOME} component={HomePage} />
-          <Route path={routes.SETTINGS} component={SettingPage} />
+          <Route path={routes.USER_SETTINGS} component={UserSettingsPage} />
           <Route path={routes.CHATROOM} component={ChatroomPage} />
           <Route path="*" component={NotFoundPage} />
         </Switch>
