@@ -1,9 +1,4 @@
-.user-settings-option-container {
-  width: calc(100vw - 52px); height: auto;
-  max-width: 343px;
-  margin: 30px auto; padding: 5px;
-}
-.user-settings-option-container img {
+.user-settings-photo {
   width: 120px; height: 120px;
   margin: 10px auto; padding: 0;
   display: block;

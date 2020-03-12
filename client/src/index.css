@@ -62,12 +62,12 @@ h1.app-subtitle {
 
 .app-card {
   width: calc(100vw - 52px); height: auto;
-  max-width: 343px;
-  margin: 30px auto; padding: 5px;
+  max-width: 323px;
+  margin: 30px auto; padding: 10px;
 
   background: var(--colour-background);
   border-radius: 10px;
-  box-shadow: 18px 18px 30px #D1D9E6, -18px -18px 10px #FFFFFF94;
+  box-shadow: 18px 18px 30px #D1D9E6, -18px -18px 30px #FFFFFF;
 }
 @media(prefers-color-scheme: dark) {
   .app-card {
