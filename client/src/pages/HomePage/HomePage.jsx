@@ -19,8 +19,6 @@ const HomePage = () => {
   const [ pass, setPass ] = useState('')
   const [ roomId, setRoomId ] = useState('')
 
-  console.log(redirectRoomId)
-
   const attemptJoinChat = () => {
     if (!roomId) history.push(routes.CREATE_CHATROOM)
     else history.push(routes.HOME.concat(`chat/${roomId}`))
