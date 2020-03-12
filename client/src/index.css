@@ -60,6 +60,22 @@ h1.app-subtitle {
   margin: 10px;
 }
 
+.app-card {
+  width: calc(100vw - 52px); height: auto;
+  max-width: 343px;
+  margin: 30px auto; padding: 5px;
+
+  background: var(--colour-background);
+  border-radius: 10px;
+  box-shadow: 18px 18px 30px #D1D9E6, -18px -18px 10px #FFFFFF94;
+}
+@media(prefers-color-scheme: dark) {
+  .app-card {
+    background: var(--colour-foreground);
+    box-shadow: none;
+  }
+}
+
 .frosted-glass {
   background: var(--colour-foreground);
 }

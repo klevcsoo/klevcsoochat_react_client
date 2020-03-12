@@ -51,7 +51,7 @@ const UserSettingsPage = () => {
   return (
     <div>
       <PageTitleHeader previousPage="home" title="Fiókbeállítások" />
-      <div className="user-settings-option-container">
+      <div className="user-settings-option-container app-card">
         {!!userLoading ? <LoadingSpinner /> : (
           <img src={user.photoURL} alt="Profilkép" className="user-settings-photo"/>
         )}
@@ -62,13 +62,13 @@ const UserSettingsPage = () => {
         <AppButton text="Megváltoztatás" onClick={() => changePhoto()}
         loading={updating} />
       </div>
-      <div className="user-settings-option-container">
+      <div className="user-settings-option-container app-card">
         <AppInput placeholder="Név" onChange={(text) => setDisplayName(text)}
         onSubmit={() => changeDisplayName()} />
         <AppButton text="Név frissítése" onClick={() => changeDisplayName()}
         loading={updating} />
       </div>
-      <div className="user-settings-option-container">
+      <div className="user-settings-option-container app-card">
         <AppInput placeholder="Jelenlegi jelszó" onChange={(text) => {
           setPassword({ current: text, new: password.new })
         }} onSubmit={() => changePassword()} />
