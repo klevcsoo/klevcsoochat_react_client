@@ -3,7 +3,7 @@
   max-width: 343px;
   margin: 30px auto; padding: 5px;
 
-  background: var(--colour-foreground);
+  background: var(--colour-background);
   border-radius: 10px;
   box-shadow: 18px 18px 30px #D1D9E6, -18px -18px 10px #FFFFFF94;
 }
@@ -20,6 +20,7 @@
 }
 @media(prefers-color-scheme: dark) {
   .user-settings-option-container {
+    background: var(--colour-foreground);
     box-shadow: none;
   }
 }
