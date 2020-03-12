@@ -86,14 +86,20 @@ export const firebaseHandler = {
     })
   },
 
-  createChatroom: (handler, onError) => {
+  createChatroom: ({ name, password }, onSuccess, onError) => {
     if (!app.auth().currentUser) onError('Nem vagy bejelentkezve.')
 
-    app.database().ref('/chats/metadata').push({
-      created: new Date().getTime(),
-      creator: app.auth().currentUser.uid
+    app.database().ref('/chats').push({
+      metadata: {
+        created: new Date().getTime(),
+        creator: app.auth().currentUser.uid,
+        name: name
+      },
+      secret: {
+        password: password || null
+      }
     }).then((reference) => {
-      handler(reference.key)
+      onSuccess(reference.key)
     })
   },
 
