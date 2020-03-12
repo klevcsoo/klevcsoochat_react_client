@@ -10,9 +10,9 @@ const AppInput = ({ placeholder, defaultValue, onChange, onSubmit, inChat, refer
     setValue('')
   }
 
-  useEffect(() => {
-    if (!!onChange) onChange(value)
-  }, [ value, onChange ])
+  // Fuck off
+  // eslint-disable-next-line
+  useEffect(() => onChange(value), [ value ])
 
   return (
     <input
