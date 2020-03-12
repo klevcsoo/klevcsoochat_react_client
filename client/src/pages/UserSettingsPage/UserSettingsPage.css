@@ -18,3 +18,8 @@
   border: 1px solid var(--colour-background);
   border-radius: 100%;
 }
+@media(prefers-color-scheme: dark) {
+  .user-settings-option-container {
+    box-shadow: none;
+  }
+}
