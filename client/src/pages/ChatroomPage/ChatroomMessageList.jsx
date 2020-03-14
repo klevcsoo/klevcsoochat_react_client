@@ -1,7 +1,5 @@
 import React from 'react'
 import './ChatroomPage.css'
-import { firebaseHandler } from '../../Utils'
-import cookie from 'react-cookies'
 import AppMessageCard from '../../components/AppMessageCards/AppMessageCard'
 import AppImageMessageCard from '../../components/AppMessageCards/AppImageMessageCard'
 
@@ -11,12 +9,10 @@ const ChatroomMessageList = ({ list, onImageClick }) => {
       {list.map((m) => {
         let idKey = list.indexOf(m)
         return !!(m.url) ? (
-          <AppImageMessageCard {...m} key={idKey}
-          incoming={!(m.author === cookie.load('username') || m.author === firebaseHandler.getUid())}
+          <AppImageMessageCard messa key={idKey}
           onClick={() => onImageClick(m.url)} />
         ) : (
-          <AppMessageCard {...m} key={idKey}
-          incoming={!(m.author === cookie.load('username') || m.author === firebaseHandler.getUid())} />
+          <AppMessageCard messageObject={m} key={idKey} />
         )
       })}
     </div>

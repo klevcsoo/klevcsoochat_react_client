@@ -1,21 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './ChatroomPage.css'
-import { firebaseHandler } from '../../Utils'
+import { firebaseHandler, useAuthUser } from '../../Utils'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 
 // Components
 import LoadingSpinner from '../../components/LoadingSpinner'
-import ChatroomNamePopup from './ChatroomNamePopup'
 import ChatroomMessageList from './ChatroomMessageList'
 import ChatroomMessageComposer from './ChatroomMessageComposer'
 import ChatroomImageInspect from './ChatroomImageInspect'
 import PageTitleHeader from '../../components/PageTitleHeader/PageTitleHeader'
+import { routes } from '../../Contants'
 
 let loadedMessages = []
 
 const ChatroomPage = () => {
   const history = useHistory()
   const roomId = useRouteMatch().params.chatroom_id
+  const [ user, userLoading ] = useAuthUser()
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
   const [ loading, setLoading ] = useState(true)
@@ -27,6 +28,12 @@ const ChatroomPage = () => {
       bottomRef.current.scrollIntoView({ behaivor: 'smooth' })
     }
   }
+
+  useEffect(() => {
+    if (!userLoading && !user) {
+      history.push(routes.HOME.concat(`?chat=${roomId}`))
+    }
+  }, [ user, userLoading, history, roomId ])
 
   useEffect(() => {
     firebaseHandler.loadChatroom(roomId, (msgs) => {
@@ -48,7 +55,6 @@ const ChatroomPage = () => {
 
   return (
     <React.Fragment>
-      <ChatroomNamePopup />
       <ChatroomImageInspect url={currentImage} onClose={() => setCurrentImage(null)} />
       <div>
         <PageTitleHeader previousPage="home" nextPage="settings" title={roomId} />
