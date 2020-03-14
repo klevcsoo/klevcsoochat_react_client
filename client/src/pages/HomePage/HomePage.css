@@ -6,6 +6,7 @@
   width: auto; height: 1px;
   margin: 30px 20vw;
   background: var(--colour-text);
+  opacity: 0.2;
 }
 
 .home-settings-link {

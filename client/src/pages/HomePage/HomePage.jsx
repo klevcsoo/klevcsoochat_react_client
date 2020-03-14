@@ -10,6 +10,7 @@ import AppLogo from '../../components/AppLogo'
 import AppInput from '../../components/AppInput/AppInput'
 import AppButton from '../../components/AppButton/AppButton'
 import LoadingSpinner from '../../components/LoadingSpinner'
+import AppWarningButton from '../../components/AppButton/AppWarningButton'
 
 const HomePage = () => {
   const history = useHistory()
@@ -18,6 +19,7 @@ const HomePage = () => {
   const [ email, setEmail ] = useState('')
   const [ pass, setPass ] = useState('')
   const [ roomId, setRoomId ] = useState('')
+  const [ logginIn, setLoggingIn ] = useState(false)
 
   const attemptJoinChat = () => {
     if (!roomId) history.push(routes.CREATE_CHATROOM)
@@ -26,7 +28,10 @@ const HomePage = () => {
 
   const attemptLogin = () => {
     if (!email || !pass) alert('Hiányzó adatok!')
-    else firebaseHandler.login(email, pass)
+    else {
+      setLoggingIn(true)
+      firebaseHandler.login(email, pass)
+    }
   }
 
   useEffect(() => {
@@ -35,13 +40,17 @@ const HomePage = () => {
     }
   }, [ user, redirectRoomId, history ])
 
+  useEffect(() => {
+    if (!!user) setLoggingIn(false)
+  }, [ user ])
+
   return (
     <div>
       <div className="home-logo"><AppLogo/></div>
       <div className="home-content-container">
         {userLoading ? <LoadingSpinner /> : !!user ? (
           <React.Fragment>
-            <h1 className="app-subtitle" onClick={() => firebaseHandler.logout()}>
+            <h1 className="app-subtitle">
               <span style={{ fontSize: 30 }}>Bejelentkezve!</span><br/>
               {user.email}<br/>
               {user.displayName}
@@ -51,11 +60,13 @@ const HomePage = () => {
             }}><SettingsRounded color="inherit" /> Beállítások</span>
             <div className="home-option-separator"></div>
             <div>
-            <AppInput placeholder="Szoba azonosító" onChange={(text) => setRoomId(text)}
-            onSubmit={() => attemptJoinChat()} />
-            <AppButton text={!!roomId ? 'Csatlakozás' : 'Szoba létrehozása'}
-            onClick={() => attemptJoinChat()} />
-          </div>
+              <AppInput placeholder="Szoba azonosító" onChange={(text) => setRoomId(text)}
+              onSubmit={() => attemptJoinChat()} />
+              <AppButton text={!!roomId ? 'Csatlakozás' : 'Szoba létrehozása'}
+              onClick={() => attemptJoinChat()} />
+            </div>
+            <div className="home-option-separator"></div>
+            <AppWarningButton text="Kijelentezés" onClick={() => firebaseHandler.logout()} />
           </React.Fragment>
         ) : (
           <div>
@@ -63,7 +74,7 @@ const HomePage = () => {
             onSubmit={() => attemptLogin()} />
             <AppInput placeholder="Jelszó" pass onChange={(text) => setPass(text)}
             onSubmit={() => attemptLogin()} />
-            <AppButton text="Bejelentkezés" onClick={() => attemptLogin()} />
+            <AppButton text="Bejelentkezés" onClick={() => attemptLogin()} loading={logginIn} />
           </div>
         )}
       </div>
