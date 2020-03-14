@@ -9,6 +9,7 @@
   --value-frosted-glass: 30px;
 
   --primary-shadow: 0 0 50px #4CA3E388;
+  --warning-shadow: 0 0 50px #F53F4B88;
 }
 @media (prefers-color-scheme: dark) {
   :root {

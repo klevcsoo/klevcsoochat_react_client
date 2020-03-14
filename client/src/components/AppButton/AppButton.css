@@ -40,6 +40,9 @@
 .app-warning-button {
   background: var(--colour-warning);
 }
+.app-warning-button:hover {
+  box-shadow: var(--warning-shadow) !important;
+}
 
 .app-toggle-button {
   width: 38px; height: 38px;
