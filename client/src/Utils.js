@@ -32,6 +32,11 @@ export const firebaseHandler = {
       console.log('Login successful!')
     }).catch((err) => {
       console.error('Login failed:', err.message)
+      app.auth().createUserWithEmailAndPassword(email, password).then(() => {
+        console.log('User created successfully!')
+      }).catch((err) => {
+        console.error('User creation failed: ', err.message)
+      })
     })
   },
 
@@ -106,9 +111,11 @@ export const firebaseHandler = {
   sendMessage: (roomId, message, handler, onError) => {
     if (!app.auth().currentUser) onError('Nem vagy bejelentkezve.')
 
+    const user = app.auth().currentUser
     app.database().ref(`/chats/${roomId}/messages`).push({
-      author: app.auth().currentUser.displayName || app.auth().currentUser.uid,
-      authorPhoto: app.auth().currentUser.photoURL,
+      author: user.displayName || user.email,
+      authorId: user.uid,
+      authorPhoto: user.photoURL,
       content: message
     }).then(() => {
       handler()
@@ -118,9 +125,11 @@ export const firebaseHandler = {
   sendImage: (roomId, url, handler, onError) => {
     if (!app.auth().currentUser) onError('Nem vagy bejelentkezve.')
 
+    const user = app.auth().currentUser
     app.database().ref(`/chats/${roomId}/messages`).push({
-      author: app.auth().currentUser.displayName || app.auth().currentUser.uid,
-      authorPhoto: app.auth().currentUser.photoURL,
+      author: user.displayName || user.email,
+      authorId: user.uid,
+      authorPhoto: user.photoURL,
       url: url,
     }).then(() => {
       handler()
