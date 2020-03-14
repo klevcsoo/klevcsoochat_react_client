@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './ChatroomSettingsPage.css'
-import { useHistory, useRouteMatch } from 'react-router-dom'
+import { useRouteMatch } from 'react-router-dom'
 import { useChatroom, firebaseHandler, formatDate } from '../../Utils'
 
 // Components
@@ -11,7 +11,6 @@ import AppInput from '../../components/AppInput/AppInput'
 import AppWarningButton from '../../components/AppButton/AppWarningButton'
 
 const ChatroomSettingsPage = () => {
-  const history = useHistory()
   const roomId = useRouteMatch().params.chatroom_id
   const [ metadata, chatroomLoading ] = useChatroom(roomId, () => null)
   const [ working, setWorking ] = useState(true)
