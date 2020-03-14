@@ -16,7 +16,7 @@
 
   display: flex; justify-content: flex-end;
 }
-.app-message-card > p { /* Author name */
+.app-message-card:not(.incoming) > p { /* Author name */
   display: none; visibility: collapse;
 }
 .app-message-card:not(.incoming) > img { /* Author photo */
@@ -48,6 +48,10 @@
 
 .app-message-card.incoming { /* Incoming message card container */
   justify-content: flex-start;
+}
+.app-message-card.incoming > p { /* Incoming message author name */
+  margin: 0 0 0 10px; padding: 0;
+  opacity: 0.8; line-height: 40px;
 }
 .app-message-card.incoming > img { /* Incoming author photo */
   order: 0; align-self: flex-end;
