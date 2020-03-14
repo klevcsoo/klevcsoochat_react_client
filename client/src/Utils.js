@@ -154,6 +154,28 @@ export const useAuthUser = function() {
   return [ user, loading ]
 }
 
+export const useChatroom = function(roomId, onMessage) {
+  const [ metadata, setMetadata ] = useState(null)
+  const [ loading, setLoading ] = useState(true)
+
+  useEffect(() => {
+    firebaseHandler.loadChatroom(roomId, onMessage, (err) => {
+      console.error('Failed to fetch messages: ', err)
+    })
+
+    app.database().ref(`/chats/${roomId}/metadata`).on('value', (snapshot) => {
+      setMetadata(snapshot.val())
+      setLoading(false)
+    }, (err) => {
+      console.error('Failed to get metadata: ', err.message)
+      setLoading(false)
+    })
+    // eslint-disable-next-line
+  } , [ roomId ])
+
+  return [ metadata, loading ]
+}
+
 export const validateMessage = (message) => !(
   // Check lenght
   message.length === 0 ||

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react'
 import './ChatroomPage.css'
-import { firebaseHandler, useAuthUser } from '../../Utils'
+import { useAuthUser, useChatroom } from '../../Utils'
 import { useRouteMatch, useHistory } from 'react-router-dom'
 import { routes } from '../../Contants'
 
@@ -17,9 +17,21 @@ const ChatroomPage = () => {
   const history = useHistory()
   const roomId = useRouteMatch().params.chatroom_id
   const [ user, userLoading ] = useAuthUser()
+  const [ chatroomMetadata, chatroomLoading ] = useChatroom(roomId, (msgs) => {
+    msgs.forEach((m, i) => {
+      if (!loadedMessages[i]) m.animation = true
+      else m.animation = false
+    })
+
+    setMessages(msgs)
+    loadedMessages = msgs
+    scrollToBottom()
+  }, (err) => {
+    console.log(err)
+    history.replace(`/notfound/${roomId}`)
+  })
   const bottomRef = useRef(null)
   const inputRef = useRef(null)
-  const [ loading, setLoading ] = useState(true)
   const [ messages, setMessages ] = useState([])
   const [ currentImage, setCurrentImage ] = useState(null)
 
@@ -35,31 +47,14 @@ const ChatroomPage = () => {
     }
   }, [ user, userLoading, history, roomId ])
 
-  useEffect(() => {
-    firebaseHandler.loadChatroom(roomId, (msgs) => {
-      msgs.forEach((m, i) => {
-        if (!loadedMessages[i]) m.animation = true
-        else m.animation = false
-      })
-
-      setMessages(msgs)
-      loadedMessages = msgs
-
-      setLoading(false)
-      scrollToBottom()
-    }, (err) => {
-      console.log(err)
-      history.replace(`/notfound/${roomId}`)
-    })
-  }, [ roomId, history ])
-
   return (
     <React.Fragment>
       <ChatroomImageInspect url={currentImage} onClose={() => setCurrentImage(null)} />
       <div>
         <PageTitleHeader previousPage="home" nextPage="settings"
-        nextPath={routes.CHATROOM_SETTINGS.replace(':chatroom_id', roomId)} title={roomId} />
-        {loading ? (
+        nextPath={routes.CHATROOM_SETTINGS.replace(':chatroom_id', roomId)}
+        title={chatroomMetadata?.name || roomId} />
+        {chatroomLoading ? (
           <div style={{
             position: 'fixed',
             top: '50%', left: '50%',
