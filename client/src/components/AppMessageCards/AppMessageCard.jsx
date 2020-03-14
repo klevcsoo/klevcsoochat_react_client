@@ -1,13 +1,17 @@
 import React from 'react'
 import './AppMessageCard.css'
+import { firebaseHandler } from '../../Utils'
 
-const AppMessageCard = ({ author, content, animation, incoming }) => {
+const AppMessageCard = ({ messageObject: message }) => {
+  const incoming = message.authorId !== firebaseHandler.getUid()
+
   return (
     <div className={`app-message-card${incoming ? ' incoming' : ''}`}>
-      <div className={animation ? ' anim' : ''}>
-        <p>{content}</p>
+      <img src={message.authorPhoto} alt="" />
+      <div className={message.animation ? ' anim' : ''}>
+        <p>{message.content}</p>
       </div>
-      <p>{author}</p>
+      <p>{message.author}</p>
     </div>
   )
 }

@@ -9,17 +9,20 @@
   }
 }
 
-.app-message-card {
+.app-message-card { /* Message card container */
   width: auto; height: max-content;
   min-height: 40px;
   margin: 5px 0; padding: 0 10px;
 
   display: flex; justify-content: flex-end;
 }
-.app-message-card:not(.incoming) > p {
+.app-message-card > p { /* Author name */
   display: none; visibility: collapse;
 }
-.app-message-card > div {
+.app-message-card:not(.incoming) > img { /* Author photo */
+  display: none; visibility: hidden;
+}
+.app-message-card > div { /* Message card */
   width: min-content; height: auto;
   max-width: 250px;
   margin: 0; padding: 5px 15px;
@@ -27,10 +30,10 @@
   background: var(--colour-primary);
   border-radius: 20px 20px 5px 20px;
 }
-.app-message-card > div.anim {
+.app-message-card > div.anim { /*  Message card with animation */
   animation: new-message-animation 200ms forwards ease-out;
 }
-.app-message-card > div > p {
+.app-message-card > div > p { /* Message text */
   width: max-content; max-width: inherit;
   margin: 0; padding: 0;
 
@@ -43,51 +46,53 @@
   font-weight: 400;
 }
 
-.app-message-card.incoming {
+.app-message-card.incoming { /* Incoming message card container */
   justify-content: flex-start;
 }
-.app-message-card.incoming > p {
-  margin: 0 0 0 10px; padding: 0;
-  opacity: 0.8; line-height: 40px;
+.app-message-card.incoming > img { /* Incoming author photo */
+  order: 0; align-self: flex-end;
+  max-width: 30px; max-height: 30px;
+  margin: 5px 15px 5px 5px;
+  overflow: hidden;
 
-  font-family: sans-serif;
-  font-size: 14px;
-  font-weight: 300;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 100%;
 }
-.app-message-card.incoming > div {
+.app-message-card.incoming > div { /* Incoming message card */
   background: var(--colour-background);
   box-shadow: 18px 18px 30px #D1D9E6, -18px -18px 10px #FFFFFF94;
   border-radius: 20px 20px 20px 5px;
 }
-.app-message-card.incoming > div > p {
+.app-message-card.incoming > div > p { /* Incoming message text */
   color: var(--colour-text);
 }
 
-.app-message-card.image > div {
+.app-message-card.image > div { /* Image message card */
   max-height: 250px;
   padding: 0;
   background: var(--colour-background);
   box-shadow: 18px 18px 30px #D1D9E6;
 }
-.app-message-card.image > div > img {
+.app-message-card.image > div > img { /* Image message image content */
   width: 250px; height: 250px;
   object-fit: cover;
   object-position: center;
   border-radius: 20px 20px 5px 20px;
   cursor: pointer;
 }
-.app-message-card.image.incoming > div > img {
+.app-message-card.image.incoming > div > img { /* Incoming image message image content */
   border-radius: 20px 20px 20px 5px !important;
 }
 
 /* DARK MODE OVERRIDE */
 @media(prefers-color-scheme: dark) {
-  .app-message-card.incoming > div {
+  .app-message-card.incoming > div { /* Incoming message card */
     background: var(--colour-foreground);
     box-shadow: none;
   }
   
-  .app-message-card.image > div {
+  .app-message-card.image > div { /* Image message card */
     box-shadow: none;
   }
 }
