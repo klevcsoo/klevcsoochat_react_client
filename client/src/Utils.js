@@ -108,6 +108,28 @@ export const firebaseHandler = {
     })
   },
 
+  saveChatroom: (roomId, onSaved) => {
+    const user = app.auth().currentUser
+    app.database().ref(`/users/${user.uid}/savedChatrooms`).push(roomId).then(() => {
+      console.log('Chatroom saved!')
+      onSaved()
+    }).catch((err) => console.error('Failed to save chatroom:', err.message))
+  },
+
+  checkChatroomSaved: (roomId, onChecked) => {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        app.database().ref(`/users/${user.uid}/savedChatrooms`).once('value').then((snapshot) => {
+          let saved = false
+          snapshot.forEach((chat) => {
+            if (chat.val() === roomId) saved = true
+          })
+          onChecked(saved)
+        })
+      }
+    })
+  },
+
   sendMessage: (roomId, message, handler, onError) => {
     if (!app.auth().currentUser) onError('Nem vagy bejelentkezve.')
 
@@ -187,4 +209,20 @@ export const validateImageUrl = (url, onValid, onError) => {
   if (validateMessage(url) && !!(url.match(/\.(jpeg|jpg|gif|png)$/))) {
     fetch(url).then(() => onValid()).catch((err) => onError(err))
   } else onError('Failed at message validation')
+}
+
+export const formatDate = (date) => {
+  const innerDate = new Date(date);
+  const months = [
+      'január', 'február', 'március',
+      'április', 'május', 'június',
+      'július', 'augusztus', 'szeptember',
+      'október', 'november', 'december'
+  ];
+
+  const year = innerDate.getFullYear();
+  const month = months[innerDate.getMonth()];
+  const day = innerDate.getDate();
+
+  return `${year}. ${month} ${day}.`;
 }
