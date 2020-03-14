@@ -8,6 +8,7 @@ import {
   SettingsRounded
 } from '@material-ui/icons'
 import { useHistory } from 'react-router-dom'
+import { routes } from '../../Contants'
 
 const PageTitleHeader = ({ previousPage, nextPage, nextPath,  title }) => {
   const history = useHistory()
@@ -33,7 +34,10 @@ const PageTitleHeader = ({ previousPage, nextPage, nextPath,  title }) => {
   return (
     <React.Fragment>
       <div className="page-title-header frosted-glass">
-        <div onClick={() => history.goBack()}>
+        <div onClick={() => {
+          if (previousPage === 'home') history.replace(routes.HOME)
+          else history.goBack()
+        }}>
           {!!previousPage ? <ArrowBackIosRounded color="inherit" /> : null}
           {getPreviousIcon()}
         </div>
