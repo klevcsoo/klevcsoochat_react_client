@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react'
 import './ChatroomPage.css'
 import { firebaseHandler, useAuthUser } from '../../Utils'
 import { useRouteMatch, useHistory } from 'react-router-dom'
+import { routes } from '../../Contants'
 
 // Components
 import LoadingSpinner from '../../components/LoadingSpinner'
@@ -9,7 +10,6 @@ import ChatroomMessageList from './ChatroomMessageList'
 import ChatroomMessageComposer from './ChatroomMessageComposer'
 import ChatroomImageInspect from './ChatroomImageInspect'
 import PageTitleHeader from '../../components/PageTitleHeader/PageTitleHeader'
-import { routes } from '../../Contants'
 
 let loadedMessages = []
 
@@ -57,7 +57,8 @@ const ChatroomPage = () => {
     <React.Fragment>
       <ChatroomImageInspect url={currentImage} onClose={() => setCurrentImage(null)} />
       <div>
-        <PageTitleHeader previousPage="home" nextPage="settings" title={roomId} />
+        <PageTitleHeader previousPage="home" nextPage="settings"
+        nextPath={routes.CHATROOM_SETTINGS.replace(':chatroom_id', roomId)} title={roomId} />
         {loading ? (
           <div style={{
             position: 'fixed',
