@@ -20,10 +20,16 @@ const HomePage = () => {
   const [ pass, setPass ] = useState('')
   const [ roomId, setRoomId ] = useState('')
   const [ logginIn, setLoggingIn ] = useState(false)
+  const [ savedRooms, setSavedRooms ] = useState([])
 
-  const attemptJoinChat = () => {
-    if (!roomId) history.push(routes.CREATE_CHATROOM)
-    else history.push(routes.HOME.concat(`chat/${roomId}`))
+  const attemptJoinChat = (id) => {
+    if (!!id) {
+      history.push(routes.HOME.concat(`chat/${id}`))
+    }
+    else {
+      if (!roomId) history.push(routes.CREATE_CHATROOM)
+      else history.push(routes.HOME.concat(`chat/${roomId}`))
+    }
   }
 
   const attemptLogin = () => {
@@ -43,6 +49,12 @@ const HomePage = () => {
   useEffect(() => {
     if (!!user) setLoggingIn(false)
   }, [ user ])
+
+  useEffect(() => {
+    firebaseHandler.loadSavedChatrooms((list) => {
+      setSavedRooms(list)
+    })
+  }, [])
 
   return (
     <div>
@@ -64,6 +76,14 @@ const HomePage = () => {
               onSubmit={() => attemptJoinChat()} />
               <AppButton text={!!roomId ? 'Csatlakozás' : 'Szoba létrehozása'}
               onClick={() => attemptJoinChat()} />
+              <div className="app-card">
+                {savedRooms.map((id, index) => (
+                  <span className="home-saved-room" key={index}
+                  onClick={() => attemptJoinChat(id)}>
+                    <h1 className="app-subtitle">{id}</h1>
+                  </span>
+                ))}
+              </div>
             </div>
             <div className="home-option-separator"></div>
             <AppWarningButton text="Kijelentezés" onClick={() => firebaseHandler.logout()} />

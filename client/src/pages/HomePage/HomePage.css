@@ -27,3 +27,10 @@
 .home-settings-link svg {
   margin-right: 5px;
 }
+
+.home-saved-room {
+  cursor: pointer;
+}
+.home-saved-room:hover {
+  text-decoration: underline;
+}

@@ -130,6 +130,21 @@ export const firebaseHandler = {
     })
   },
 
+  loadSavedChatrooms: (onLoaded) => {
+    app.auth().onAuthStateChanged((user) => {
+      if (user) {
+        app.database().ref(`/users/${user.uid}/savedChatrooms`).once('value').then((snapshot) => {
+          const saved = []
+          const savedObj = snapshot.val()
+          Object.keys(savedObj).forEach((i) => {
+            saved.push(savedObj[i])
+          })
+          onLoaded(saved)
+        })
+      }
+    })
+  },
+
   sendMessage: (roomId, message, handler, onError) => {
     if (!app.auth().currentUser) onError('Nem vagy bejelentkezve.')
 
