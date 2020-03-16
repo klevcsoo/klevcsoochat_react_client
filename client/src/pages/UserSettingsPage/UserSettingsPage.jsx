@@ -51,33 +51,33 @@ const UserSettingsPage = () => {
   return (
     <div>
       <PageTitleHeader previousPage="home" title="Fiókbeállítások" />
-      <div className="app-card">
-        {!!userLoading ? <LoadingSpinner /> : (
-          <img src={user.photoURL} alt="Profilkép" className="user-settings-photo"/>
-        )}
-        <AppInput placeholder="Profilkép link" onChange={(text) => {
-          setPhotoURL(text); console.log(text)
-        }}
-        onSubmit={() => changePhoto()} />
-        <AppButton text="Megváltoztatás" onClick={() => changePhoto()}
-        loading={updating} />
-      </div>
-      <div className="app-card">
-        <AppInput placeholder="Név" onChange={(text) => setDisplayName(text)}
-        onSubmit={() => changeDisplayName()} />
-        <AppButton text="Név frissítése" onClick={() => changeDisplayName()}
-        loading={updating} />
-      </div>
-      <div className="app-card">
-        <AppInput placeholder="Jelenlegi jelszó" onChange={(text) => {
-          setPassword({ current: text, new: password.new })
-        }} onSubmit={() => changePassword()} />
-        <AppInput placeholder="Új jelszó" onChange={(text) => {
-          setPassword({ current: password.current, new: text })
-        }} onSubmit={() => changePassword()} />
-        <AppButton text="Jelszó frissítése" onClick={() => changePassword()}
-        loading={updating} />
-      </div>
+      {userLoading ? <LoadingSpinner /> : (
+        <React.Fragment>
+          <div className="app-card">
+            <img src={user.photoURL} alt="Profilkép" className="user-settings-photo"/>
+            <AppInput placeholder="Profilkép link" defaultValue={user.photoURL}
+            onChange={(text) => setPhotoURL(text)} onSubmit={() => changePhoto()} />
+            <AppButton text="Megváltoztatás" onClick={() => changePhoto()}
+            loading={updating} />
+          </div>
+          <div className="app-card">
+            <AppInput placeholder="Név" defaultValue={user.displayName}
+            onChange={(text) => setDisplayName(text)} onSubmit={() => changeDisplayName()} />
+            <AppButton text="Név frissítése" onClick={() => changeDisplayName()}
+            loading={updating} />
+          </div>
+          <div className="app-card">
+            <AppInput placeholder="Jelenlegi jelszó" onChange={(text) => {
+              setPassword({ current: text, new: password.new })
+            }} onSubmit={() => changePassword()} />
+            <AppInput placeholder="Új jelszó" onChange={(text) => {
+              setPassword({ current: password.current, new: text })
+            }} onSubmit={() => changePassword()} />
+            <AppButton text="Jelszó frissítése" onClick={() => changePassword()}
+            loading={updating} />
+          </div>
+        </React.Fragment>
+      )}
     </div>
   )
 }
