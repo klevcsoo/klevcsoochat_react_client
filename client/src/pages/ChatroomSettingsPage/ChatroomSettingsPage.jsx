@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import './ChatroomSettingsPage.css'
-import { useRouteMatch } from 'react-router-dom'
+import { useRouteMatch, useHistory } from 'react-router-dom'
 import { useChatroom, firebaseHandler, formatDate } from '../../Utils'
 
 // Components
@@ -9,8 +9,10 @@ import AppButton from '../../components/AppButton/AppButton'
 import LoadingSpinner from '../../components/LoadingSpinner'
 import AppInput from '../../components/AppInput/AppInput'
 import AppWarningButton from '../../components/AppButton/AppWarningButton'
+import { routes } from '../../Contants'
 
 const ChatroomSettingsPage = () => {
+  const history = useHistory()
   const roomId = useRouteMatch().params.chatroom_id
   const [ metadata, chatroomLoading ] = useChatroom(roomId, () => null)
   const [ working, setWorking ] = useState(true)
@@ -25,7 +27,7 @@ const ChatroomSettingsPage = () => {
   }
 
   const updateRoomName = () => {
-    alert('Még nem érhetö el.')
+    firebaseHandler.roomSettings().updateName(roomName, roomId)
   }
 
   useEffect(() => {
@@ -59,7 +61,7 @@ const ChatroomSettingsPage = () => {
           </div>
           <div className="app-card">
             <AppWarningButton text="Üzenetek törlése" onClick={() => {
-              alert('Még nem érhetö el.')
+              firebaseHandler.roomSettings().deleteConversation(roomId)
             }} />
             <p className="chatroom-settings-action-description">
               A szobába írt összes üzenetet törli, a chat
@@ -67,7 +69,9 @@ const ChatroomSettingsPage = () => {
               Ez visszafordíthatatlan.
             </p>
             <AppWarningButton text="Szoba törlése" onClick={() => {
-              alert('Még nem érhetö el.')
+              firebaseHandler.roomSettings().deleteRoom(roomId, () => {
+                history.replace(routes.HOME)
+              }, (err) => alert(err))
             }} />
             <p className="chatroom-settings-action-description">
               Az egész szoba véglegesen törölve lesz beállításokkal

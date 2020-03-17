@@ -173,6 +173,43 @@ export const firebaseHandler = {
     })
   },
 
+  roomSettings: () => {
+    return {
+
+      updateName: (name, roomId) => {
+        app.database().ref(`/chats/${roomId}/metadata/name`).set(name).then(() => {
+          console.log('Updated room name!')
+        }).catch((err) => console.error('Failed to update room name:', err.message))
+      },
+
+      deleteConversation: (roomId) => {
+        app.database().ref(`/chats/${roomId}/messages`).remove().then(() => {
+          console.log('All messages deleted!')
+        }).catch((err) => console.error('Failed to delete messages:', err.message))
+      },
+
+      deleteRoom: (roomId, onDeleted, onError) => {
+        app.database().ref(`/chats/${roomId}`).once('value', (snapshot) => {
+          const user = app.auth().currentUser
+          const canDelete = snapshot.child('/metadata/creator').val() === user.uid
+          if (canDelete) {
+            snapshot.ref.remove().then(() => {
+              console.log('Chatroom deleted!')
+              onDeleted()
+            }).catch((err) => {
+              console.error('Failed to delete room:', err.message)
+              onError('Hiba történt! Próbáld máskor.')
+            })
+          } else onError('Nincs jogosultságot törölni a szobát.')
+        }, (err) => {
+          console.error('Failed to access database:', err.message)
+          onError('Hiba történt! Próbáld máskor.')
+        })
+      }
+
+    }
+  },
+
   getUid: () => app.auth().currentUser.uid
 }
 
