@@ -1,5 +1,9 @@
 .home-logo {
-  margin: 20vh 0;
+  margin: 50px 0;
+}
+
+.home-content-container {
+  margin-bottom: 50px;
 }
 
 .home-option-separator {
