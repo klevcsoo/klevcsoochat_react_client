@@ -259,12 +259,6 @@ export const validateMessage = (message) => !(
   message.replace(/\s/g, '').length === 0
 )
 
-export const validateImageUrl = (url, onValid, onError) => {
-  if (validateMessage(url) && !!(url.match(/\.(jpeg|jpg|gif|png)$/))) {
-    fetch(url).then(() => onValid()).catch((err) => onError(err))
-  } else onError('Failed at message validation')
-}
-
 export const formatDate = (date, withMinutes) => {
   const innerDate = new Date(date)
   const months = [

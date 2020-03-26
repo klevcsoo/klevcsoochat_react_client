@@ -9,7 +9,7 @@ const ChatroomMessageList = ({ list, onImageClick }) => {
       {list.map((m) => {
         let idKey = list.indexOf(m)
         return !!(m.url) ? (
-          <AppImageMessageCard messa key={idKey}
+          <AppImageMessageCard messageObject={m} key={idKey}
           onClick={() => onImageClick(m.url)} />
         ) : (
           <AppMessageCard messageObject={m} key={idKey} />

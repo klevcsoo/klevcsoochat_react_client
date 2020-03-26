@@ -14,18 +14,12 @@ const ChatroomMessageComposer = ({ inputRef, scrollToBottom, roomId }) => {
     if (urlMode) {
       setSending(true)
 
-      validateImageUrl(message, () => {
-        if (inputRef.current) inputRef.current.focus()
-        firebaseHandler.sendImage(roomId, message, () => {
-          setSending(false); scrollToBottom()
-          setUrlMode(false)
-        }, (err) => {
-          console.log(err)
-          setSending(false)
-        })
+      if (inputRef.current) inputRef.current.focus()
+      firebaseHandler.sendImage(roomId, message, () => {
+        setSending(false); scrollToBottom()
+        setUrlMode(false)
       }, (err) => {
-        console.error(err)
-        alert('Érvenytelen kép URL')
+        console.log(err)
         setSending(false)
       })
     } else {
