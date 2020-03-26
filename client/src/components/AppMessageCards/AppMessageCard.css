@@ -64,9 +64,7 @@
   border-radius: 100%;
 }
 .app-message-card.incoming > div { /* Incoming message card */
-  background: var(--colour-background);
-  box-shadow: 18px 18px 30px #D1D9E6, -18px -18px 10px #FFFFFF94;
-  border-radius: 20px 20px 20px 5px;
+  background: var(--colour-foreground);
 }
 .app-message-card.incoming > div > p { /* Incoming message text */
   color: var(--colour-text);
@@ -75,8 +73,7 @@
 .app-message-card.image > div { /* Image message card */
   max-height: 250px;
   padding: 0;
-  background: var(--colour-background);
-  box-shadow: 18px 18px 30px #D1D9E6;
+  background: var(--colour-foreground);
 }
 .app-message-card.image > div > img { /* Image message image content */
   width: 250px; height: 250px;
@@ -89,14 +86,4 @@
   border-radius: 20px 20px 20px 5px !important;
 }
 
-/* DARK MODE OVERRIDE */
-@media(prefers-color-scheme: dark) {
-  .app-message-card.incoming > div { /* Incoming message card */
-    background: var(--colour-foreground);
-    box-shadow: none;
-  }
-  
-  .app-message-card.image > div { /* Image message card */
-    box-shadow: none;
-  }
 }
