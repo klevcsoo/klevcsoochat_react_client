@@ -153,7 +153,8 @@ export const firebaseHandler = {
       author: user.displayName || user.email,
       authorId: user.uid,
       authorPhoto: user.photoURL,
-      content: message
+      content: message,
+      timestamp: new Date().getTime()
     }).then(() => {
       handler()
     })
@@ -168,6 +169,7 @@ export const firebaseHandler = {
       authorId: user.uid,
       authorPhoto: user.photoURL,
       url: url,
+      timestamp: new Date().getTime()
     }).then(() => {
       handler()
     })
@@ -263,18 +265,23 @@ export const validateImageUrl = (url, onValid, onError) => {
   } else onError('Failed at message validation')
 }
 
-export const formatDate = (date) => {
-  const innerDate = new Date(date);
+export const formatDate = (date, withMinutes) => {
+  const innerDate = new Date(date)
   const months = [
       'január', 'február', 'március',
       'április', 'május', 'június',
       'július', 'augusztus', 'szeptember',
       'október', 'november', 'december'
-  ];
+  ]
 
-  const year = innerDate.getFullYear();
-  const month = months[innerDate.getMonth()];
-  const day = innerDate.getDate();
+  const year = innerDate.getFullYear()
+  const month = months[innerDate.getMonth()]
+  const day = innerDate.getDate()
 
-  return `${year}. ${month} ${day}.`;
+  if (!withMinutes) return `${year}. ${month} ${day}.`
+
+  const hours = innerDate.getHours()
+  const minutes = innerDate.getMinutes()
+
+  return `${year}. ${month} ${day}. ${hours}:${minutes}`
 }
