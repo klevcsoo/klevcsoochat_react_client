@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import './ChatroomPage.css'
 import AppInput from '../../components/AppInput/AppInput'
 import AppSendButton from '../../components/AppButton/AppSendButton'
-import { validateMessage, firebaseHandler, validateImageUrl } from '../../Utils'
+import { validateMessage, firebaseHandler } from '../../Utils'
 import AppURLModeSwitcherButton from '../../components/AppButton/AppURLModeSwitcherButton'
 
 const ChatroomMessageComposer = ({ inputRef, scrollToBottom, roomId }) => {
