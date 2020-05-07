@@ -101,3 +101,19 @@
 .app-button.warning:hover > div {
   color: #ffffff;
 }
+
+.app-bottom-attached-button {
+  width: auto; height: 80px;
+  margin: 0; padding: 0;
+
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  backdrop-filter: blur(30px) saturate(120%);
+  -webkit-backdrop-filter: blur(30px) saturate(120%);
+  border-top: 1px solid var(--colour-fg);
+}
