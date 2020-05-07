@@ -1,0 +1,26 @@
+.app-page-header {
+  width: auto; height: 44px;
+  margin: 0; padding: 0 16px;
+
+  position: fixed; z-index: 1000;
+  top: 0; left: 0; right: 0;
+
+  display: grid;
+  grid-template-rows: auto min-content auto;
+  grid-template-columns: 48px auto 48px;
+
+  backdrop-filter: blur(30px) saturate(120%);
+  -webkit-backdrop-filter: blur(30px) saturate(120%);
+}
+.app-page-header > * {
+  grid-row: 2 / span 1;
+  user-select: none;
+}
+.app-page-header > div {
+  cursor: pointer;
+}
+
+.app-page-header > .previous {
+  display: flex;
+  flex-direction: row;
+}
