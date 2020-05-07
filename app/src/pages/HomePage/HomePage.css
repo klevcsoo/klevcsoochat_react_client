@@ -1,0 +1,99 @@
+@keyframes init-bg-img-blur {
+  from {
+    filter: none;
+  }
+  to {
+    filter: blur(30px) saturate(120%)
+  }
+}
+
+.homepage-container {
+  position: fixed;
+  top: 0; left: 0;
+  bottom: 0; right: 0;
+  overflow: hidden;
+}
+.homepage-container > img {
+  width: 100vw; height: 100vh;
+  object-fit: cover;
+  object-position: center;
+  animation: init-bg-img-blur 2000ms ease-out forwards;
+  backdrop-filter: blur(30px) saturate(120%);
+  -webkit-backdrop-filter: blur(30px) saturate(120%);
+}
+.homepage-container > svg {
+  position: fixed;
+  top: 15%; left: 50%;
+  transform: translate(-50%, -50%);
+}
+.homepage-container > .homepage-login-panel {
+  width: 100%;
+  position: fixed; top: 50%;
+  transform: translateY(-50%);
+}
+
+.homepage-container.logged-in {
+  width: auto; height: 180px;
+  position: sticky;
+  top: 0; left: 0; right: 0;
+}
+.homepage-container.logged-in > img {
+  height: 180px;
+}
+.homepage-container.logged-in > svg {
+  top: 90px;
+}
+
+.homepage-login-panel-divider {
+  width: 300px; display: block;
+  margin: auto;
+
+  display: grid;
+  grid-template-columns: auto min-content auto;
+  grid-template-rows: 1fr 1fr;
+}
+.homepage-login-panel-divider > div {
+  grid-row: 1 / span 1;
+  border-bottom: 1px solid var(--colour-text);
+}
+.homepage-login-panel-divider > div:first-child {
+  grid-column: 1 / span 1;
+  margin-right: 15px
+}
+.homepage-login-panel-divider > div:nth-child(2) {
+  grid-column: 3 / span 1;
+  margin-left: 15px;
+}
+.homepage-login-panel-divider > span {
+  grid-row: 1 / span 2;
+  grid-column: 2 / span 1;
+  user-select: none;
+}
+
+.homepage-logged-in-content > .account-link-container > h1 {
+  margin: 5px;
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
+  font-size: 28px;
+  font-weight: 500;
+}
+.homepage-logged-in-content > .account-link-container > h2 {
+  margin: 5px;
+  text-align: center;
+  font-family: 'Rubik', sans-serif;
+  font-size: 20px;
+  font-weight: 300;
+}
+.homepage-logged-in-content span.saved-chatroom-name {
+  margin: 5px 20px; padding-bottom: 5px;
+  display: block;
+  cursor: pointer;
+  border-bottom: 1px solid var(--colour-fg);
+}
+.homepage-logged-in-content span.saved-chatroom-name:hover {
+  text-decoration: underline;
+}
+.homepage-logged-in-content span.saved-chatroom-name:last-child {
+  padding-bottom: 0;
+  border: none;
+}
