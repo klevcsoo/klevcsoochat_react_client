@@ -52,10 +52,6 @@
   justify-content: center;
   align-items: center;
 
-  font-family: 'Rubik', sans-serif;
-  font-size: 20px;
-  font-weight: 500;
-
   user-select: none;
 }
 
@@ -83,8 +79,25 @@
   color: var(--colour-text);
 }
 .app-button.secondary:hover {
-  background: #ffffff;
+  background: var(--colour-fg);
 }
 .app-button.secondary:active {
   background: #ffffff80;
+}
+
+.app-button.warning {
+  background: #ffffff80;
+  border: 1px solid var(--colour-warn);
+}
+.app-button.warning:hover {
+  background: var(--colour-warn);
+}
+.app-button.warning:active {
+  filter: brightness(50%);
+}
+.app-button.warning > div {
+  color: var(--colour-warn);
+}
+.app-button.warning:hover > div {
+  color: #ffffff;
 }
