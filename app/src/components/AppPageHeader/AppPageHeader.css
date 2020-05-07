@@ -9,6 +9,7 @@
   grid-template-rows: auto min-content auto;
   grid-template-columns: 48px auto 48px;
 
+  border-bottom: 1px solid var(--colour-fg);
   backdrop-filter: blur(30px) saturate(120%);
   -webkit-backdrop-filter: blur(30px) saturate(120%);
 }
