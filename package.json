@@ -6,6 +6,7 @@
   "scripts": {
     "build": "cd .\\client && npm run build",
     "dev": "cd .\\client && npm start",
+    "serve": "cd .\\functions && npm run build && cd ..\\client && npm run build && cd .. && firebase serve -o 0.0.0.0",
     "deploy": "firebase deploy"
   },
   "keywords": [],
