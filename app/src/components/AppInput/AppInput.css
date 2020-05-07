@@ -20,4 +20,5 @@
 }
 .app-input:focus {
   background: #ffffff;
+  border-color: var(--colour-text);
 }
