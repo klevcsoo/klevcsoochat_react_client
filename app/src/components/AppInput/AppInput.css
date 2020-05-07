@@ -1,0 +1,23 @@
+.app-input {
+  width: calc(100% - 20px); max-width: 300px;
+  height: 40px; display: block;
+  margin: 5px auto; padding: 0 10px;
+
+  background: #ffffff80;
+  border: 1px solid var(--colour-fg);
+  border-radius: 10px;
+
+  color: var(--colour-text);
+  font-family: 'Roboto', sans-serif;
+  font-size: 18px;
+  font-weight: 400;
+
+  -webkit-appearance: none; /* For Safari */
+}
+.app-input::placeholder {
+  color: var(--colour-text);
+  font-weight: 300;
+}
+.app-input:focus {
+  background: #ffffff;
+}
