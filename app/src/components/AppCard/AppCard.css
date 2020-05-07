@@ -1,0 +1,9 @@
+.app-card {
+  width: 300px; display: block;
+  height: auto; min-height: 70px;
+  margin: 30px auto; padding: 10px;
+  
+  background: var(--colour-bg);
+  box-shadow: 0 0 18px #D1D9E6;
+  border-radius: 10px;
+}
