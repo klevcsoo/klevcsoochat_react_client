@@ -3,6 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import { initializeFirebase } from './utils/firebase';
+
+console.log('----- KLEVCSOOCHAT ------');
 
 ReactDOM.render(
   <React.StrictMode>
@@ -12,3 +15,4 @@ ReactDOM.render(
 );
 
 serviceWorker.unregister();
+initializeFirebase();
