@@ -2,19 +2,27 @@ import React, { useEffect, useState } from 'react';
 import './AccountPage.css';
 import AppPageHeader from '../../components/AppPageHeader/AppPageHeader';
 import AppCard from '../../components/AppCard/AppCard';
-import { useAuthUser } from '../../utils/firebase';
+import { useAuthUser, updateUserProfile } from '../../utils/firebase';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import { useHistory } from 'react-router-dom';
 import { routes } from '../../utils/constants';
 import AppInput from '../../components/AppInput/AppInput';
 import AppBottomAttachedButton from '../../components/AppButton/AppBottomAttachedButton';
+import { useAppNotification } from '../../components/AppNotification/AppNotifiaction';
 
 const AccountPage = () => {
   const history = useHistory();
   const [ user, userLoading ] = useAuthUser();
+  const [ UpdatedNotification, showNotification ] = useAppNotification({
+    persistent: false,
+    text: 'Adatok frissítve',
+    type: 'info'
+  });
+
   const [ accountImg, setAccountImg ] = useState('');
   const [ username, setUsername ] = useState('');
-  const [ password, setPassword ] = useState({ current: '', new: '' });
+  const [ password, setPassword ] = useState({ old: '', new: '' });
+  const [ updatingData, setUpdatingData ] = useState(false);
 
   useEffect(() => {
     if (!userLoading && !user) {
@@ -29,6 +37,7 @@ const AccountPage = () => {
 
   return (
     <div className="accountpage-container">
+      <UpdatedNotification />
       <AppPageHeader title="Fiókbeállítások" previous={{ icon: 'home' }} />
       {userLoading ? <LoadingSpinner /> : !user ? null : (
         <React.Fragment>
@@ -50,14 +59,19 @@ const AccountPage = () => {
           </AppCard>
           <AppCard>
             <h1 className="app-small-header">Jelszó</h1>
-            <AppInput placeholder="Jelenlegi jelszó" text={password.current} onTextChanged={(text) => {
-              setPassword({ current: text, new: password.new });
-            }} />
+            <AppInput placeholder="Jelenlegi jelszó" text={password.old} onTextChanged={(text) => {
+              setPassword({ old: text, new: password.new });
+            }} password />
             <AppInput placeholder="Új jelszó" text={password.new} onTextChanged={(text) => {
-              setPassword({ current: password.current, new: text });
+              setPassword({ old: password.old, new: text });
             }} />
           </AppCard>
-          <AppBottomAttachedButton text="Adatok frissítése" onClick={() => { }} />
+          <AppBottomAttachedButton text="Adatok frissítése" onClick={() => {
+            setUpdatingData(true);
+            updateUserProfile({ pass: password, photo: accountImg, username: username }, () => {
+              setUpdatingData(false); showNotification();
+            });
+          }} loading={updatingData} />
         </React.Fragment>
       )}
     </div>
