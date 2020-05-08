@@ -38,6 +38,12 @@ export function initializeFirebase() {
   });
 }
 
+export function getAuthUser() {
+  const user = app.auth().currentUser;
+  if (!user) throw new Error('No auth user found.');
+  else return user;
+}
+
 export function signUp(email: string, password: string, onSuccess: () => void, onError: (err: string) => void) {
   app.auth().createUserWithEmailAndPassword(email, password).then(() => onSuccess()).catch((err) => onError(err));
 }
@@ -65,6 +71,42 @@ export function getSavedChatrooms(callback: (rooms: ChatroomMetadata[]) => void)
       });
     });
   });
+}
+
+export function updateUserProfile(
+  data: {
+    photo: string,
+    username: string,
+    pass: { old: string, new: string; };
+  }, callback: () => void
+) {
+  const user = getAuthUser();
+  const updateState: { profile: boolean, pass: boolean; } = { profile: false, pass: false };
+  const changeUpdateState = (state: { profile?: boolean, pass?: boolean; }) => {
+    if (state.profile) updateState.profile = state.profile;
+    if (state.pass) updateState.pass = state.pass;
+
+    if (updateState.pass && updateState.profile) callback();
+  };
+
+  user.updateProfile({
+    displayName: !!data.username ? data.username : user.displayName,
+    photoURL: !!data.photo ? data.photo : user.photoURL
+  }).then(() => changeUpdateState({ profile: true }));
+
+  if (data.pass.old !== '' && data.pass.new !== '') {
+    const cred = app.auth.EmailAuthProvider.credential(String(user.email), data.pass.old);
+    user.reauthenticateWithCredential(cred).then((reauthUser) => {
+      if (!(data.pass?.new)) {
+        console.error('Failed to update password.');
+        changeUpdateState({ pass: true });
+        return;
+      }
+      reauthUser.user?.updatePassword(data.pass.new).then(() => {
+        changeUpdateState({ pass: true });
+      }).catch((err) => console.error(err));
+    });
+  } else changeUpdateState({ pass: true });
 }
 // ---------- CALLABLES ----------
 
