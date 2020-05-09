@@ -25,19 +25,24 @@ const AppNotifiaction = (props: {
 
 export function useAppNotification(props: AppNotificatonData): [ () => (JSX.Element), () => void ] {
   const [ visible, setVisible ] = useState(false);
+  const [ render, setRender ] = useState(false);
 
   const notification = () => (
     <React.Fragment>
-      {!visible ? null : (
+      {!render ? null : (
         <AppNotifiaction text={props.text} type={props.type} visible={visible} onDismiss={() => {
-          setVisible(false); if (!!props.onDismiss) props.onDismiss();
+          hide(); if (!!props.onDismiss) props.onDismiss();
         }} persistent={props.persistent} />
       )}
     </React.Fragment>
   );
+
   const show = () => {
-    setVisible(true);
-    if (!props.persistent && !visible) setTimeout(() => setVisible(false), 2000);
+    setRender(true); setVisible(true);
+    if (!props.persistent && !visible) setTimeout(() => hide(), 2000);
+  };
+  const hide = () => {
+    setVisible(false); setTimeout(() => setRender(false), 500);
   };
 
   return [ notification, show ];
