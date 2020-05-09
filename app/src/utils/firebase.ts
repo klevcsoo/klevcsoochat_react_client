@@ -1,6 +1,6 @@
 import app from 'firebase/app';
 import 'firebase/auth'; import 'firebase/database';
-// import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
+import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
 import { useState, useEffect } from 'react';
 import { ChatroomMetadata } from './interfaces';
 
@@ -23,16 +23,18 @@ export function initializeFirebase() {
     if (user) {
       console.log(`Signed in as ${user.uid}`);
 
-      // const connectionsRef = app.database().ref(`/users/${user.uid}/connections`);
-      // const lastOnlineRef = app.database().ref(`/users/${user.uid}/lastOnline`);
-      // app.database().ref('.info/connected').on('value', (snapshot) => {
-      //   if (!!snapshot.val()) {
-      //     const con = connectionsRef.push();
-      //     con.onDisconnect().remove();
-      //     con.set(`${deviceType}-${osName}-${browserName.replace(/ /g, '_')}-${browserVersion}`);
-      //     lastOnlineRef.onDisconnect().set(app.database.ServerValue.TIMESTAMP);
-      //   }
-      // });
+      if (window.location.hostname !== 'localhost') {
+        const connectionsRef = app.database().ref(`/users/${user.uid}/connections`);
+        const lastOnlineRef = app.database().ref(`/users/${user.uid}/lastOnline`);
+        app.database().ref('.info/connected').on('value', (snapshot) => {
+          if (!!snapshot.val()) {
+            const con = connectionsRef.push();
+            con.onDisconnect().remove();
+            con.set(`${deviceType}-${osName}-${browserName.replace(/ /g, '_')}-${browserVersion}`);
+            lastOnlineRef.onDisconnect().set(app.database.ServerValue.TIMESTAMP);
+          }
+        });
+      }
     }
     else console.warn('Not signed in');
   });
