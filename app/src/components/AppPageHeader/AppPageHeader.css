@@ -6,7 +6,7 @@
   top: 0; left: 0; right: 0;
 
   display: grid;
-  grid-template-rows: auto min-content auto;
+  grid-template-rows: auto 24px auto;
   grid-template-columns: 48px auto 48px;
 
   border-bottom: 1px solid var(--colour-fg);
