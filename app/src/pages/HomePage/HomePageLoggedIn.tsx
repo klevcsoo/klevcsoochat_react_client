@@ -3,7 +3,7 @@ import { User } from 'firebase';
 import AppCard from '../../components/AppCard/AppCard';
 import AppButton from '../../components/AppButton/AppButton';
 import { useHistory } from 'react-router-dom';
-import { routes } from '../../utils/constants';
+import { routes, regex } from '../../utils/constants';
 import { ChatroomMetadata } from '../../utils/interfaces';
 import { getSavedChatrooms, logout } from '../../utils/firebase';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -48,9 +48,13 @@ const HomePageLoggedIn = (props: {
       <AppCard>
         <AppInput placeholder="Szoba azonosító / meghívó" text={currentRoomId} onTextChanged={(text) => {
           setCurrentRoomId(text);
+        }} onSubmit={() => {
+          if (currentRoomId.length !== 0 && !currentRoomId.match(regex.WHITESPACE)) {
+            history.push(routes.CHATROOM.replace(':id', currentRoomId));
+          }
         }} />
         <AppButton text={currentRoomId.length > 0 ? 'Csatlakozás a szobához' : 'Szoba létrehozása'} onClick={() => {
-          if (currentRoomId.length > 0) history.push(routes.HOME.concat(`chatroom/${currentRoomId}`));
+          if (currentRoomId.length > 0) history.push(routes.CHATROOM.replace(':id', currentRoomId));
           else history.push(routes.CREATE_CHATROOM);
         }} type="primary" />
       </AppCard>
