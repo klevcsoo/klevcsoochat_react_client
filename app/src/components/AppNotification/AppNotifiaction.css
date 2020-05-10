@@ -29,3 +29,10 @@
 .app-notification.anim:not(.visible) {
   animation: none;
 }
+
+.app-notification.error .app-card {
+  border: 1px solid var(--colour-warn);
+}
+.app-notification.error h2 {
+  color: var(--colour-warn);
+}

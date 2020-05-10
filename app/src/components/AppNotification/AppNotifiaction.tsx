@@ -12,7 +12,7 @@ const AppNotifiaction = (props: {
   onDismiss: () => void;
 }) => {
   return (
-    <div className={`app-notification${props.visible ? ' visible' : ''}`}>
+    <div className={`app-notification${props.visible ? ' visible' : ''} ${props.type}`}>
       <AppCard>
         <h2 className="app-small-header">{props.text}</h2>
         {!props.persistent ? null : (
