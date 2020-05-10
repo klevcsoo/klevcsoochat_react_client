@@ -13,7 +13,7 @@ const HomePageLoggedIn = (props: {
   user: User;
 }) => {
   const history = useHistory();
-  const [ savedRooms, setSavedRooms ] = useState<ChatroomMetadata[] | null>(null);
+  const [ savedRooms, setSavedRooms ] = useState<(ChatroomMetadata | null)[] | null>(null);
   const [ currentRoomId, setCurrentRoomId ] = useState('');
 
   useEffect(() => {
@@ -29,19 +29,22 @@ const HomePageLoggedIn = (props: {
           history.push(routes.ACCOUNT_SETTINGS);
         }} loading={false} />
       </AppCard>
-      <AppCard>
-        <h2 className="app-small-header">Lementett szobák</h2>
-        <div style={{ height: 10 }}></div>
-        {!savedRooms ? <LoadingSpinner /> : (
-          <div style={{ marginTop: 5 }}>
-            {savedRooms.map((r) => (
-              <span className="saved-chatroom-name" onClick={() => {
-                history.push(routes.CHATROOM.replace(':id', r.id));
-              }} key={r.id}>{r.name}<br /></span>
-            ))}
-          </div>
-        )}
-      </AppCard>
+      {!savedRooms || (!!savedRooms && savedRooms.some((val) => val !== null)) ? (
+        <AppCard>
+          <h2 className="app-small-header">Lementett szobák</h2>
+          <div style={{ height: 10 }}></div>
+          {!savedRooms ? <LoadingSpinner /> : (
+            <div style={{ marginTop: 5 }}>
+              {savedRooms.map((r) => (
+                <span className="saved-chatroom-name" onClick={() => {
+                  if (!r) return;
+                  history.push(routes.CHATROOM.replace(':id', r.id));
+                }} key={r?.id}>{r?.name}<br /></span>
+              ))}
+            </div>
+          )}
+        </AppCard>
+      ) : null}
       <AppCard>
         <AppInput placeholder="Szoba azonosító / meghívó" text={currentRoomId} onTextChanged={(text) => {
           setCurrentRoomId(text);

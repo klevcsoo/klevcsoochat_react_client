@@ -60,16 +60,24 @@ export function logout(callback?: () => void) {
   app.auth().signOut().then(() => !!callback ? callback() : null);
 }
 
-export function getSavedChatrooms(callback: (rooms: ChatroomMetadata[]) => void) {
+export function getSavedChatrooms(callback: (rooms: (ChatroomMetadata | null)[]) => void) {
   app.database().ref(`/users/${app.auth().currentUser?.uid}/savedChatrooms`).once('value', (snapshot) => {
     if (!snapshot.exists()) return;
+    const pushIds = Object.keys(snapshot.val());
     const roomIds = Object.values(snapshot.val());
     const roomsRef = app.database().ref('/chats');
-    const roomObjects: ChatroomMetadata[] = [];
-    roomIds.forEach((id) => {
+    const roomObjects: (ChatroomMetadata | null)[] = [];
+    roomIds.forEach((id, i) => {
       roomsRef.child(`${id}/metadata`).once('value', (roomSnapshot) => {
-        const a = roomSnapshot.val() as ChatroomMetadata; a.id = String(id);
-        roomObjects.push(a);
+        if (!roomSnapshot.exists()) {
+          roomObjects.push(null);
+          snapshot.child(pushIds[ i ]).ref.remove();
+        }
+        else {
+          const a = roomSnapshot.val() as ChatroomMetadata; a.id = String(id);
+          roomObjects.push(a);
+        }
+
         if (roomObjects.length === roomIds.length) callback(roomObjects);
       });
     });
