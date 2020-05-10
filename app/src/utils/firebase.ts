@@ -3,7 +3,7 @@ import app from 'firebase/app';
 import 'firebase/auth'; import 'firebase/database';
 import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
 import { useState, useEffect } from 'react';
-import { ChatroomMetadata } from './interfaces';
+import { ChatroomMetadata, ChatMessage } from './interfaces';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLXTi7stlDNk1yGBXhS68N0_1TJeNxVNk",
@@ -47,6 +47,10 @@ function getAuthUser() {
   else return user;
 }
 
+export function getUID() {
+  return getAuthUser().uid;
+}
+
 export function signUp(email: string, password: string, onSuccess: () => void, onError: (err: string) => void) {
   app.auth().createUserWithEmailAndPassword(email, password).then(() => onSuccess()).catch((err) => onError(err));
 }
@@ -81,6 +85,12 @@ export function getSavedChatrooms(callback: (rooms: (ChatroomMetadata | null)[])
         if (roomObjects.length === roomIds.length) callback(roomObjects);
       });
     });
+  });
+}
+
+export function getRoomID(code: string, callback: (id: string) => void) {
+  app.database().ref(`/customcodes/${code}`).once('value', (snapshot) => {
+    callback(snapshot.val());
   });
 }
 
@@ -131,16 +141,59 @@ export function createChatroom(data: {
     onError('Érvénytelen meghívókód'); return;
   }
 
-  app.database().ref('/chats').push({
-    metadata: {
-      created: new Date().getTime(),
-      creator: user.uid,
-      inviteCode: data.inviteCode.length !== 0 ? null : data.inviteCode,
-      name: data.name
-    }
-  }).then((ref) => onCreated(String(ref.key))).catch((err) => onError(err));
+  app.database().ref(`/customcodes/${data.inviteCode}`).once('value', (snapshot) => {
+    if (snapshot.exists()) { onError('Meghívókód már foglalt'); return; }
+
+    const push = app.database().ref('/chats').push();
+    snapshot.ref.set(push.key);
+    push.set({
+      metadata: {
+        created: new Date().getTime(),
+        creator: user.uid,
+        inviteCode: data.inviteCode.length === 0 ? null : data.inviteCode,
+        name: data.name
+      }
+    }).then(() => onCreated(String(push.key))).catch((err) => onError(err));
+  });
 
   // TODO: Send invites via Firebase Functions
+}
+
+export function sendChatMessage(message: {
+  type: 'text' | 'image',
+  content: string;
+}, roomId: string, callback: (err?: string) => void) {
+  const user = getAuthUser();
+
+  app.database().ref(`/chats/${roomId}`).once('value', (snapshot) => {
+    if (!snapshot.exists()) {
+      console.error("Room doesn't exist");
+      callback('A szoba nem létezik');
+      return;
+    }
+
+    const msg: ChatMessage = {
+      author: { id: user.uid, name: user.displayName },
+      sent: Number(app.database.ServerValue.TIMESTAMP),
+      type: message.type,
+      content: message.content
+    };
+
+    snapshot.ref.child('messages').push(msg, (err) => {
+      if (!!err) { console.error(err); callback(err.message); }
+      else callback();
+    });
+  });
+}
+
+export function onNewMessage(roomId: string, callback: (message: ChatMessage) => void): () => void {
+  const ref = app.database().ref(`/chats/${roomId}/messages`);
+  const handler = (snapshot: app.database.DataSnapshot) => {
+    callback(snapshot.val() as ChatMessage);
+  };
+
+  ref.on('child_added', handler);
+  return () => ref.off('child_added', handler);
 }
 // ---------- CALLABLES ----------
 
@@ -154,5 +207,18 @@ export function useAuthUser(): [ app.User | null, boolean ] {
   }, []);
 
   return [ user, loading ];
+}
+
+export function useChatroomMetadata(id: string): [ ChatroomMetadata | null, boolean ] {
+  const [ metadata, setMetadata ] = useState<ChatroomMetadata | null>(null);
+  const [ loading, setLoading ] = useState(true);
+
+  useEffect(() => {
+    app.database().ref(`/chats/${id}/metadata`).on('value', (snapshot) => {
+      setMetadata(snapshot.val()); setLoading(false);
+    });
+  }, [ id ]);
+
+  return [ metadata, loading ];
 }
 // ---------- HOOKS ----------
