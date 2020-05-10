@@ -1,0 +1,46 @@
+.createchatroompage-container p.description {
+  padding: 0 10px; margin: 0;
+
+  text-align: start;
+  font-size: 12px;
+  font-weight: 400;
+}
+.createchatroompage-container p.description > span {
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.createchatroompage-invitee {
+  width: 260px; height: 40px;
+  margin: 5px auto; padding: 0 10px;
+
+  display: grid;
+  grid-template-rows: auto 24px auto;
+  grid-template-columns: auto 24px;
+
+  border: 1px solid var(--colour-fg);
+  border-radius: 10px;
+}
+.createchatroompage-invitee > * {
+  grid-row: 2 / span 1;
+}
+.createchatroompage-invitee > p {
+  margin: 0;
+  text-align: start;
+  font-size: 18px;
+  font-weight: 400;
+}
+.createchatroompage-invitee > div {
+  opacity: 0;
+  cursor: pointer;
+  border-radius: 100%;
+}
+.createchatroompage-invitee:hover > div {
+  opacity: 1;
+}
+.createchatroompage-invitee > div:hover {
+  background: var(--colour-warn);
+}
+.createchatroompage-invitee > div:hover > svg {
+  fill: white;
+}
