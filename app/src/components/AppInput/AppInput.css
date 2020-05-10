@@ -17,6 +17,7 @@
 .app-input::placeholder {
   color: var(--colour-text);
   font-weight: 300;
+  user-select: none;
 }
 .app-input:focus {
   background: #ffffff;
