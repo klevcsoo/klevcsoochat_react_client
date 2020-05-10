@@ -1,3 +1,4 @@
+import { regex } from './constants';
 import app from 'firebase/app';
 import 'firebase/auth'; import 'firebase/database';
 import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
@@ -40,7 +41,7 @@ export function initializeFirebase() {
   });
 }
 
-export function getAuthUser() {
+function getAuthUser() {
   const user = app.auth().currentUser;
   if (!user) throw new Error('No auth user found.');
   else return user;
@@ -109,6 +110,29 @@ export function updateUserProfile(
       }).catch((err) => console.error(err));
     });
   } else changeUpdateState({ pass: true });
+}
+
+export function createChatroom(data: {
+  name: string,
+  inviteCode: string,
+  invitees: string[];
+}, onCreated: (roomId: string) => void, onError: (err: string) => void) {
+  const user = getAuthUser();
+
+  if (data.inviteCode.length !== 0 && !data.inviteCode.match(regex.CHATROOM_INVITECODE)) {
+    onError('Érvénytelen meghívókód'); return;
+  }
+
+  app.database().ref('/chats').push({
+    metadata: {
+      created: new Date().getTime(),
+      creator: user.uid,
+      inviteCode: data.inviteCode.length !== 0 ? null : data.inviteCode,
+      name: data.name
+    }
+  }).then((ref) => onCreated(String(ref.key))).catch((err) => onError(err));
+
+  // TODO: Send invites via Firebase Functions
 }
 // ---------- CALLABLES ----------
 

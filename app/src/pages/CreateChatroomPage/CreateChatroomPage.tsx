@@ -5,14 +5,27 @@ import AppCard from '../../components/AppCard/AppCard';
 import AppInput from '../../components/AppInput/AppInput';
 import CreateChatroomInviteesList from './CreateChatroomInviteesList';
 import AppBottomAttachedButton from '../../components/AppButton/AppBottomAttachedButton';
+import { createChatroom } from '../../utils/firebase';
+import { useAppNotification } from '../../components/AppNotification/AppNotifiaction';
+import { useHistory } from 'react-router-dom';
+import { routes } from '../../utils/constants';
 
 const CreateChatroomPage = () => {
+  const [ CreateFailedNotification, showNotification ] = useAppNotification({
+    persistent: false,
+    type: 'error',
+    text: 'A megadott adatok érvénytelenek'
+  });
+  const history = useHistory();
+
   const [ name, setName ] = useState('');
   const [ inviteCode, setInviteCode ] = useState('');
   const [ allInvitees, setAllInvitees ] = useState<string[]>([]);
+  const [ creating, setCreating ] = useState(false);
 
   return (
     <div className="createchatroompage-container">
+      <CreateFailedNotification />
       <AppPageHeader title="Szoba létrehozása" previous={{ icon: 'home' }} />
       <AppCard>
         <AppInput placeholder="Szoba neve" text={name} onTextChanged={(text) => setName(text)} />
@@ -26,7 +39,7 @@ const CreateChatroomPage = () => {
           <span>Nem kötelező megadni.</span><br />
           Ezzel az meghívóval is lehet csatlakozni
           a szobához az alap azonosító mellett.
-          Maximum 8 karaktert tartalmazhat, amik
+          Minimum 5, maximum 12 karaktert tartalmazhat, amik
           számok, illetve az angol ABC betűi lehetnek (0-9;a-z).
         </p>
       </AppCard>
@@ -35,7 +48,19 @@ const CreateChatroomPage = () => {
         Amint az összes résztvevő elhagyta a szobát az üzenetek törlődnek.
         A szoba ugyanúgy elérhető lesz, csak az üzenetek törlődnek.
       </p>
-      <AppBottomAttachedButton text="Létrehozás" onClick={() => { }} />
+      <AppBottomAttachedButton text="Létrehozás" onClick={() => {
+        setCreating(true);
+        createChatroom({
+          name: name,
+          inviteCode: inviteCode,
+          invitees: allInvitees
+        }, (id) => {
+          history.push(routes.CHATROOM.replace(':id', id));
+        }, (err) => {
+          setCreating(false);
+          console.error(err); showNotification();
+        });
+      }} loading={creating} />
     </div>
   );
 };
