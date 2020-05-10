@@ -36,7 +36,7 @@ const HomePageLoggedIn = (props: {
           <div style={{ marginTop: 5 }}>
             {savedRooms.map((r) => (
               <span className="saved-chatroom-name" onClick={() => {
-                history.push(routes.HOME.concat(`chatroom/${r.id}`));
+                history.push(routes.CHATROOM.replace(':id', r.id));
               }} key={r.id}>{r.name}<br /></span>
             ))}
           </div>
