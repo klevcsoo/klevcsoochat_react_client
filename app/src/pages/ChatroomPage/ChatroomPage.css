@@ -36,3 +36,62 @@
 .chatroompage-messagebar > div.toggle.on:active > svg { fill: var(--colour-text); }
 .chatroompage-messagebar > div.click:active { background: var(--colour-text); transition: none; }
 .chatroompage-messagebar > div.click:active > svg { fill: white; transition: none; }
+
+.chatroompage-chatmessage {
+  width: calc(100% - 32px); height: auto;
+  margin: 0 auto 10px auto;
+
+  display: grid;
+  grid-template-rows: min-content min-content;
+}
+.chatroompage-chatmessage > h2 {
+  margin: 0;
+  text-align: start;
+  text-transform: uppercase;
+  font-family: 'Rubik', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+}
+.chatroompage-chatmessage > div {
+  width: 100%; height: auto;
+  min-height: 40px;
+
+  display: grid;
+  grid-template-rows: auto min-content auto;
+  grid-template-columns: 5px auto;
+
+  border: 1px solid var(--colour-fg);
+  border-radius: 5px;
+  overflow: hidden;
+}
+.chatroompage-chatmessage > div > div {
+  grid-row: 1 / span 3;
+  grid-column: 1 / span 1;
+}
+.chatroompage-chatmessage > div > p {
+  grid-row: 2 / span 1;
+  grid-column: 2 / span 1;
+
+  margin: 0 15px;
+  text-align: start;
+  font-size: 18px;
+  font-weight: 400;
+}
+.chatroompage-chatmessage > div > img {
+  width: auto; height: auto;
+  max-height: 300px; max-width: 70vw;
+  object-fit: contain;
+  object-position: center;
+  cursor: pointer;
+}
+
+.chatroompage-chatmessage.outgoing > div {
+  background: var(--colour-fg);
+}
+.chatroompage-chatmessage.outgoing > div > div {
+  background: var(--gradient-primary);
+}
+
+.chatroompage-chatmessage.incoming > div > div {
+  background: var(--colour-text);
+}

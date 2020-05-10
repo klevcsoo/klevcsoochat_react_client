@@ -18,7 +18,7 @@ const ChatroomMessageBar = (props: {
     }, props.roomId, (err) => {
       console.log(err ? err : 'Sent');
     });
-    setMessage('');
+    setMessage(''); setUrlMode(false);
   };
 
   return (

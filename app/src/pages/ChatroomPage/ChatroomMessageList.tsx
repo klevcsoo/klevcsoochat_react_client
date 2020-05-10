@@ -7,15 +7,18 @@ import ChatroomChatMessage from './ChatroomChatMessage';
 const ChatroomMessageList = (props: { roomId: string; }) => {
   const [ messageList, setMessageList ] = useState<ChatMessage[]>([]);
 
+  useEffect(() => window.scrollTo(0, document.body.scrollHeight), []);
+
   useEffect(() => {
     const cleanup = onNewMessage(props.roomId, (message) => {
       setMessageList((prevState) => [ ...prevState, message ]);
+      window.scrollTo(0, document.body.scrollHeight);
     });
     return cleanup;
   }, [ props.roomId ]);
 
   return (
-    <div className="chatroompage-messagelist">
+    <div className="chatroompage-messagelist" id="msglist">
       {messageList.map((m, i) => (
         <ChatroomChatMessage {...m} key={i} />
       ))}
