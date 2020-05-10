@@ -172,14 +172,12 @@ export function sendChatMessage(message: {
       return;
     }
 
-    const msg: ChatMessage = {
+    snapshot.ref.child('messages').push({
       author: { id: user.uid, name: user.displayName },
-      sent: Number(app.database.ServerValue.TIMESTAMP),
+      sent: app.database.ServerValue.TIMESTAMP,
       type: message.type,
       content: message.content
-    };
-
-    snapshot.ref.child('messages').push(msg, (err) => {
+    }, (err) => {
       if (!!err) { console.error(err); callback(err.message); }
       else callback();
     });
