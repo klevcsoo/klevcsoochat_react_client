@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AppCard from '../../components/AppCard/AppCard';
 import AppInput from '../../components/AppInput/AppInput';
 import CreateChatroomInvitee from './CreateChatroomInvitee';
+import { regex } from '../../utils/constants';
 
 const CreateChatroomInviteesList = (props: {
   onListChanged: (list: string[]) => void;
@@ -30,7 +31,7 @@ const CreateChatroomInviteesList = (props: {
       <div style={{ height: 5 }}></div>
       <AppInput placeholder="E-mail" text={currentInvitee} onTextChanged={(text) => setCurrentInvitee(text)}
         onSubmit={() => {
-          if (currentInvitee.match(/^\s+$/g) || !currentInvitee.match(/^[\w-.]+@([\w-]+\.)+[\w-]{2,4}$/g)) return;
+          if (currentInvitee.match(regex.WHITESPACE) || !currentInvitee.match(regex.EMAIL)) return;
           setAllInvitees([ ...allInvitees, currentInvitee ]);
           setCurrentInvitee('');
         }} />
