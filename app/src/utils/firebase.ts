@@ -62,7 +62,7 @@ export function logout(callback?: () => void) {
 
 export function getSavedChatrooms(callback: (rooms: (ChatroomMetadata | null)[]) => void) {
   app.database().ref(`/users/${app.auth().currentUser?.uid}/savedChatrooms`).once('value', (snapshot) => {
-    if (!snapshot.exists()) return;
+    if (!snapshot.exists()) { callback([ null ]); return; }
     const pushIds = Object.keys(snapshot.val());
     const roomIds = Object.values(snapshot.val());
     const roomsRef = app.database().ref('/chats');
