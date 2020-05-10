@@ -1,0 +1,38 @@
+.chatroompage-messagebar {
+  width: auto; height: auto;
+  margin: 0; padding: 0 10px 34px 10px;
+
+  position: fixed; z-index: 100;
+  bottom: 0; left: 0; right: 0;
+
+  display: grid;
+  grid-template-rows: auto min-content auto;
+  grid-template-columns: 40px auto 40px;
+
+  border-top: 1px solid var(--colour-fg);
+  backdrop-filter: blur(30px) saturate(120%);
+  -webkit-backdrop-filter: blur(30px) saturate(120%);
+}
+.chatroompage-messagebar .app-input {
+  max-width: none;
+}
+.chatroompage-messagebar > div {
+  width: 100%; height: 40px;
+  margin: 5px 0; padding: 7px;
+
+  border: 1px solid var(--colour-fg);
+  border-radius: 10px;
+
+  cursor: pointer;
+}
+.chatroompage-messagebar > div:hover { border: 1px solid var(--colour-text); }
+.chatroompage-messagebar > div.toggle.off { background: var(--colour-bg); }
+.chatroompage-messagebar > div.toggle.off > svg { fill: var(--colour-text); }
+.chatroompage-messagebar > div.toggle.off:active { background: var(--colour-fallback); }
+.chatroompage-messagebar > div.toggle.off:active > svg { fill: white; }
+.chatroompage-messagebar > div.toggle.on { background: var(--colour-fallback); }
+.chatroompage-messagebar > div.toggle.on > svg { fill: white; }
+.chatroompage-messagebar > div.toggle.on:active { background: var(--colour-bg); }
+.chatroompage-messagebar > div.toggle.on:active > svg { fill: var(--colour-text); }
+.chatroompage-messagebar > div.click:active { background: var(--colour-text); transition: none; }
+.chatroompage-messagebar > div.click:active > svg { fill: white; transition: none; }

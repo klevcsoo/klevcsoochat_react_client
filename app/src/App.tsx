@@ -6,14 +6,16 @@ import { routes } from './utils/constants';
 import HomePage from './pages/HomePage/HomePage';
 import AccountPage from './pages/AccountPage/AccountPage';
 import CreateChatroomPage from './pages/CreateChatroomPage/CreateChatroomPage';
+import ChatroomPage from './pages/ChatroomPage/ChatroomPage';
 
 function App() {
   return (
     <BrowserRouter>
       <Switch>
         <Route exact path={routes.HOME} component={HomePage} />
-        <Route exact path={routes.ACCOUNT_SETTINGS} component={AccountPage} />
-        <Route exact path={routes.CREATE_CHATROOM} component={CreateChatroomPage} />
+        <Route path={routes.ACCOUNT_SETTINGS} component={AccountPage} />
+        <Route path={routes.CREATE_CHATROOM} component={CreateChatroomPage} />
+        <Route exact path={routes.CHATROOM} component={ChatroomPage} />
       </Switch>
     </BrowserRouter>
   );
