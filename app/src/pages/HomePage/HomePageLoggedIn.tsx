@@ -5,7 +5,7 @@ import AppButton from '../../components/AppButton/AppButton';
 import { useHistory } from 'react-router-dom';
 import { routes, regex } from '../../utils/constants';
 import { ChatroomMetadata } from '../../utils/interfaces';
-import { getSavedChatrooms, logout } from '../../utils/firebase';
+import { getSavedChatrooms, logout, getRoomID } from '../../utils/firebase';
 import LoadingSpinner from '../../components/LoadingSpinner';
 import AppInput from '../../components/AppInput/AppInput';
 
@@ -50,12 +50,15 @@ const HomePageLoggedIn = (props: {
           setCurrentRoomId(text);
         }} onSubmit={() => {
           if (currentRoomId.length !== 0 && !currentRoomId.match(regex.WHITESPACE)) {
-            history.push(routes.CHATROOM.replace(':id', currentRoomId));
+            if (currentRoomId[ 0 ] === '-') history.push(routes.CHATROOM.replace(':id', currentRoomId));
+            else getRoomID(currentRoomId, (id) => history.push(routes.CHATROOM.replace(':id', id)));
           }
         }} />
         <AppButton text={currentRoomId.length > 0 ? 'Csatlakozás a szobához' : 'Szoba létrehozása'} onClick={() => {
-          if (currentRoomId.length > 0) history.push(routes.CHATROOM.replace(':id', currentRoomId));
-          else history.push(routes.CREATE_CHATROOM);
+          if (currentRoomId.length !== 0 && !currentRoomId.match(regex.WHITESPACE)) {
+            if (currentRoomId[ 0 ] === '-') history.push(routes.CHATROOM.replace(':id', currentRoomId));
+            else getRoomID(currentRoomId, (id) => history.push(routes.CHATROOM.replace(':id', id)));
+          }
         }} type="primary" />
       </AppCard>
       <AppButton text="Kijelentkezés" type="warning" onClick={() => { logout(); }} />
