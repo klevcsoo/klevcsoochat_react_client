@@ -31,8 +31,8 @@ const AppPageHeader = (props: {
           <div className="next" onClick={() => {
             if (!!props.next) history.push(props.next.path);
           }}>
-            <ArrowForwardIosRounded color="inherit" />
             {getIcon(props.next.icon)}
+            <ArrowForwardIosRounded color="inherit" />
           </div>
         )}
       </div>
