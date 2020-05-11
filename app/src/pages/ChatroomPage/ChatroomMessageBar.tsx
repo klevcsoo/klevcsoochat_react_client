@@ -11,12 +11,11 @@ const ChatroomMessageBar = (props: {
   const [ urlMode, setUrlMode ] = useState(false);
 
   const sendMessage = () => {
-    console.log('Sending:', message);
     sendChatMessage({
       type: urlMode ? 'image' : 'text',
       content: message
     }, props.roomId, (err) => {
-      console.log(err ? err : 'Sent');
+      if (!!err) console.log(err);
     });
     setMessage(''); setUrlMode(false);
   };
