@@ -50,13 +50,9 @@ const CreateChatroomPage = () => {
       </p>
       <AppBottomAttachedButton text="Létrehozás" onClick={() => {
         setCreating(true);
-        createChatroom({
-          name: name,
-          inviteCode: inviteCode,
-          invitees: allInvitees
-        }, (id) => {
+        createChatroom(name, inviteCode, allInvitees).then((id) => {
           history.push(routes.CHATROOM.replace(':id', id));
-        }, (err) => {
+        }).catch((err) => {
           setCreating(false);
           console.error(err); showNotification();
         });

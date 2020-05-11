@@ -51,137 +51,102 @@ export function getUID() {
   return getAuthUser().uid;
 }
 
-export function signUp(email: string, password: string, onSuccess: () => void, onError: (err: string) => void) {
-  app.auth().createUserWithEmailAndPassword(email, password).then(() => onSuccess()).catch((err) => onError(err));
+export async function signUp(email: string, password: string) {
+  await app.auth().createUserWithEmailAndPassword(email, password);
 }
 
-export function login(email: string, password: string, onSuccess: () => void, onError: (err: string) => void) {
+export async function login(email: string, password: string) {
   const cred = app.auth.EmailAuthProvider.credential(email, password);
-  app.auth().signInWithCredential(cred).then(() => onSuccess()).catch((err) => onError(err));
+  await app.auth().signInWithCredential(cred);
 }
 
-export function logout(callback?: () => void) {
-  app.auth().signOut().then(() => !!callback ? callback() : null);
+export async function logout() {
+  await app.auth().signOut();
 }
 
-export function getSavedChatrooms(callback: (rooms: (ChatroomMetadata | null)[]) => void) {
-  app.database().ref(`/users/${app.auth().currentUser?.uid}/savedChatrooms`).once('value', (snapshot) => {
-    if (!snapshot.exists()) { callback([ null ]); return; }
-    const pushIds = Object.keys(snapshot.val());
-    const roomIds = Object.values(snapshot.val());
-    const roomsRef = app.database().ref('/chats');
-    const roomObjects: (ChatroomMetadata | null)[] = [];
-    roomIds.forEach((id, i) => {
-      roomsRef.child(`${id}/metadata`).once('value', (roomSnapshot) => {
-        if (!roomSnapshot.exists()) {
-          roomObjects.push(null);
-          snapshot.child(pushIds[ i ]).ref.remove();
-        }
-        else {
-          const a = roomSnapshot.val() as ChatroomMetadata; a.id = String(id);
-          roomObjects.push(a);
-        }
+export async function getSavedChatrooms(): Promise<(ChatroomMetadata | null)[]> {
+  const savedRoomsSnapshot = await app.database().ref(`/users/${app.auth().currentUser?.uid}/savedChatrooms`).once('value');
+  if (!savedRoomsSnapshot.exists()) return [ null ];
 
-        if (roomObjects.length === roomIds.length) callback(roomObjects);
-      });
-    });
+  const roomsRef = app.database().ref('/chats');
+  const roomObjects: (ChatroomMetadata | null)[] = [];
+
+  Object.values(savedRoomsSnapshot.val()).forEach(async (id, i) => {
+    const roomSnapshot = await roomsRef.child(`${id}/metadata`).once('value');
+    if (!roomSnapshot.exists()) {
+      roomObjects.push(null);
+      savedRoomsSnapshot.child(Object.keys(savedRoomsSnapshot.val())[ i ]).ref.remove();
+    }
+    else {
+      const a = roomSnapshot.val() as ChatroomMetadata; a.id = String(id);
+      roomObjects.push(a);
+    }
   });
+
+  return roomObjects;
 }
 
-export function getRoomID(code: string, callback: (id: string) => void) {
-  app.database().ref(`/customcodes/${code}`).once('value', (snapshot) => {
-    callback(snapshot.val());
-  });
+export async function getRoomID(code: string) {
+  return String((await app.database().ref(`/customcodes/${code}`).once('value')).val());
 }
 
-export function updateUserProfile(
-  data: {
-    photo: string,
-    username: string,
-    pass: { old: string, new: string; };
-  }, callback: () => void
-) {
-  const user = getAuthUser();
-  const updateState: { profile: boolean, pass: boolean; } = { profile: false, pass: false };
-  const changeUpdateState = (state: { profile?: boolean, pass?: boolean; }) => {
-    if (state.profile) updateState.profile = state.profile;
-    if (state.pass) updateState.pass = state.pass;
-
-    if (updateState.pass && updateState.profile) callback();
-  };
-
-  user.updateProfile({
-    displayName: !!data.username ? data.username : user.displayName,
-    photoURL: !!data.photo ? data.photo : user.photoURL
-  }).then(() => changeUpdateState({ profile: true }));
-
-  if (data.pass.old !== '' && data.pass.new !== '') {
-    const cred = app.auth.EmailAuthProvider.credential(String(user.email), data.pass.old);
-    user.reauthenticateWithCredential(cred).then((reauthUser) => {
-      if (!(data.pass?.new)) {
-        console.error('Failed to update password.');
-        changeUpdateState({ pass: true });
-        return;
-      }
-      reauthUser.user?.updatePassword(data.pass.new).then(() => {
-        changeUpdateState({ pass: true });
-      }).catch((err) => console.error(err));
-    });
-  } else changeUpdateState({ pass: true });
-}
-
-export function createChatroom(data: {
-  name: string,
-  inviteCode: string,
-  invitees: string[];
-}, onCreated: (roomId: string) => void, onError: (err: string) => void) {
+export async function updateUserProfile(photo: string, username: string, pass: { old: string, new: string; }) {
   const user = getAuthUser();
 
-  if (data.inviteCode.length !== 0 && !data.inviteCode.match(regex.CHATROOM_INVITECODE)) {
-    onError('Érvénytelen meghívókód'); return;
+  await user.updateProfile({
+    displayName: !!username ? username : user.displayName,
+    photoURL: !!photo ? photo : user.photoURL
+  });
+
+  const gotOldPass = pass.old.length !== 0 && !pass.old.match(regex.WHITESPACE);
+  const gotNewPass = pass.new.length !== 0 && !pass.new.match(regex.WHITESPACE);
+
+  if (gotOldPass && gotNewPass) {
+    const cred = app.auth.EmailAuthProvider.credential(String(user.email), pass.old);
+    const reauthUser = await user.reauthenticateWithCredential(cred);
+
+    return reauthUser.user?.updatePassword(pass.new);
   }
 
-  app.database().ref(`/customcodes/${data.inviteCode}`).once('value', (snapshot) => {
-    if (snapshot.exists()) { onError('Meghívókód már foglalt'); return; }
-
-    const push = app.database().ref('/chats').push();
-    snapshot.ref.set(push.key);
-    push.set({
-      metadata: {
-        created: new Date().getTime(),
-        creator: user.uid,
-        inviteCode: data.inviteCode.length === 0 ? null : data.inviteCode,
-        name: data.name
-      }
-    }).then(() => onCreated(String(push.key))).catch((err) => onError(err));
-  });
-
-  // TODO: Send invites via Firebase Functions
+  return;
 }
 
-export function sendChatMessage(message: {
-  type: 'text' | 'image',
-  content: string;
-}, roomId: string, callback: (err?: string) => void) {
+export async function createChatroom(name: string, inviteCode: string, invitees: string[]) {
   const user = getAuthUser();
 
-  app.database().ref(`/chats/${roomId}`).once('value', (snapshot) => {
-    if (!snapshot.exists()) {
-      console.error("Room doesn't exist");
-      callback('A szoba nem létezik');
-      return;
-    }
+  if (inviteCode.length !== 0 && !inviteCode.match(regex.CHATROOM_INVITECODE)) {
+    throw Error('Érvéntelen meghívókód');
+  }
 
-    snapshot.ref.child('messages').push({
-      author: { id: user.uid, name: user.displayName },
-      sent: app.database.ServerValue.TIMESTAMP,
-      type: message.type,
-      content: message.content
-    }, (err) => {
-      if (!!err) { console.error(err); callback(err.message); }
-      else callback();
-    });
+  const snapshot = await app.database().ref(`/customcodes/${inviteCode}`).once('value');
+  if (snapshot.exists()) throw Error('Meghívókód már foglalt');
+
+  const push = app.database().ref('/chats').push();
+  snapshot.ref.set(push.key);
+  await push.set({
+    metadata: {
+      created: new Date().getTime(),
+      creator: user.uid,
+      inviteCode: inviteCode.length === 0 ? null : inviteCode,
+      name: name
+    }
   });
+
+  return String((await push).key);
+}
+
+export async function sendChatMessage(message: { type: 'text' | 'image', content: string; }, roomId: string) {
+  const user = getAuthUser();
+
+  const snapshot = await app.database().ref(`/chats/${roomId}`).once('value');
+  if (!snapshot.exists()) throw Error('A szoba nem létezik');
+
+  await snapshot.ref.child('messages').push({
+    author: { id: user.uid, name: user.displayName },
+    sent: app.database.ServerValue.TIMESTAMP,
+    type: message.type,
+    content: message.content
+  }).catch((err) => { throw Error(err); });
 }
 
 export function onNewMessage(roomId: string, callback: (message: ChatMessage) => void): () => void {

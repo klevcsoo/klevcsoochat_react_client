@@ -14,9 +14,7 @@ const ChatroomMessageBar = (props: {
     sendChatMessage({
       type: urlMode ? 'image' : 'text',
       content: message
-    }, props.roomId, (err) => {
-      if (!!err) console.log(err);
-    });
+    }, props.roomId).catch((err) => console.error(err));
     setMessage(''); setUrlMode(false);
   };
 

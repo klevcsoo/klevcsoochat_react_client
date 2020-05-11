@@ -25,9 +25,8 @@ const HomePage = () => {
               <AppInput placeholder="Jelszó" text={pass} onTextChanged={(text) => setPass(text)} password />
               <AppButton text="Regisztráció" type="primary" onClick={() => {
                 setLoggingIn(true);
-                signUp(email, pass, () => setLoggingIn(false), (err) => {
-                  console.error(err);
-                  setLoggingIn(false);
+                signUp(email, pass).then(() => setLoggingIn(false)).catch((err) => {
+                  console.error(err); setLoggingIn(false);
                 });
               }} loading={loggingIn} />
               <div className="homepage-login-panel-divider">
@@ -36,7 +35,7 @@ const HomePage = () => {
               </div>
               <AppButton text="Bejelentkezés" type="secondary" onClick={() => {
                 setLoggingIn(true);
-                login(email, pass, () => setLoggingIn(false), (err) => {
+                login(email, pass).then(() => setLoggingIn(false)).catch((err) => {
                   console.error(err);
                   setLoggingIn(false);
                 });

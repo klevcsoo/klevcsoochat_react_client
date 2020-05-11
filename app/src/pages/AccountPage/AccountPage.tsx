@@ -68,7 +68,7 @@ const AccountPage = () => {
           </AppCard>
           <AppBottomAttachedButton text="Adatok frissítése" onClick={() => {
             setUpdatingData(true);
-            updateUserProfile({ pass: password, photo: accountImg, username: username }, () => {
+            updateUserProfile(accountImg, username, password).then(() => {
               setUpdatingData(false); showNotification();
             });
           }} loading={updatingData} />

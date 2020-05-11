@@ -17,7 +17,7 @@ const HomePageLoggedIn = (props: {
   const [ currentRoomId, setCurrentRoomId ] = useState('');
 
   useEffect(() => {
-    getSavedChatrooms((r) => setSavedRooms(r));
+    getSavedChatrooms().then((r) => setSavedRooms(r));
   }, []);
 
   return (
@@ -51,13 +51,13 @@ const HomePageLoggedIn = (props: {
         }} onSubmit={() => {
           if (currentRoomId.length !== 0 && !currentRoomId.match(regex.WHITESPACE)) {
             if (currentRoomId[ 0 ] === '-') history.push(routes.CHATROOM.replace(':id', currentRoomId));
-            else getRoomID(currentRoomId, (id) => history.push(routes.CHATROOM.replace(':id', id)));
+            else getRoomID(currentRoomId).then((id) => history.push(routes.CHATROOM.replace(':id', id)));
           }
         }} />
         <AppButton text={currentRoomId.length > 0 ? 'Csatlakozás a szobához' : 'Szoba létrehozása'} onClick={() => {
           if (currentRoomId.length !== 0 && !currentRoomId.match(regex.WHITESPACE)) {
             if (currentRoomId[ 0 ] === '-') history.push(routes.CHATROOM.replace(':id', currentRoomId));
-            else getRoomID(currentRoomId, (id) => history.push(routes.CHATROOM.replace(':id', id)));
+            else getRoomID(currentRoomId).then((id) => history.push(routes.CHATROOM.replace(':id', id)));
           }
         }} type="primary" />
       </AppCard>
