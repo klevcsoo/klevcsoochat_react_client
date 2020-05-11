@@ -3,6 +3,7 @@ export interface ChatroomMetadata {
   name: string;
   creator: string;
   created: number;
+  inviteCode?: string;
 }
 
 export interface ChatMessage {
