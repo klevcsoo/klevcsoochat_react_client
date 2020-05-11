@@ -1,24 +1,37 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './ChatroomPage.css';
 import { ChatMessage } from '../../utils/interfaces';
 import { getUID } from '../../utils/firebase';
 
 const ChatroomChatMessage = (props: ChatMessage) => {
+  const [ imageOpened, setImageOpened ] = useState(false);
+
   const outgoing = props.author.id === getUID();
   const authorName = !!props.author.name ? props.author.name : props.author.id;
 
   return (
-    <div className={`chatroompage-chatmessage ${outgoing ? 'outgoing' : 'incoming'}`}>
-      <h2>{authorName}</h2>
-      <div>
-        <div></div>
-        {props.type === 'text' ? <p>{props.content}</p> : (
+    <React.Fragment>
+      <div className={`chatroompage-chatmessage ${outgoing ? 'outgoing' : 'incoming'}`}>
+        <h2>{authorName}</h2>
+        <div>
+          <div></div>
+          {props.type === 'text' ? <p>{props.content}</p> : (
+            <img src={props.content} alt={`Küldte: ${authorName}`} onLoad={() => {
+              window.scrollTo(0, document.body.scrollHeight);
+            }} onClick={() => setImageOpened(true)} />
+          )}
+        </div>
+      </div>
+      {props.type !== 'image' ? null : (
+        <div className={`chatroompage-chatmessage-openedimage${imageOpened ? ' opened' : ''}`} onClick={() => {
+          setImageOpened(false);
+        }}>
           <img src={props.content} alt={`Küldte: ${authorName}`} onLoad={() => {
             window.scrollTo(0, document.body.scrollHeight);
           }} />
-        )}
-      </div>
-    </div>
+        </div>
+      )}
+    </React.Fragment>
   );
 };
 
