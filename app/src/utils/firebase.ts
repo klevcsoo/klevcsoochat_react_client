@@ -150,7 +150,7 @@ export async function sendChatMessage(message: { type: 'text' | 'image', content
 }
 
 export function onNewMessage(roomId: string, callback: (message: ChatMessage) => void): () => void {
-  const ref = app.database().ref(`/chats/${roomId}/messages`);
+  const ref = app.database().ref(`/chats/${roomId}/messages`).limitToLast(100);
   const handler = (snapshot: app.database.DataSnapshot) => {
     callback(snapshot.val() as ChatMessage);
   };
