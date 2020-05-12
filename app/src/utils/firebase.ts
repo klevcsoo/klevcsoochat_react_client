@@ -138,10 +138,7 @@ export async function createChatroom(name: string, inviteCode: string, invitees:
 export async function sendChatMessage(message: { type: 'text' | 'image', content: string; }, roomId: string) {
   const user = getAuthUser();
 
-  const snapshot = await app.database().ref(`/chats/${roomId}`).once('value');
-  if (!snapshot.exists()) throw Error('A szoba nem létezik');
-
-  await snapshot.ref.child('messages').push({
+  await app.database().ref(`/chats/${roomId}/messages`).push({
     author: { id: user.uid, name: user.displayName },
     sent: app.database.ServerValue.TIMESTAMP,
     type: message.type,
