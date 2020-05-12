@@ -13,10 +13,11 @@ exports.onUserCreate = functions.auth.user().onCreate(async (user) => {
     photoURL: defaultAccountPhoto
   });
 
-  await admin.database().ref(`/users/${user.uid}/info`).set({
-    photo: user.photoURL,
+  return admin.database().ref(`/users/${user.uid}/info`).set({
+    photo: defaultAccountPhoto,
     username: user.displayName,
     email: user.email,
+    lastOnline: admin.database.ServerValue.TIMESTAMP
   });
 });
 
