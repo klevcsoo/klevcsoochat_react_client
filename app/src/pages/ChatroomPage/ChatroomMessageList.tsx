@@ -12,7 +12,7 @@ const ChatroomMessageList = (props: { roomId: string; }) => {
   useEffect(() => {
     const cleanup = onNewMessage(props.roomId, (message) => {
       setMessageList((prevState) => [ ...prevState, message ]);
-      window.scrollTo(0, document.body.scrollHeight);
+      setTimeout(() => window.scrollTo(0, document.body.scrollHeight), 50);
     });
     return cleanup;
   }, [ props.roomId ]);
