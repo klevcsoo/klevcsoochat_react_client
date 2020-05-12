@@ -37,12 +37,19 @@
 .chatroompage-messagebar > div.click:active { background: var(--colour-text); transition: none; }
 .chatroompage-messagebar > div.click:active > svg { fill: white; transition: none; }
 
+@keyframes message-in {
+  from { transform: translateY(200%) }
+  to { transform: translateY(0) }
+}
 .chatroompage-chatmessage {
   width: calc(100% - 32px); height: auto;
   margin: 0 auto 10px auto;
 
   display: grid;
   grid-template-rows: min-content min-content;
+}
+.chatroompage-chatmessage:last-child {
+  animation: message-in 500ms forwards;
 }
 .chatroompage-chatmessage > h2 {
   margin: 0;
