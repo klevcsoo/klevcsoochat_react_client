@@ -44,6 +44,9 @@
   font-size: 12px;
   font-weight: 300;
 }
+.app-user-card.chatroom {
+  cursor: pointer;
+}
 .app-user-card.chatroom > img {
   border: 2px solid var(--colour-fallback);
 }
