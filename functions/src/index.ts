@@ -24,6 +24,9 @@ exports.onUserCreate = functions.auth.user().onCreate(async (user) => {
 exports.createChatroom = functions.https.onCall(async ({ code, name, photo }, context) => {
   if (!context.auth) throw Error('Be kell jelentkezni, a szoba létrehozásához');
   if (!name) throw Error('Nincs szoba adatok nélkül🤷‍♀️');
+  if (!!code && (await admin.database().ref(`/customcodes/${code}`).once('value')).exists()) {
+    throw Error('Ez a kód már foglalt');
+  }
 
   const uid = context.auth.uid;
   const pushId = await admin.database().ref('/chats').push();
