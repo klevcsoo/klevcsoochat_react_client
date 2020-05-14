@@ -42,7 +42,7 @@ exports.createChatroom = functions.https.onCall(async ({ code, name, photo }, co
   });
 
   if (!pushId.key) throw Error('Hiba történt, próbáld újra');
-  await admin.database().ref(`/customcodes/${code}`).set(pushId.key);
+  if (!!code) await admin.database().ref(`/customcodes/${code}`).set(pushId.key);
 
   return pushId.key;
 });
@@ -60,20 +60,23 @@ exports.deleteChatroom = functions.https.onCall(async ({ id }, context) => {
   await admin.database().ref(`/customcodes/${metadata.child('code').val()}`).remove();
 });
 
-exports.onUserChatroomsChange = functions.database.ref('/users/{user_id}/chatrooms')
+exports.onUserChatroomsChange = functions.database.ref('/users/{user_id}/chatrooms/{room_id}')
   .onWrite(async ({ before, after }, context) => {
     const uid = context.params.user_id;
+    const rid = context.params.room_id;
 
     // Added new chatroom
     if (!before.exists() && after.exists()) {
-      return admin.database().ref(`/chats/${after.key}/members/${uid}`).set(
+      console.log(`Adding ${`/chats/${rid}/members/${uid}`}`);
+      return admin.database().ref(`/chats/${rid}/members/${uid}`).set(
         admin.database.ServerValue.TIMESTAMP
       );
     }
 
     // Removed a chatroom
     if (before.exists() && !after.exists()) {
-      return admin.database().ref(`/chats/${after.key}/members/${uid}`).remove();
+      console.log(`Removing ${`/chats/${rid}/members/${uid}`}`);
+      return admin.database().ref(`/chats/${rid}/members/${uid}`).remove();
     }
   });
 
