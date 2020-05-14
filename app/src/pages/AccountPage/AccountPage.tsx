@@ -44,7 +44,7 @@ const AccountPage = () => {
           <AppCard>
             <div className="account-img-container">
               {!!user.photoURL ? (
-                <img src={user.photoURL} alt={user.displayName ? user.displayName : 'account'} />
+                <img src={accountImg} alt={user.displayName ? user.displayName : 'account'} />
               ) : null}
             </div>
             <AppInput placeholder="Profilkép link" text={accountImg} onTextChanged={(text) => {
