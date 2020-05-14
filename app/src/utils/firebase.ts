@@ -111,28 +111,10 @@ export async function updateUserProfile(photo: string, username: string, pass: {
   return;
 }
 
-export async function createChatroom(name: string, inviteCode: string, invitees: string[]) {
-  const user = getAuthUser();
-
-  if (inviteCode.length !== 0 && !inviteCode.match(regex.CHATROOM_INVITECODE)) {
-    throw Error('Érvéntelen meghívókód');
-  }
-
-  const snapshot = await app.database().ref(`/customcodes/${inviteCode}`).once('value');
-  if (snapshot.exists()) throw Error('Meghívókód már foglalt');
-
-  const push = app.database().ref('/chats').push();
-  snapshot.ref.set(push.key);
-  await push.set({
-    metadata: {
-      created: new Date().getTime(),
-      creator: user.uid,
-      inviteCode: inviteCode.length === 0 ? null : inviteCode,
-      name: name
-    }
+export async function createChatroom(name: string, code: string, photo: string) {
+  return (app.functions().httpsCallable('createChatroom'))({ name: name, code: code, photo: photo }).then(({ data }) => {
+    return String(data.id);
   });
-
-  return String((await push).key);
 }
 
 export async function sendChatMessage(message: { type: 'text' | 'image', content: string; }, roomId: string) {
