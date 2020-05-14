@@ -157,6 +157,10 @@ export async function respondToRequest(approved: boolean, uid: string, rid: stri
   } else await ref.child(`requests/${rid}`).remove();
 }
 
+export async function leaveChatroom(rid: string) {
+  await app.database().ref(`/user/${getAuthUser().uid}/chatrooms/${rid}`).remove();
+}
+
 export async function sendChatMessage(message: { type: 'text' | 'image', content: string; }, roomId: string) {
   const user = getAuthUser();
 
