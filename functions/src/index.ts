@@ -80,19 +80,20 @@ exports.onUserChatroomsChange = functions.database.ref('/users/{user_id}/chatroo
     }
   });
 
-exports.onUserRequestsChange = functions.database.ref('/users/{user_id}/requests')
+exports.onUserRequestsChange = functions.database.ref('/users/{user_id}/requests/{room_id}')
   .onWrite(async ({ before, after }, context) => {
     const uid = context.params.user_id;
+    const rid = context.params.room_id;
 
     // Added new request
     if (!before.exists() && after.exists()) {
-      return admin.database().ref(`/chats/${after.key}/metadata/requests/${uid}`).set(
+      return admin.database().ref(`/chats/${rid}/requests/${uid}`).set(
         admin.database.ServerValue.TIMESTAMP
       );
     }
 
     // Removed a request
     if (before.exists() && !after.exists()) {
-      return admin.database().ref(`/chats/${after.key}/metadata/requests/${uid}`).remove();
+      return admin.database().ref(`/chats/${rid}/requests/${uid}`).remove();
     }
   });
