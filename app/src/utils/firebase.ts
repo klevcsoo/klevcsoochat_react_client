@@ -177,6 +177,29 @@ export function onNewMessage(roomId: string, callback: (message: ChatMessage) =>
   ref.on('child_added', handler);
   return () => ref.off('child_added', handler);
 }
+
+export function onChatroomMember(roomId: string, callback: (uids: string[]) => void) {
+  const ref = app.database().ref(`/chats/${roomId}/members`);
+  const handler = (snapshot: app.database.DataSnapshot) => {
+    callback(Object.keys(snapshot.val()));
+  };
+
+  ref.on('value', handler);
+  return () => ref.off('value', handler);
+}
+
+export function onChatroomRequest(roomId: string, callback: (uids: string[] | null) => void) {
+  const ref = app.database().ref(`/chats/${roomId}/requests`);
+  const handler = (snapshot: app.database.DataSnapshot) => {
+    if (!snapshot.exists()) { callback(null); return; }
+    callback(Object.keys(snapshot.val()));
+  };
+
+  ref.on('value', handler, (err: any) => {
+    console.log(err); callback(null);
+  });
+  return () => ref.off('value', handler);
+}
 // ---------- CALLABLES ----------
 
 // ---------- HOOKS ----------
