@@ -21,28 +21,43 @@ exports.onUserCreate = functions.auth.user().onCreate(async (user) => {
   });
 });
 
-exports.createChatroom = functions.https.onCall(async (data, context) => {
+exports.createChatroom = functions.https.onCall(async ({ code, name, photo }, context) => {
   if (!context.auth) throw Error('Be kell jelentkezni, a szoba létrehozásához');
 
-  if (!data || !data.code || !data.name) {
+  if (!code || !name) {
     throw Error('Nincs szoba adatok nélkül🤷‍♀️');
   }
 
   const uid = context.auth.uid;
   const pushId = await admin.database().ref('/chats').push();
-  const photo = !!data.photo ? data.photo : defaultChatroomPhoto;
+  const roomPhoto = !!photo ? photo : defaultChatroomPhoto;
   await pushId.set({
     metadata: {
       created: admin.database.ServerValue.TIMESTAMP,
       creator: uid,
-      code: data.code,
-      name: data.name,
-      photo: photo
+      code: code,
+      name: name,
+      photo: roomPhoto
     }
   });
 
   if (!pushId.key) throw Error('Hiba történt, próbáld újra');
+  await admin.database().ref(`/customcodes/${code}`).set(pushId.key);
+
   return pushId.key;
+});
+
+exports.deleteChatroom = functions.https.onCall(async ({ id }, context) => {
+  if (!context.auth) throw Error('Be kell jelentkezni, a szoba törléséhez');
+
+  const uid = context.auth.uid;
+  const metadata = await admin.database().ref(`/chats/${id}/metadata`).once('value');
+
+  if (!metadata.exists()) throw Error('Szoba nem létezik');
+  if (metadata.child('creator').val() !== uid) throw Error('Csak a szoba tulajdonosa törölheti a szobát');
+
+  await metadata.ref.parent?.remove();
+  await admin.database().ref(`/customcodes/${metadata.child('code').val()}`).remove();
 });
 
 exports.onUserChatroomsChange = functions.database.ref('/users/{user_id}/chatrooms')
