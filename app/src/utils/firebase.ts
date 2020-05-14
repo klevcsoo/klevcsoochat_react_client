@@ -1,6 +1,6 @@
 import { regex } from './constants';
 import app from 'firebase/app';
-import 'firebase/auth'; import 'firebase/database';
+import 'firebase/auth'; import 'firebase/database'; import 'firebase/functions';
 import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
 import { useState, useEffect } from 'react';
 import { ChatroomMetadata, ChatMessage, AuthUserInfoUI } from './interfaces';
@@ -98,6 +98,11 @@ export async function updateUserProfile(photo: string, username: string, pass: {
     photoURL: !!photo ? photo : user.photoURL
   });
 
+  await app.database().ref(`/users/${user.uid}/info`).update({
+    username: !!username ? username : user.displayName,
+    photo: !!photo ? photo : user.photoURL
+  });
+
   const gotOldPass = pass.old.length !== 0 && !pass.old.match(regex.WHITESPACE);
   const gotNewPass = pass.new.length !== 0 && !pass.new.match(regex.WHITESPACE);
 
@@ -112,9 +117,16 @@ export async function updateUserProfile(photo: string, username: string, pass: {
 }
 
 export async function createChatroom(name: string, code: string, photo: string) {
-  return (app.functions().httpsCallable('createChatroom'))({ name: name, code: code, photo: photo }).then(({ data }) => {
-    return String(data.id);
+  const id = await (app.functions().httpsCallable('createChatroom'))({
+    name: name, code: code, photo: photo
+  }).then(({ data }) => String(data)).catch((err) => {
+    console.log(err); throw Error(err);
   });
+
+  await app.database().ref(`/users/${getAuthUser().uid}/chatrooms`).update({
+    [ id ]: app.database.ServerValue.TIMESTAMP
+  });
+  return id;
 }
 
 export async function sendChatMessage(message: { type: 'text' | 'image', content: string; }, roomId: string) {
@@ -177,7 +189,7 @@ export function useChatroomMetadata(id: string): [ ChatroomMetadata | null, bool
 
   useEffect(() => {
     app.database().ref(`/chats/${id}/metadata`).on('value', (snapshot) => {
-      setMetadata(snapshot.val()); setLoading(false);
+      setMetadata({ ...snapshot.val(), id: id }); setLoading(false);
     });
   }, [ id ]);
 
