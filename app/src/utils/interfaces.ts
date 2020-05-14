@@ -22,3 +22,11 @@ export interface AppNotificatonData {
   type: 'info' | 'error';
   onDismiss?: () => void;
 }
+
+export interface AuthUserInfoUI {
+  online: boolean,
+  lastOnline: number,
+  photo: string,
+  username?: string,
+  email: string;
+}
