@@ -3,7 +3,7 @@ import AppCard from '../../components/AppCard/AppCard';
 import AppButton from '../../components/AppButton/AppButton';
 import { useHistory } from 'react-router-dom';
 import { routes, regex } from '../../utils/constants';
-import { logout, getRoomID, getUID, onUserRequests, onUserChatrooms } from '../../utils/firebase';
+import { logout, getRoomID, getUID, onUserRequests, onUserChatrooms, sendChatroomRequest } from '../../utils/firebase';
 import AppInput from '../../components/AppInput/AppInput';
 import AppUserCard from '../../components/AppCard/AppUserCard';
 import LoadingSpinner from '../../components/LoadingSpinner';
@@ -14,11 +14,15 @@ const HomePageLoggedIn = () => {
   const [ currentRoomId, setCurrentRoomId ] = useState('');
   const [ requests, setRequests ] = useState<(string | null)[]>([]);
   const [ chatrooms, setChatrooms ] = useState<(string | null)[]>([]);
+  const [ requesting, setRequesting ] = useState(false);
 
-  const requestChatroomAccess = () => {
+  const openChatroom = () => {
     if (currentRoomId.length !== 0 && !currentRoomId.match(regex.WHITESPACE)) {
-      if (currentRoomId[ 0 ] === '-') history.push(routes.CHATROOM.replace(':id', currentRoomId));
-      else getRoomID(currentRoomId).then((id) => history.push(routes.CHATROOM.replace(':id', id)));
+      setRequesting(true);
+      sendChatroomRequest(currentRoomId).then(() => setRequesting(false)).catch((err) => {
+        console.error(err); setRequesting(false);
+      });
+      setCurrentRoomId('');
     } else history.push(routes.CREATE_CHATROOM);
   };
 
@@ -39,9 +43,9 @@ const HomePageLoggedIn = () => {
       <AppCard>
         <AppInput placeholder="Szoba azonosító / meghívó" text={currentRoomId} onTextChanged={(text) => {
           setCurrentRoomId(text);
-        }} onSubmit={() => requestChatroomAccess()} />
+        }} onSubmit={() => openChatroom()} />
         <AppButton text={currentRoomId.length > 0 ? 'Csatlakozási kérelem küldése' : 'Szoba létrehozása'}
-          onClick={() => requestChatroomAccess()} type="primary" />
+          onClick={() => openChatroom()} type="primary" loading={requesting} />
       </AppCard>
       <div style={{ margin: 30 }}>
         {requests.length !== 0 && requests.some((val) => !val) ? null : requests.length === 0 ? <LoadingSpinner /> : (
@@ -51,7 +55,7 @@ const HomePageLoggedIn = () => {
             }}>Belépési kérelmek:</h2>
             {requests.map((room, i) => {
               if (!room) return null;
-              else return <AppChatroomCard id={room} key={i} reducedMargin />;
+              else return <AppChatroomCard id={room} key={i} reducedMargin request />;
             })}
           </React.Fragment>
         )}
