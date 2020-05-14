@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ChatroomSettingsPage.css';
 import { useRouteMatch } from 'react-router-dom';
-import { useChatroomMetadata, onChatroomMember, onChatroomRequest } from '../../utils/firebase';
+import { useChatroomMetadata, onChatroomMember, onChatroomRequest, leaveChatroom } from '../../utils/firebase';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import AppPageHeader from '../../components/AppPageHeader/AppPageHeader';
 import AppCard from '../../components/AppCard/AppCard';
@@ -14,13 +14,15 @@ const ChatroomSettingsPage = () => {
   const roomId = (useRouteMatch().params as any).id;
   const [ metadata, metadataLoading ] = useChatroomMetadata(roomId);
 
-  const [ roomName, setRoomName ] = useState('');
-  const [ updatingName, setUpdatingName ] = useState(false);
   const [ members, setMembers ] = useState<string[]>([]);
   const [ requests, setRequests ] = useState<string[] | null>([]);
+  const [ roomPhoto, setRoomPhoto ] = useState('');
+  const [ roomName, setRoomName ] = useState('');
+  const [ updatingData, setUpdatingData ] = useState(false);
 
   useEffect(() => {
     if (!!metadata?.name) setRoomName(metadata.name);
+    if (!!metadata?.photo) setRoomPhoto(metadata.photo);
   }, [ metadata ]);
 
   useEffect(() => {
@@ -49,12 +51,22 @@ const ChatroomSettingsPage = () => {
         </div>
       )}
       <AppCard>
-        <AppInput placeholder="Szoba neve" text={String(roomName)} onTextChanged={(text) => setRoomName(text)} />
-        <AppButton text="Név módosítása" type="primary" onClick={() => {
-          setUpdatingName(true);
-        }} loading={updatingName} />
+        <div className="chatroom-img-container">
+          <img src={roomPhoto} alt={roomName} />
+        </div>
+        <AppInput placeholder="Szoba kép link" text={roomPhoto} onTextChanged={(text) => setRoomPhoto(text)} />
+        <AppInput placeholder="Szoba neve" text={roomName} onTextChanged={(text) => setRoomName(text)} />
+        <AppButton text="Adatok módosítása" type="primary" onClick={() => {
+          setUpdatingData(true);
+        }} loading={updatingData} />
       </AppCard>
       <AppCard>
+        <AppButton text="Szoba elhagyása" type="warning" onClick={() => {
+          leaveChatroom(roomId);
+        }} />
+        <p className="description">
+          Később visszaléphetsz, ha elfogadják a kérelmed.
+        </p>
         <AppButton text="Üzenetek törlése" type="warning" onClick={() => { }} />
         <p className="description">
           A szobába írt összes üzenetet törli, a chat teljesen üres lesz,
