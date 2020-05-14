@@ -169,6 +169,26 @@ export function useAuthUser(): [ app.User | null, boolean ] {
   return [ user, loading ];
 }
 
+export function useOtherUserInfo(uid: string): [ AuthUserInfoUI | null, boolean ] {
+  const [ user, setUser ] = useState<AuthUserInfoUI | null>(null);
+  const [ loading, setLoading ] = useState(true);
+
+  useEffect(() => {
+    app.database().ref(`/users/${uid}/info`).on('value', (snapshot) => {
+      setUser({
+        email: snapshot.child('email').val(),
+        lastOnline: snapshot.child('lastOnline').val(),
+        online: snapshot.child('connections').exists() ? true : false,
+        photo: snapshot.child('photo').val(),
+        username: snapshot.child('username').val()
+      });
+      setLoading(false);
+    });
+  }, [ uid ]);
+
+  return [ user, loading ];
+}
+
 export function useChatroomMetadata(id: string): [ ChatroomMetadata | null, boolean ] {
   const [ metadata, setMetadata ] = useState<ChatroomMetadata | null>(null);
   const [ loading, setLoading ] = useState(true);
