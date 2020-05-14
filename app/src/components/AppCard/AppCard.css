@@ -44,9 +44,9 @@
   font-size: 12px;
   font-weight: 300;
 }
-.app-user-card.classroom > img {
+.app-user-card.chatroom > img {
   border: 2px solid var(--colour-fallback);
 }
-.app-user-card.classroom > h3 {
-  text-decoration: none;
+.app-user-card.chatroom > h3 {
+  text-transform: none;
 }
