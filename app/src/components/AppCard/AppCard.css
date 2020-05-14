@@ -44,3 +44,9 @@
   font-size: 12px;
   font-weight: 300;
 }
+.app-user-card.classroom > img {
+  border: 2px solid var(--colour-fallback);
+}
+.app-user-card.classroom > h3 {
+  text-decoration: none;
+}

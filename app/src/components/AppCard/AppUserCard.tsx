@@ -1,14 +1,16 @@
 import React from 'react';
-import AppCard from './AppCard';
+import './AppCard.css';
 import { useOtherUserInfo } from '../../utils/firebase';
 import LoadingSpinner from '../LoadingSpinner';
 import { getOnlineStatusText } from '../../utils/functions';
 
-const AppUserCard = (props: { uid: string; }) => {
+const AppUserCard = (props: { uid: string, reducedMargin?: boolean; }) => {
   const [ user, userLoading ] = useOtherUserInfo(props.uid);
 
   return !userLoading && !user ? null : (
-    <AppCard>
+    <div className="app-card" style={{
+      margin: `${props.reducedMargin ? '10' : '30'}px auto`
+    }}>
       {userLoading ? <LoadingSpinner /> : !user ? null : (
         <div className="app-user-card">
           <img src={user.photo} alt={user.username} className={user.online ? 'online' : 'offline'} />
@@ -16,7 +18,7 @@ const AppUserCard = (props: { uid: string; }) => {
           <h3>{getOnlineStatusText(user.online, user.lastOnline)}</h3>
         </div>
       )}
-    </AppCard>
+    </div>
   );
 };
 
