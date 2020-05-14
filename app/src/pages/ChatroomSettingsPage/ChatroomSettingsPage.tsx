@@ -25,8 +25,8 @@ const ChatroomSettingsPage = () => {
       <p style={{ fontWeight: 300 }}>
         <b>Szoba azonosítója:</b> {roomId} <br />
         <b>Szoba neve:</b> {metadata.name} <br />
-        {!metadata.inviteCode ? null : (
-          <React.Fragment><b>Meghívó kód:</b> {metadata.inviteCode}</React.Fragment>
+        {!metadata.code ? null : (
+          <React.Fragment><b>Meghívó kód:</b> {metadata.code}</React.Fragment>
         )}
       </p>
       <AppCard>

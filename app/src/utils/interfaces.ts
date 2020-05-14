@@ -3,7 +3,8 @@ export interface ChatroomMetadata {
   name: string;
   creator: string;
   created: number;
-  inviteCode?: string;
+  code?: string;
+  photo: string;
 }
 
 export interface ChatMessage {
