@@ -49,9 +49,9 @@ const HomePageLoggedIn = () => {
             <h2 className="app-small-header" style={{
               marginBottom: 15
             }}>Belépési kérelmek:</h2>
-            {requests.map((room) => {
+            {requests.map((room, i) => {
               if (!room) return null;
-              else return <AppChatroomCard id={room} reducedMargin />;
+              else return <AppChatroomCard id={room} key={i} reducedMargin />;
             })}
           </React.Fragment>
         )}
@@ -62,9 +62,9 @@ const HomePageLoggedIn = () => {
             <h2 className="app-small-header" style={{
               marginBottom: 15
             }}>Saját szobák:</h2>
-            {chatrooms.map((room) => {
+            {chatrooms.map((room, i) => {
               if (!room) return null;
-              else return <AppChatroomCard id={room} reducedMargin />;
+              else return <AppChatroomCard id={room} key={i} reducedMargin />;
             })}
           </React.Fragment>
         )}
