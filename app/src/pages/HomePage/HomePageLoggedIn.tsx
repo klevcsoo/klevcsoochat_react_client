@@ -3,7 +3,7 @@ import AppCard from '../../components/AppCard/AppCard';
 import AppButton from '../../components/AppButton/AppButton';
 import { useHistory } from 'react-router-dom';
 import { routes, regex } from '../../utils/constants';
-import { logout, getRoomID, getUID, onUserRequests, onUserChatrooms, sendChatroomRequest } from '../../utils/firebase';
+import { logout, getUID, onUserRequests, onUserChatrooms, sendChatroomRequest } from '../../utils/firebase';
 import AppInput from '../../components/AppInput/AppInput';
 import AppUserCard from '../../components/AppCard/AppUserCard';
 import LoadingSpinner from '../../components/LoadingSpinner';
