@@ -19,7 +19,7 @@ const CreateChatroomPage = () => {
 
   const [ photo, setPhoto ] = useState(defaultChatroomPhoto);
   const [ name, setName ] = useState('');
-  const [ inviteCode, setInviteCode ] = useState('');
+  const [ code, setCode ] = useState('');
   const [ creating, setCreating ] = useState(false);
 
   return (
@@ -39,7 +39,7 @@ const CreateChatroomPage = () => {
         </p>
       </AppCard>
       <AppCard>
-        <AppInput placeholder="Egyéni kód" text={inviteCode} onTextChanged={(text) => setInviteCode(text)} />
+        <AppInput placeholder="Egyéni kód" text={code} onTextChanged={(text) => setCode(text)} />
         <p className="description">
           <span>Nem kötelező megadni.</span><br />
           Ezzel az kóddal is lehet csatlakozni a szobához az alap azonosító mellett.
@@ -52,12 +52,12 @@ const CreateChatroomPage = () => {
       </p>
       <AppBottomAttachedButton text="Létrehozás" onClick={() => {
         setCreating(true);
-        // createChatroom(name, inviteCode, allInvitees).then((id) => {
-        //   history.push(routes.CHATROOM.replace(':id', id));
-        // }).catch((err) => {
-        //   setCreating(false);
-        //   console.error(err); showNotification();
-        // });
+        createChatroom(name, code, photo).then((id) => {
+          history.push(routes.CHATROOM.replace(':id', id));
+        }).catch((err) => {
+          setCreating(false);
+          console.error(err); showNotification();
+        });
       }} loading={creating} />
     </div>
   );
