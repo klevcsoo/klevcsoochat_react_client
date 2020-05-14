@@ -129,6 +129,34 @@ export async function createChatroom(name: string, code: string, photo: string) 
   return id;
 }
 
+export async function sendChatroomRequest(roomId: string) {
+  const user = getAuthUser();
+
+  try {
+    if ((await app.database().ref(`/chats/${roomId}/members/${user.uid}`).once('value')).exists()) {
+      throw Error('Ebben a szobában már benne vagy');
+    }
+  } catch { }
+
+  let rid = roomId;
+  if (rid[ 0 ] !== '-') {
+    rid = (await app.database().ref(`/customcodes/${roomId}`).once('value')).val();
+  }
+
+  await app.database().ref(`/users/${getAuthUser().uid}/requests`).update({
+    [ rid ]: app.database.ServerValue.TIMESTAMP
+  });
+}
+
+export async function respondToRequest(approved: boolean, uid: string, rid: string) {
+  const ref = app.database().ref(`/users/${uid}`);
+
+  if (approved) {
+    await ref.child(`requests/${rid}`).remove();
+    await ref.child('chatrooms').update({ [ rid ]: app.database.ServerValue.TIMESTAMP });
+  } else await ref.child(`requests/${rid}`).remove();
+}
+
 export async function sendChatMessage(message: { type: 'text' | 'image', content: string; }, roomId: string) {
   const user = getAuthUser();
 
@@ -140,7 +168,7 @@ export async function sendChatMessage(message: { type: 'text' | 'image', content
   }).catch((err) => { throw Error(err); });
 }
 
-export function onNewMessage(roomId: string, callback: (message: ChatMessage) => void): () => void {
+export function onNewMessage(roomId: string, callback: (message: ChatMessage) => void) {
   const ref = app.database().ref(`/chats/${roomId}/messages`).limitToLast(100);
   const handler = (snapshot: app.database.DataSnapshot) => {
     callback(snapshot.val() as ChatMessage);
