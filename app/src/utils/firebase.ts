@@ -3,7 +3,7 @@ import app from 'firebase/app';
 import 'firebase/auth'; import 'firebase/database';
 import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
 import { useState, useEffect } from 'react';
-import { ChatroomMetadata, ChatMessage } from './interfaces';
+import { ChatroomMetadata, ChatMessage, AuthUserInfoUI } from './interfaces';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLXTi7stlDNk1yGBXhS68N0_1TJeNxVNk",
@@ -25,8 +25,8 @@ export function initializeFirebase() {
       console.log(`Signed in as ${user.uid}`);
 
       if (window.location.hostname !== 'localhost') {
-        const connectionsRef = app.database().ref(`/users/${user.uid}/connections`);
-        const lastOnlineRef = app.database().ref(`/users/${user.uid}/lastOnline`);
+        const connectionsRef = app.database().ref(`/users/${user.uid}/info/connections`);
+        const lastOnlineRef = app.database().ref(`/users/${user.uid}/info/lastOnline`);
         app.database().ref('.info/connected').on('value', (snapshot) => {
           if (!!snapshot.val()) {
             const con = connectionsRef.push();
@@ -64,26 +64,26 @@ export async function logout() {
   await app.auth().signOut();
 }
 
-export async function getSavedChatrooms(): Promise<(ChatroomMetadata | null)[]> {
-  const savedRoomsSnapshot = await app.database().ref(`/users/${app.auth().currentUser?.uid}/savedChatrooms`).once('value');
-  if (!savedRoomsSnapshot.exists()) return [ null ];
+export function onUserChatrooms(callback: (roomId: (string | null)[]) => void) {
+  const chatroomsRef = app.database().ref(`/users/${getAuthUser().uid}/chatrooms`);
+  const handler = (snapshot: app.database.DataSnapshot) => {
+    if (!snapshot.exists()) callback([ null ]);
+    else callback(Object.keys(snapshot.val()));
+  };
 
-  const roomsRef = app.database().ref('/chats');
-  const roomObjects: (ChatroomMetadata | null)[] = [];
+  chatroomsRef.on('value', handler);
+  return () => chatroomsRef.off('value', handler);
+}
 
-  Object.values(savedRoomsSnapshot.val()).forEach(async (id, i) => {
-    const roomSnapshot = await roomsRef.child(`${id}/metadata`).once('value');
-    if (!roomSnapshot.exists()) {
-      roomObjects.push(null);
-      savedRoomsSnapshot.child(Object.keys(savedRoomsSnapshot.val())[ i ]).ref.remove();
-    }
-    else {
-      const a = roomSnapshot.val() as ChatroomMetadata; a.id = String(id);
-      roomObjects.push(a);
-    }
-  });
+export function onUserRequests(callback: (roomId: (string | null)[]) => void) {
+  const requestsRef = app.database().ref(`/users/${getAuthUser().uid}/requests`);
+  const handler = (snapshot: app.database.DataSnapshot) => {
+    if (!snapshot.exists()) callback([ null ]);
+    else callback(Object.keys(snapshot.val()));
+  };
 
-  return roomObjects;
+  requestsRef.on('value', handler);
+  return () => requestsRef.off('value', handler);
 }
 
 export async function getRoomID(code: string) {

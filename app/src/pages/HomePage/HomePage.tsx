@@ -44,7 +44,7 @@ const HomePage = () => {
           ) : null}
         </div>
       </div>
-      {!!user ? <HomePageLoggedIn user={user} /> : null}
+      {!!user ? <HomePageLoggedIn /> : null}
     </React.Fragment>
   );
 };

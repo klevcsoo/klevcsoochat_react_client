@@ -1,67 +1,74 @@
 import React, { useState, useEffect } from 'react';
-import { User } from 'firebase';
 import AppCard from '../../components/AppCard/AppCard';
 import AppButton from '../../components/AppButton/AppButton';
 import { useHistory } from 'react-router-dom';
 import { routes, regex } from '../../utils/constants';
-import { ChatroomMetadata } from '../../utils/interfaces';
-import { getSavedChatrooms, logout, getRoomID } from '../../utils/firebase';
-import LoadingSpinner from '../../components/LoadingSpinner';
+import { logout, getRoomID, getUID, onUserRequests, onUserChatrooms } from '../../utils/firebase';
 import AppInput from '../../components/AppInput/AppInput';
+import AppUserCard from '../../components/AppCard/AppUserCard';
+import LoadingSpinner from '../../components/LoadingSpinner';
+import AppChatroomCard from '../../components/AppCard/AppChatroomCard';
 
-const HomePageLoggedIn = (props: {
-  user: User;
-}) => {
+const HomePageLoggedIn = () => {
   const history = useHistory();
-  const [ savedRooms, setSavedRooms ] = useState<(ChatroomMetadata | null)[] | null>(null);
   const [ currentRoomId, setCurrentRoomId ] = useState('');
+  const [ requests, setRequests ] = useState<(string | null)[]>([]);
+  const [ chatrooms, setChatrooms ] = useState<(string | null)[]>([]);
+
+  const requestChatroomAccess = () => {
+    if (currentRoomId.length !== 0 && !currentRoomId.match(regex.WHITESPACE)) {
+      if (currentRoomId[ 0 ] === '-') history.push(routes.CHATROOM.replace(':id', currentRoomId));
+      else getRoomID(currentRoomId).then((id) => history.push(routes.CHATROOM.replace(':id', id)));
+    } else history.push(routes.CREATE_CHATROOM);
+  };
 
   useEffect(() => {
-    getSavedChatrooms().then((r) => setSavedRooms(r));
+    const requestsCleanup = onUserRequests((ids) => setRequests(ids));
+    const chatroomsCleanup = onUserChatrooms((ids) => setChatrooms(ids));
+    return () => { requestsCleanup(); chatroomsCleanup(); };
   }, []);
 
   return (
     <div className="homepage-logged-in-content">
-      <AppCard className="account-link-container">
-        <h1>{props.user.displayName}</h1>
-        <h2>{props.user.email}</h2>
-        <AppButton text="Beállítások" type="secondary" onClick={() => {
-          history.push(routes.ACCOUNT_SETTINGS);
-        }} loading={false} />
-      </AppCard>
-      {!savedRooms || (!!savedRooms && savedRooms.some((val) => val !== null)) ? (
-        <AppCard>
-          <h2 className="app-small-header">Lementett szobák</h2>
-          <div style={{ height: 10 }}></div>
-          {!savedRooms ? <LoadingSpinner /> : (
-            <div style={{ marginTop: 5 }}>
-              {savedRooms.map((r) => (
-                <span className="saved-chatroom-name" onClick={() => {
-                  if (!r) return;
-                  history.push(routes.CHATROOM.replace(':id', r.id));
-                }} key={r?.id}>{r?.name}<br /></span>
-              ))}
-            </div>
-          )}
-        </AppCard>
-      ) : null}
+      <div style={{ height: 30 }}></div>
+      <AppUserCard uid={getUID()} reducedMargin />
+      <AppButton text="Kijelentkezés" type="warning" onClick={() => { logout(); }} />
+      <AppButton text="Beállítások" type="secondary" onClick={() => {
+        history.push(routes.ACCOUNT_SETTINGS);
+      }} loading={false} />
       <AppCard>
         <AppInput placeholder="Szoba azonosító / meghívó" text={currentRoomId} onTextChanged={(text) => {
           setCurrentRoomId(text);
-        }} onSubmit={() => {
-          if (currentRoomId.length !== 0 && !currentRoomId.match(regex.WHITESPACE)) {
-            if (currentRoomId[ 0 ] === '-') history.push(routes.CHATROOM.replace(':id', currentRoomId));
-            else getRoomID(currentRoomId).then((id) => history.push(routes.CHATROOM.replace(':id', id)));
-          }
-        }} />
-        <AppButton text={currentRoomId.length > 0 ? 'Csatlakozás a szobához' : 'Szoba létrehozása'} onClick={() => {
-          if (currentRoomId.length !== 0 && !currentRoomId.match(regex.WHITESPACE)) {
-            if (currentRoomId[ 0 ] === '-') history.push(routes.CHATROOM.replace(':id', currentRoomId));
-            else getRoomID(currentRoomId).then((id) => history.push(routes.CHATROOM.replace(':id', id)));
-          }
-        }} type="primary" />
+        }} onSubmit={() => requestChatroomAccess()} />
+        <AppButton text={currentRoomId.length > 0 ? 'Csatlakozási kérelem küldése' : 'Szoba létrehozása'}
+          onClick={() => requestChatroomAccess()} type="primary" />
       </AppCard>
-      <AppButton text="Kijelentkezés" type="warning" onClick={() => { logout(); }} />
+      <div style={{ margin: 30 }}>
+        {requests.length !== 0 && requests.some((val) => !val) ? null : requests.length === 0 ? <LoadingSpinner /> : (
+          <React.Fragment>
+            <h2 className="app-small-header" style={{
+              marginBottom: 15
+            }}>Belépési kérelmek:</h2>
+            {requests.map((room) => {
+              if (!room) return null;
+              else return <AppChatroomCard id={room} reducedMargin />;
+            })}
+          </React.Fragment>
+        )}
+      </div>
+      <div style={{ margin: 30 }}>
+        {chatrooms.length !== 0 && chatrooms.some((val) => !val) ? null : chatrooms.length === 0 ? <LoadingSpinner /> : (
+          <React.Fragment>
+            <h2 className="app-small-header" style={{
+              marginBottom: 15
+            }}>Saját szobák:</h2>
+            {chatrooms.map((room) => {
+              if (!room) return null;
+              else return <AppChatroomCard id={room} reducedMargin />;
+            })}
+          </React.Fragment>
+        )}
+      </div>
       <div style={{ height: 50 }}></div>
     </div>
   );
