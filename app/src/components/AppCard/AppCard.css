@@ -7,3 +7,40 @@
   box-shadow: 0 0 18px #D1D9E6;
   border-radius: 10px;
 }
+
+.app-user-card {
+  display: grid; column-gap: 10px;
+  grid-template-rows: repeat(4, auto);
+  grid-template-columns: 50px auto;
+}
+.app-user-card > * {
+  margin: 0;
+}
+.app-user-card > img {
+  grid-row: 1 / span 4;
+  grid-column: 1 / span 1;
+
+  width: 50px; height: 50px;
+  object-fit: cover;
+  object-position: center;
+
+  border: 2px solid var(--colour-text);
+  border-radius: 100%;
+}
+.app-user-card > img.online {
+  border: 2px solid #37E878;
+}
+.app-user-card > h2 {
+  grid-row: 2 / span 1;
+  grid-column: 2 / span 1;
+  text-align: start;
+}
+.app-user-card > h3 {
+  grid-row: 3 / span 1;
+  grid-column: 2 / span 1;
+
+  text-align: start;
+  text-transform: uppercase;
+  font-size: 12px;
+  font-weight: 300;
+}
