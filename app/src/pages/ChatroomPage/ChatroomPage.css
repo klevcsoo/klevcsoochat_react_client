@@ -122,3 +122,27 @@
   width: auto; height: auto;
   max-width: 80vw; max-height: 80vh;
 }
+
+.chatroompage-member-typing {
+  width: auto; height: auto;
+  padding: 5px 20px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  animation: message-in 500ms forwards;
+}
+.chatroompage-member-typing:first-child {
+  border-top: 1px solid var(--colour-fg);
+}
+.chatroompage-member-typing > img {
+  width: 20px; height: 20px;
+  display: inline-block;
+  object-fit: cover;
+  object-position: center;
+  border-radius: 100%;
+}
+.chatroompage-member-typing > p {
+  margin: 0 0 0 10px;
+  text-align: start;
+  font-size: 16px;
+}

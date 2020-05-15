@@ -163,6 +163,7 @@ export async function leaveChatroom(rid: string) {
 
 export async function sendChatMessage(message: { type: 'text' | 'image', content: string; }, roomId: string) {
   const user = getAuthUser();
+  if (message.content.length === 0 || message.content.match(regex.WHITESPACE)) return;
 
   await app.database().ref(`/chats/${roomId}/messages`).push({
     author: { id: user.uid, name: user.displayName },
@@ -180,6 +181,23 @@ export function onNewMessage(roomId: string, callback: (message: ChatMessage) =>
 
   ref.on('child_added', handler);
   return () => ref.off('child_added', handler);
+}
+
+export async function setTypingStatus(isTyping: boolean, rid: string) {
+  await app.database().ref(`/chats/${rid}/typing`).update({
+    [ getAuthUser().uid ]: isTyping || null
+  });
+}
+
+export function onMemberTyping(rid: string, callback: (uids: string[]) => void) {
+  const ref = app.database().ref(`/chats/${rid}/typing`);
+  const handler = (snapshot: app.database.DataSnapshot) => {
+    if (!snapshot.exists()) callback([]);
+    else callback(Object.keys(snapshot.val()));
+  };
+
+  ref.on('value', handler);
+  return () => ref.off('value', handler);
 }
 
 export function onChatroomMember(roomId: string, callback: (uids: string[]) => void) {
