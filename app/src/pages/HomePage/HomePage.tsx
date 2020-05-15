@@ -21,8 +21,10 @@ const HomePage = () => {
         <div className="homepage-login-panel">
           {userLoading ? <LoadingSpinner /> : !user ? (
             <React.Fragment>
-              <AppInput placeholder="E-mail" text={email} onTextChanged={(text) => setEmail(text)} password={false} />
-              <AppInput placeholder="Jelszó" text={pass} onTextChanged={(text) => setPass(text)} password />
+              <form>
+                <AppInput placeholder="E-mail" text={email} onTextChanged={(text) => setEmail(text)} type="email" />
+                <AppInput placeholder="Jelszó" text={pass} onTextChanged={(text) => setPass(text)} type="password" />
+              </form>
               <AppButton text="Regisztráció" type="primary" onClick={() => {
                 setLoggingIn(true);
                 signUp(email, pass).then(() => setLoggingIn(false)).catch((err) => {
