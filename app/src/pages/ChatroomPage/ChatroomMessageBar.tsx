@@ -24,9 +24,12 @@ const ChatroomMessageBar = (props: {
         <div className={`messagebar-button toggle ${urlMode ? 'on' : 'off'}`} onClick={() => setUrlMode(!urlMode)}>
           <InsertPhotoRounded color="inherit" />
         </div>
-        <AppInput placeholder={urlMode ? 'Kép link' : 'Aa'} text={message} onTextChanged={(text) => {
-          setMessage(text);
-        }} onSubmit={() => sendMessage()} />
+        <form action="" method="post" autoComplete="off">
+          <AppInput placeholder={urlMode ? 'Kép link' : 'Aa'} text={message}
+            onTextChanged={(text) => {
+              setMessage(text); sendTyping();
+            }} onSubmit={() => sendMessage()} />
+        </form>
         <div className="messagebar-button click" onClick={() => sendMessage()}>
           <SendRounded color="inherit" />
         </div>
