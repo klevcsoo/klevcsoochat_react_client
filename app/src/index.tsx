@@ -4,6 +4,7 @@ import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { initializeFirebase } from './utils/firebase';
+import { initializeNotifications } from './utils/functions';
 
 console.log('----- KLEVCSOOCHAT ------');
 
@@ -16,3 +17,4 @@ ReactDOM.render(
 
 serviceWorker.register();
 initializeFirebase();
+initializeNotifications();

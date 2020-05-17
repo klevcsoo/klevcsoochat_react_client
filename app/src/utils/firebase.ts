@@ -4,6 +4,7 @@ import 'firebase/auth'; import 'firebase/database'; import 'firebase/functions';
 import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
 import { useState, useEffect } from 'react';
 import { ChatroomMetadata, ChatMessage, AuthUserInfoUI } from './interfaces';
+import { onMessageNotification } from './functions';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLXTi7stlDNk1yGBXhS68N0_1TJeNxVNk",
@@ -176,7 +177,8 @@ export async function sendChatMessage(message: { type: 'text' | 'image', content
 export function onNewMessage(roomId: string, callback: (message: ChatMessage) => void) {
   const ref = app.database().ref(`/chats/${roomId}/messages`).limitToLast(100);
   const handler = (snapshot: app.database.DataSnapshot) => {
-    callback(snapshot.val() as ChatMessage);
+    const m = snapshot.val() as ChatMessage;
+    callback(m); onMessageNotification(m);
   };
 
   ref.on('child_added', handler);
