@@ -238,7 +238,7 @@ export function useAuthUser(): [ app.User | null, boolean ] {
   return [ user, loading ];
 }
 
-export function useOtherUserInfo(uid: string): [ AuthUserInfoUI | null, boolean ] {
+export function useUserInfoUI(uid: string): [ AuthUserInfoUI | null, boolean ] {
   const [ user, setUser ] = useState<AuthUserInfoUI | null>(null);
   const [ loading, setLoading ] = useState(true);
 

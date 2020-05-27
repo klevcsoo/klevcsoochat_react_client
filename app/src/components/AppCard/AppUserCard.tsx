@@ -1,11 +1,11 @@
 import React from 'react';
 import './AppCard.css';
-import { useOtherUserInfo } from '../../utils/firebase';
+import { useUserInfoUI } from '../../utils/firebase';
 import LoadingSpinner from '../LoadingSpinner';
 import { getOnlineStatusText } from '../../utils/functions';
 
 const AppUserCard = (props: { uid: string, reducedMargin?: boolean; }) => {
-  const [ user, userLoading ] = useOtherUserInfo(props.uid);
+  const [ user, userLoading ] = useUserInfoUI(props.uid);
 
   return !userLoading && !user ? null : (
     <div className="app-card" style={{
