@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import './ChatroomPage.css';
 import { ChatMessage } from '../../utils/interfaces';
 import { getUID } from '../../utils/firebase';
+import { formatChatSentDate } from '../../utils/functions';
 
 const ChatroomChatMessage = (props: ChatMessage) => {
   const [ imageOpened, setImageOpened ] = useState(false);
@@ -12,7 +13,7 @@ const ChatroomChatMessage = (props: ChatMessage) => {
   return (
     <React.Fragment>
       <div className={`chatroompage-chatmessage ${outgoing ? 'outgoing' : 'incoming'}`}>
-        <h2>{authorName}</h2>
+        <h2>{authorName} <span>{formatChatSentDate(props.sent)}</span></h2>
         <div>
           <div></div>
           {props.type === 'text' ? <p>{props.content}</p> : (

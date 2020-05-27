@@ -1,9 +1,9 @@
 import React from 'react';
 import './ChatroomPage.css';
-import { useOtherUserInfo, getUID } from '../../utils/firebase';
+import { useUserInfoUI, getUID } from '../../utils/firebase';
 
 const ChatroomMemberTyping = (props: { uid: string; }) => {
-  const [ user, userloading ] = useOtherUserInfo(props.uid);
+  const [ user, userloading ] = useUserInfoUI(props.uid);
 
   return userloading || !user || props.uid === getUID() ? null : (
     <div className="chatroompage-member-typing">

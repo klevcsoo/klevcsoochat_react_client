@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import './AppCard.css';
-import { useOtherUserInfo, respondToRequest } from '../../utils/firebase';
+import { useUserInfoUI, respondToRequest } from '../../utils/firebase';
 import LoadingSpinner from '../LoadingSpinner';
 import { getOnlineStatusText } from '../../utils/functions';
 import AppButton from '../AppButton/AppButton';
 
 const AppRequestCard = (props: { uid: string, rid: string, reducedMargin?: boolean; }) => {
-  const [ user, userLoading ] = useOtherUserInfo(props.uid);
+  const [ user, userLoading ] = useUserInfoUI(props.uid);
   const [ responding, setResponding ] = useState(false);
 
   return !userLoading && !user ? null : (
