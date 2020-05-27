@@ -175,10 +175,15 @@ export async function sendChatMessage(message: { type: 'text' | 'image', content
 }
 
 export function onNewMessage(roomId: string, callback: (message: ChatMessage) => void) {
+  const cached = getCachedMessages(roomId);
+  if (!!cached) for (const mid of Object.keys(cached)) callback(cached[ mid ]);
+
   const ref = app.database().ref(`/chats/${roomId}/messages`).limitToLast(100);
   const handler = (snapshot: app.database.DataSnapshot) => {
     const m = snapshot.val() as ChatMessage;
+    if (!!cached && !!cached[ String(snapshot.key) ]) return;
     callback(m); onMessageNotification(m);
+    addMessageToCache(roomId, String(snapshot.key), m);
   };
 
   ref.on('child_added', handler);
@@ -271,3 +276,18 @@ export function useChatroomMetadata(id: string): [ ChatroomMetadata | null, bool
   return [ metadata, loading ];
 }
 // ---------- HOOKS ----------
+
+// ---------- CACHING ----------
+const cachedMessages: { [ rid: string ]: { [ mid: string ]: ChatMessage; }; } = {};
+function getCachedMessages(rid: string) {
+  if (!cachedMessages[ rid ]) return;
+  else return cachedMessages[ rid ];
+}
+function addMessageToCache(rid: string, mid: string, message: ChatMessage) {
+  if (!cachedMessages[ rid ]) cachedMessages[ rid ] = { [ mid ]: message };
+  else cachedMessages[ rid ][ mid ] = message;
+}
+; (window as any).displayCache = () => {
+  console.log('Cached messages:', cachedMessages);
+};
+// ---------- CACHING ----------
