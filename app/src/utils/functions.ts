@@ -18,6 +18,7 @@ export function initializeNotifications() {
   if (!('Notification' in window)) return;
   if (Notification.permission === 'granted' || Notification.permission === 'denied') {
     console.log(`Notification permission is already ${Notification.permission}`);
+    return;
   }
 
   Notification.requestPermission().then((permission) => {
