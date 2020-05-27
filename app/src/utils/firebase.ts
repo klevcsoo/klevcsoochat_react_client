@@ -243,15 +243,8 @@ export function useUserInfoUI(uid: string): [ AuthUserInfoUI | null, boolean ] {
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
-    app.database().ref(`/users/${uid}/info`).on('value', (snapshot) => {
-      setUser({
-        email: snapshot.child('email').val(),
-        lastOnline: snapshot.child('lastOnline').val(),
-        online: snapshot.child('connections').exists() ? true : false,
-        photo: snapshot.child('photo').val(),
-        username: snapshot.child('username').val()
-      });
-      setLoading(false);
+    getCachedUserInfoUI(uid).then((info) => {
+      setUser(info); setLoading(false);
     });
   }, [ uid ]);
 
@@ -271,3 +264,23 @@ export function useChatroomMetadata(id: string): [ ChatroomMetadata | null, bool
   return [ metadata, loading ];
 }
 // ---------- HOOKS ----------
+
+// ---------- CACHING ----------
+const cachedUserInfo: { [ uid: string ]: AuthUserInfoUI; } = {};
+async function getCachedUserInfoUI(uid: string) {
+  if (!!cachedUserInfo[ uid ]) return cachedUserInfo[ uid ];
+  else {
+    const userSnapshot = await app.database().ref(`/users/${uid}/info`).once('value');
+    const userInfo = {
+      email: userSnapshot.child('email').val(),
+      lastOnline: userSnapshot.child('lastOnline').val(),
+      online: userSnapshot.child('connections').exists() ? true : false,
+      photo: userSnapshot.child('photo').val(),
+      username: userSnapshot.child('username').val()
+    } as AuthUserInfoUI;
+
+    if (uid !== getUID()) cachedUserInfo[ uid ] = userInfo;
+    return userInfo;
+  }
+}
+// ---------- CACHING ----------
