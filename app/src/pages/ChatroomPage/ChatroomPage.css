@@ -56,8 +56,17 @@
   text-align: start;
   text-transform: uppercase;
   font-family: 'Rubik', sans-serif;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 700;
+}
+.chatroompage-chatmessage > h2 > span {
+  float: right;
+  font-weight: 300;
+  text-transform: none;
+}
+.chatroompage-chatmessage:hover > h2 > span {
+  font-weight: 500;
+  transition: none;
 }
 .chatroompage-chatmessage > div {
   width: 100%; height: auto;

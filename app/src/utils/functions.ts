@@ -14,6 +14,12 @@ export function getOnlineStatusText(online: boolean, lastOnline: number) {
   return `legutóbb online ${Math.round(offlineSince.time)} ${offlineSince.text}`;
 }
 
+export function formatChatSentDate(sent: number): string {
+  const d = new Date(sent);
+  if (d.getTime() < (new Date().getTime() - 86400000)) return d.toLocaleString();
+  else return d.toLocaleTimeString();
+}
+
 export function initializeNotifications() {
   if (!('Notification' in window)) return;
   if (Notification.permission === 'granted' || Notification.permission === 'denied') {
