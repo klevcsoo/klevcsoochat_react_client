@@ -12,8 +12,7 @@ import { routes, defaultChatroomPhoto } from '../../utils/constants';
 const CreateChatroomPage = () => {
   const [ CreateFailedNotification, showNotification ] = useAppNotification({
     persistent: false,
-    type: 'error',
-    text: 'A megadott adatok érvénytelenek'
+    type: 'error'
   });
   const history = useHistory();
 
@@ -55,8 +54,8 @@ const CreateChatroomPage = () => {
         createChatroom(name, code, photo).then((id) => {
           history.push(routes.CHATROOM.replace(':id', id));
         }).catch((err) => {
-          setCreating(false);
-          console.error(err); showNotification();
+          setCreating(false); console.error(err);
+          showNotification('A megadott adatok érvénytelenek');
         });
       }} loading={creating} />
     </div>

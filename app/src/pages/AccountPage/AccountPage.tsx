@@ -15,7 +15,6 @@ const AccountPage = () => {
   const [ user, userLoading ] = useAuthUser();
   const [ UpdatedNotification, showNotification ] = useAppNotification({
     persistent: false,
-    text: 'Adatok frissítve',
     type: 'info'
   });
 
@@ -69,7 +68,7 @@ const AccountPage = () => {
           <AppBottomAttachedButton text="Adatok frissítése" onClick={() => {
             setUpdatingData(true);
             updateUserProfile(accountImg, username, password).then(() => {
-              setUpdatingData(false); showNotification();
+              setUpdatingData(false); showNotification('Adatok frissítve');
             });
           }} loading={updatingData} />
         </React.Fragment>
