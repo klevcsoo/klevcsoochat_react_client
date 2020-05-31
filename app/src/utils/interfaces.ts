@@ -18,7 +18,6 @@ export interface ChatMessage {
 }
 
 export interface AppNotificatonData {
-  text: string;
   persistent: boolean;
   type: 'info' | 'error';
   onDismiss?: () => void;
