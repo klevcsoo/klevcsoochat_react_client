@@ -5,16 +5,21 @@ param (
 
 try {
   switch ($task) {
-    "dev" { Set-Location .\app; $Env:BROWSER = "none"; npm.cmd start }
-    "build" { Set-Location .\app; npm.cmd run build }
+    "dev" { Set-Location .\app; $Env:BROWSER = "none"; npm.cmd start; }
     "deploy" {
       switch ($deployType) {
-        "hosting" { firebase.cmd deploy --only hosting }
-        "functions" { firebase.cmd deploy --only hosting }
+        "hosting" {
+          Set-Location .\app; npm.cmd run build;
+          Write-Host "==================================================" -fore red;
+          firebase.cmd deploy --only hosting; Set-Location .\..;
+        }
+        "functions" { firebase.cmd deploy --only hosting; }
       }
     }
   }
 }
 finally {
-  Set-Location .\..
+  if ($task -eq "dev") {
+    Set-Location .\..;
+  }
 }
