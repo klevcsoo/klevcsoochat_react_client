@@ -62,6 +62,7 @@ function getErrMessage(code: string) {
   switch (code) {
     case 'auth/user-not-found': return 'Nincs ezzel az e-mail címmel regisztrálva felhasználó';
     case 'auth/invalid-email': return 'Érvénytelen e-mail cím';
+    case 'auth/email-already-in-use': return 'Ezzel az e-mail címmel már van regisztrálva felhasználó';
     case 'auth/wrong-password': return 'Hibás jelszó';
     case 'auth/weak-password': return 'Túl gyenge jelszó (min. 6 karakter)';
     default: return 'Hiba történt a bejelentkezés során';
