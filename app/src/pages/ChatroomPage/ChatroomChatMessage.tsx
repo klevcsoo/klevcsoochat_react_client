@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './ChatroomPage.css';
 import { ChatMessage } from '../../utils/interfaces';
 import { getUID } from '../../utils/firebase';
@@ -6,6 +6,11 @@ import { formatChatSentDate } from '../../utils/functions';
 
 const ChatroomChatMessage = (props: ChatMessage) => {
   const [ imageOpened, setImageOpened ] = useState(false);
+
+  useEffect(() => {
+    if (imageOpened) document.body.style.overflowY = 'hidden';
+    else document.body.style.overflowY = 'scroll';
+  }, [ imageOpened ]);
 
   const outgoing = props.author.id === getUID();
   const authorName = !!props.author.name ? props.author.name : props.author.id;
