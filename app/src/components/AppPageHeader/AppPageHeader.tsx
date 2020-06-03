@@ -18,7 +18,7 @@ const AppPageHeader = (props: {
 
   return (
     <React.Fragment>
-      <div className="app-page-header">
+      <div className="app-page-header acrylic-transparent">
         <div className="previous" onClick={() => {
           if (!!props.previous.path) history.replace(props.previous.path);
           else history.goBack();

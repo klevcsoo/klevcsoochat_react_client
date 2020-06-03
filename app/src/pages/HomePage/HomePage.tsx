@@ -22,7 +22,7 @@ const HomePage = () => {
     <React.Fragment>
       <LoginFailedNotification />
       <div className={`homepage-container${!!user ? ' logged-in' : ''}`}>
-        <img src={require('../../assets/home-bg.jpg')} alt="background" />
+        <img src={require('../../assets/home-bg.jpg')} alt="background" className="acrylic-transparent" />
         <AppLogo />
         <div className="homepage-login-panel">
           {userLoading ? <LoadingSpinner /> : !user ? (

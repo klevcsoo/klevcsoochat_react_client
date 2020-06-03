@@ -29,9 +29,8 @@ const ChatroomChatMessage = (props: ChatMessage) => {
         </div>
       </div>
       {props.type !== 'image' ? null : (
-        <div className={`chatroompage-chatmessage-openedimage${imageOpened ? ' opened' : ''}`} onClick={() => {
-          setImageOpened(false);
-        }}>
+        <div className={`chatroompage-chatmessage-openedimage${imageOpened ? ' opened acrylic-transparent' : ''}`}
+          onClick={() => setImageOpened(false)}>
           <img src={props.content} alt={`Küldte: ${authorName}`} onLoad={() => {
             window.scrollTo(0, document.body.scrollHeight);
           }} />
