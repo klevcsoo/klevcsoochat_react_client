@@ -7,10 +7,8 @@ const LoadingOverlay = () => {
       position: 'fixed',
       top: 0, left: 0,
       bottom: 0, right: 0,
-      zIndex: 5000,
-      backdropFilter: 'blur(30px) saturate(120%)',
-      WebkitBackdropFilter: 'blur(30px) saturate(120%)'
-    }}>
+      zIndex: 5000
+    }} className="acrylic-transparent">
       <div style={{
         position: 'fixed',
         top: '50%', left: '50%',

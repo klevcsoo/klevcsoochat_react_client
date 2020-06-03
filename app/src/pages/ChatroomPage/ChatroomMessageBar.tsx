@@ -37,7 +37,7 @@ const ChatroomMessageBar = (props: { roomId: string; }) => {
         {membersTyping.map((m, i) => <ChatroomMemberTyping uid={m} key={i} />)}
       </div>
       <div style={{ height: 100 }}></div>
-      <div className="chatroompage-messagebar">
+      <div className="chatroompage-messagebar acrylic-transparent">
         <div className={`messagebar-button toggle ${urlMode ? 'on' : 'off'}`} onClick={() => setUrlMode(!urlMode)}>
           <InsertPhotoRounded color="inherit" />
         </div>

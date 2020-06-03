@@ -10,8 +10,6 @@
   grid-template-columns: 40px auto 40px;
 
   border-top: 1px solid var(--colour-fg);
-  backdrop-filter: blur(30px) saturate(120%);
-  -webkit-backdrop-filter: blur(30px) saturate(120%);
 }
 .chatroompage-messagebar .app-input {
   max-width: none;
@@ -124,8 +122,6 @@
   bottom: 0; right: 0;
 
   background: #00000080;
-  backdrop-filter: blur(30px) saturate(120%);
-  -webkit-backdrop-filter: blur(30px) saturate(120%);
 }
 .chatroompage-chatmessage-openedimage.opened > img {
   width: auto; height: auto;
