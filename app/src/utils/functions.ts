@@ -1,5 +1,6 @@
 import { ChatMessage } from './interfaces';
 import { getUID } from './firebase';
+import { targetResolution } from './constants';
 
 export function getOnlineStatusText(online: boolean, lastOnline: number) {
   if (online) return 'jelenleg online';
@@ -42,4 +43,11 @@ export function onMessageNotification(message: ChatMessage) {
     image: message.type === 'image' ? message.content : undefined,
     icon: '/logo192.png'
   });
+}
+
+export function initializeResizeHandler() {
+  const resize = () => window.resizeTo(targetResolution[ 0 ], targetResolution[ 1 ]);
+  if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true) {
+    resize(); window.onresize = resize;
+  }
 }

@@ -14,3 +14,5 @@ export const regex = {
 };
 
 export const defaultChatroomPhoto = 'https://firebasestorage.googleapis.com/v0/b/klevcsoochat.appspot.com/o/default%2FDefaultChatroomPhoto.png?alt=media&token=e68ac570-bb97-4ae1-85e8-f3d048feb4b4';
+
+export const targetResolution = [ 375, 812 ];
