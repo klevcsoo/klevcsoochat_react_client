@@ -1,20 +1,19 @@
 @keyframes anim-in {
-  from { transform: translateY(-100%); }
+  from { transform: translateY(-200%); }
   to { transform: translateY(0); }
 }
 
 @keyframes anim-out {
   from { transform: translateY(0); }
-  to { transform: translateY(-100%); }
+  to { transform: translateY(-200%); }
 }
 
 .app-notification {
   width: 80vw; max-width: 350px;
-  height: auto; padding: 50px 0 0 0;
+  height: auto; padding: 0;
 
   position: fixed; z-index: 2000;
-  top: 0; left: 16px;
-  animation: anim-out 500ms cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+  top: 50px; left: 16px;
 }
 .app-notification > .app-card {
   max-width: none; width: auto;
