@@ -9,9 +9,9 @@ const AppBottomAttachedButton = (props: {
   return (
     <React.Fragment>
       <div className="app-bottom-attached-button acrylic-transparent">
-        <AppButton text={props.text} onClick={props.onClick} type="primary" loading={props.loading} />
+        <AppButton text={ props.text } onClick={ props.onClick } type="primary" loading={ props.loading } />
       </div>
-      <div style={{ height: 90 }}></div>
+      <div style={ { height: 90 } }></div>
     </React.Fragment>
   );
 };

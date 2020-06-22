@@ -10,26 +10,26 @@ const AppRequestCard = (props: { uid: string, rid: string, reducedMargin?: boole
   const [ responding, setResponding ] = useState(false);
 
   return !userLoading && !user ? null : (
-    <div className="app-card" style={{
+    <div className="app-card" style={ {
       margin: `${props.reducedMargin ? '10' : '30'}px auto`
-    }}>
-      {userLoading ? <LoadingSpinner /> : !user ? null : (
+    } }>
+      { userLoading ? <LoadingSpinner /> : !user ? null : (
         <React.Fragment>
           <div className="app-user-card">
-            <img src={user.photo} alt={user.username} className={user.online ? 'online' : 'offline'} />
-            <h2 className="app-small-header">{user.username ? user.username : user.email}</h2>
-            <h3>{getOnlineStatusText(user.online, user.lastOnline)}</h3>
+            <img src={ user.photo } alt={ user.username } className={ user.online ? 'online' : 'offline' } />
+            <h2 className="app-small-header">{ user.username ? user.username : user.email }</h2>
+            <h3>{ getOnlineStatusText(user.online, user.lastOnline) }</h3>
           </div>
-          <AppButton text="Elfogadás" type="secondary" onClick={() => {
+          <AppButton text="Elfogadás" type="secondary" onClick={ () => {
             setResponding(true);
             respondToRequest(true, props.uid, props.rid).then(() => setResponding(false));
-          }} loading={responding} />
-          <AppButton text="Elutasítás" type="warning" onClick={() => {
+          } } loading={ responding } />
+          <AppButton text="Elutasítás" type="warning" onClick={ () => {
             setResponding(true);
             respondToRequest(false, props.uid, props.rid).then(() => setResponding(false));
-          }} loading={responding} />
+          } } loading={ responding } />
         </React.Fragment>
-      )}
+      ) }
     </div>
   );
 };

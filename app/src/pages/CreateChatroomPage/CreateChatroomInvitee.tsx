@@ -7,8 +7,8 @@ const CreateChatroomInvitee = (props: {
 }) => {
   return (
     <div className="createchatroompage-invitee">
-      <p>{props.email}</p>
-      <div onClick={() => props.onDiscard()}>
+      <p>{ props.email }</p>
+      <div onClick={ () => props.onDiscard() }>
         <CloseRounded color="inherit" />
       </div>
     </div>

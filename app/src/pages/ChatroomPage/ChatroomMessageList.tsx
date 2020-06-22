@@ -19,9 +19,9 @@ const ChatroomMessageList = (props: { roomId: string; }) => {
 
   return (
     <div className="chatroompage-messagelist" id="msglist">
-      {messageList.map((m, i) => (
-        <ChatroomChatMessage {...m} key={i} />
-      ))}
+      { messageList.map((m, i) => (
+        <ChatroomChatMessage { ...m } key={ i } />
+      )) }
     </div>
   );
 };

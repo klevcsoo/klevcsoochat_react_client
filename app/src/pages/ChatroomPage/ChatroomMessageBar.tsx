@@ -34,20 +34,20 @@ const ChatroomMessageBar = (props: { roomId: string; }) => {
   return (
     <React.Fragment>
       <div className="chatroompage-typing-indicators">
-        {membersTyping.map((m, i) => <ChatroomMemberTyping uid={m} key={i} />)}
+        { membersTyping.map((m, i) => <ChatroomMemberTyping uid={ m } key={ i } />) }
       </div>
-      <div style={{ height: 100 }}></div>
+      <div style={ { height: 100 } }></div>
       <div className="chatroompage-messagebar acrylic-transparent">
-        <div className={`messagebar-button toggle ${urlMode ? 'on' : 'off'}`} onClick={() => setUrlMode(!urlMode)}>
+        <div className={ `messagebar-button toggle ${urlMode ? 'on' : 'off'}` } onClick={ () => setUrlMode(!urlMode) }>
           <InsertPhotoRounded color="inherit" />
         </div>
         <form action="" method="post" autoComplete="off">
-          <AppInput placeholder={urlMode ? 'Kép link' : 'Aa'} text={message}
-            onTextChanged={(text) => {
+          <AppInput placeholder={ urlMode ? 'Kép link' : 'Aa' } text={ message }
+            onTextChanged={ (text) => {
               setMessage(text); sendTyping();
-            }} onSubmit={() => sendMessage()} />
+            } } onSubmit={ () => sendMessage() } />
         </form>
-        <div className="messagebar-button click" onClick={() => sendMessage()}>
+        <div className="messagebar-button click" onClick={ () => sendMessage() }>
           <SendRounded color="inherit" />
         </div>
       </div>

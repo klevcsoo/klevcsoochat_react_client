@@ -24,32 +24,32 @@ const CreateChatroomPage = () => {
   return (
     <div className="createchatroompage-container">
       <CreateFailedNotification />
-      <AppPageHeader title="Szoba létrehozása" previous={{ icon: 'home' }} />
+      <AppPageHeader title="Szoba létrehozása" previous={ { icon: 'home' } } />
       <AppCard>
         <div className="chatroom-img-container">
-          <img src={photo} alt={name} />
+          <img src={ photo } alt={ name } />
         </div>
-        <AppInput placeholder="Szoba kép link" text={photo} onTextChanged={(text) => setPhoto(text)} />
+        <AppInput placeholder="Szoba kép link" text={ photo } onTextChanged={ (text) => setPhoto(text) } />
       </AppCard>
       <AppCard>
-        <AppInput placeholder="Szoba neve" text={name} onTextChanged={(text) => setName(text)} />
+        <AppInput placeholder="Szoba neve" text={ name } onTextChanged={ (text) => setName(text) } />
         <p className="description">
           A szoba neve. Később módosítható.
         </p>
       </AppCard>
       <AppCard>
-        <AppInput placeholder="Egyéni kód" text={code} onTextChanged={(text) => setCode(text)} />
+        <AppInput placeholder="Egyéni kód" text={ code } onTextChanged={ (text) => setCode(text) } />
         <p className="description">
           <span>Nem kötelező megadni.</span><br />
           Ezzel az kóddal is lehet csatlakozni a szobához az alap azonosító mellett.
           Minimum 5, maximum 12 karaktert tartalmazhat, amik számok, illetve az angol ABC betűi lehetnek (0-9;a-z).
         </p>
       </AppCard>
-      <p style={{ maxWidth: 300, margin: '0 auto' }}>
+      <p style={ { maxWidth: 300, margin: '0 auto' } }>
         Amint az összes résztvevő elhagyta a szobát az üzenetek törlődnek.
         A szoba ugyanúgy elérhető lesz, csak az üzenetek törlődnek.
       </p>
-      <AppBottomAttachedButton text="Létrehozás" onClick={() => {
+      <AppBottomAttachedButton text="Létrehozás" onClick={ () => {
         setCreating(true);
         createChatroom(name, code, photo).then((id) => {
           history.push(routes.CHATROOM.replace(':id', id));
@@ -57,7 +57,7 @@ const CreateChatroomPage = () => {
           setCreating(false); console.error(err);
           showNotification('A megadott adatok érvénytelenek');
         });
-      }} loading={creating} />
+      } } loading={ creating } />
     </div>
   );
 };

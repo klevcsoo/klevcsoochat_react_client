@@ -13,12 +13,12 @@ const AppNotifiaction = (props: {
   anim: boolean;
 }) => {
   return (
-    <div className={`app-notification${props.visible ? ' visible' : ''}${props.anim ? ' anim' : ''} ${props.type}`}>
+    <div className={ `app-notification${props.visible ? ' visible' : ''}${props.anim ? ' anim' : ''} ${props.type}` }>
       <AppCard>
-        <h2 className="app-small-header">{props.text}</h2>
-        {!props.persistent ? null : (
-          <AppButton text="OK" type='primary' onClick={() => props.onDismiss()} />
-        )}
+        <h2 className="app-small-header">{ props.text }</h2>
+        { !props.persistent ? null : (
+          <AppButton text="OK" type='primary' onClick={ () => props.onDismiss() } />
+        ) }
       </AppCard>
     </div>
   );
@@ -32,11 +32,11 @@ export function useAppNotification(props: AppNotificatonData): [ () => (JSX.Elem
 
   const notification = () => (
     <React.Fragment>
-      {!render ? null : (
-        <AppNotifiaction text={text} type={props.type} visible={visible} onDismiss={() => {
+      { !render ? null : (
+        <AppNotifiaction text={ text } type={ props.type } visible={ visible } onDismiss={ () => {
           hide(); if (!!props.onDismiss) props.onDismiss();
-        }} persistent={props.persistent} anim={anim} />
-      )}
+        } } persistent={ props.persistent } anim={ anim } />
+      ) }
     </React.Fragment>
   );
 

@@ -19,24 +19,24 @@ const AppPageHeader = (props: {
   return (
     <React.Fragment>
       <div className="app-page-header acrylic-transparent">
-        <div className="previous" onClick={() => {
+        <div className="previous" onClick={ () => {
           if (!!props.previous.path) history.replace(props.previous.path);
           else history.goBack();
-        }}>
+        } }>
           <ArrowBackIosRounded color="inherit" />
-          {getIcon(props.previous.icon)}
+          { getIcon(props.previous.icon) }
         </div>
-        <h1 className="app-small-header">{props.title}</h1>
-        {!props.next ? null : (
-          <div className="next" onClick={() => {
+        <h1 className="app-small-header">{ props.title }</h1>
+        { !props.next ? null : (
+          <div className="next" onClick={ () => {
             if (!!props.next) history.push(props.next.path);
-          }}>
-            {getIcon(props.next.icon)}
+          } }>
+            { getIcon(props.next.icon) }
             <ArrowForwardIosRounded color="inherit" />
           </div>
-        )}
+        ) }
       </div>
-      <div style={{ height: 50 }}></div>
+      <div style={ { height: 50 } }></div>
     </React.Fragment>
   );
 };

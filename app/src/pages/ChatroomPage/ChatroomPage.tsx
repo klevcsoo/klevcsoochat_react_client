@@ -14,12 +14,12 @@ const ChatroomPage = () => {
 
   return metadataLoading ? <LoadingOverlay /> : !metadata ? null : (
     <div className="chatroompage-container">
-      <AppPageHeader title={metadata.name} previous={{ icon: 'home' }} next={{
+      <AppPageHeader title={ metadata.name } previous={ { icon: 'home' } } next={ {
         icon: 'settings',
         path: routes.CHATROOM_SETTINGS.replace(':id', roomId)
-      }} />
-      <ChatroomMessageList roomId={roomId} />
-      <ChatroomMessageBar roomId={roomId} />
+      } } />
+      <ChatroomMessageList roomId={ roomId } />
+      <ChatroomMessageBar roomId={ roomId } />
     </div>
   );
 };

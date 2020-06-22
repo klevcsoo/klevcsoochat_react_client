@@ -8,16 +8,16 @@ const AppUserCard = (props: { uid: string, reducedMargin?: boolean; }) => {
   const [ user, userLoading ] = useUserInfoUI(props.uid);
 
   return !userLoading && !user ? null : (
-    <div className="app-card" style={{
+    <div className="app-card" style={ {
       margin: `${props.reducedMargin ? '10' : '30'}px auto`
-    }}>
-      {userLoading ? <LoadingSpinner /> : !user ? null : (
+    } }>
+      { userLoading ? <LoadingSpinner /> : !user ? null : (
         <div className="app-user-card">
-          <img src={user.photo} alt={user.username} className={user.online ? 'online' : 'offline'} />
-          <h2 className="app-small-header">{user.username ? user.username : user.email}</h2>
-          <h3>{getOnlineStatusText(user.online, user.lastOnline)}</h3>
+          <img src={ user.photo } alt={ user.username } className={ user.online ? 'online' : 'offline' } />
+          <h2 className="app-small-header">{ user.username ? user.username : user.email }</h2>
+          <h3>{ getOnlineStatusText(user.online, user.lastOnline) }</h3>
         </div>
-      )}
+      ) }
     </div>
   );
 };

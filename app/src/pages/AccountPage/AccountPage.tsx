@@ -37,42 +37,42 @@ const AccountPage = () => {
   return (
     <div className="accountpage-container">
       <UpdatedNotification />
-      <AppPageHeader title="Fiókbeállítások" previous={{ icon: 'home' }} />
-      {userLoading ? <LoadingSpinner /> : !user ? null : (
+      <AppPageHeader title="Fiókbeállítások" previous={ { icon: 'home' } } />
+      { userLoading ? <LoadingSpinner /> : !user ? null : (
         <React.Fragment>
           <AppCard>
             <div className="account-img-container">
-              {!!user.photoURL ? (
-                <img src={accountImg} alt={user.displayName ? user.displayName : 'account'} />
-              ) : null}
+              { !!user.photoURL ? (
+                <img src={ accountImg } alt={ user.displayName ? user.displayName : 'account' } />
+              ) : null }
             </div>
-            <AppInput placeholder="Profilkép link" text={accountImg} onTextChanged={(text) => {
+            <AppInput placeholder="Profilkép link" text={ accountImg } onTextChanged={ (text) => {
               setAccountImg(text);
-            }} />
+            } } />
           </AppCard>
           <AppCard>
             <h1 className="app-small-header">Felhasználónév</h1>
-            <AppInput placeholder="Felhasználónév" text={username} onTextChanged={(text) => {
+            <AppInput placeholder="Felhasználónév" text={ username } onTextChanged={ (text) => {
               setUsername(text);
-            }} />
+            } } />
           </AppCard>
           <AppCard>
             <h1 className="app-small-header">Jelszó</h1>
-            <AppInput placeholder="Jelenlegi jelszó" text={password.old} onTextChanged={(text) => {
+            <AppInput placeholder="Jelenlegi jelszó" text={ password.old } onTextChanged={ (text) => {
               setPassword({ old: text, new: password.new });
-            }} type="password" />
-            <AppInput placeholder="Új jelszó" text={password.new} onTextChanged={(text) => {
+            } } type="password" />
+            <AppInput placeholder="Új jelszó" text={ password.new } onTextChanged={ (text) => {
               setPassword({ old: password.old, new: text });
-            }} />
+            } } />
           </AppCard>
-          <AppBottomAttachedButton text="Adatok frissítése" onClick={() => {
+          <AppBottomAttachedButton text="Adatok frissítése" onClick={ () => {
             setUpdatingData(true);
             updateUserProfile(accountImg, username, password).then(() => {
               setUpdatingData(false); showNotification('Adatok frissítve');
             });
-          }} loading={updatingData} />
+          } } loading={ updatingData } />
         </React.Fragment>
-      )}
+      ) }
     </div>
   );
 };
