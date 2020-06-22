@@ -3,12 +3,10 @@
   height: 40px; display: block;
   margin: 5px auto; padding: 0 10px;
 
-  background: #ffffff80;
-  border: 1px solid var(--colour-fg);
-  border-radius: 10px;
+  background: var(--colour-bg);
+  border: none; border-radius: 20px;
 
   color: var(--colour-text);
-  font-family: 'Roboto', sans-serif;
   font-size: 18px;
   font-weight: 400;
 
@@ -20,6 +18,5 @@
   user-select: none;
 }
 .app-input:focus {
-  background: #ffffff;
-  border-color: var(--colour-text);
+  background: var(--colour-fg);
 }

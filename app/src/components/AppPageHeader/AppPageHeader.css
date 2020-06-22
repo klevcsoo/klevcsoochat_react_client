@@ -6,10 +6,8 @@
   top: 0; left: 0; right: 0;
 
   display: grid;
-  grid-template-rows: auto 24px auto;
-  grid-template-columns: 48px auto 48px;
-
-  border-bottom: 1px solid var(--colour-fg);
+  grid-template-rows: auto 34px auto;
+  grid-template-columns: 58px auto 58px;
 }
 .app-page-header > * {
   grid-row: 2 / span 1;
@@ -18,8 +16,17 @@
 .app-page-header > div {
   cursor: pointer;
 }
+.app-page-header > h1 {
+  line-height: 34px;
+}
 
-.app-page-header > .previous {
+.app-page-header > .previous, .app-page-header > .next {
   display: flex;
   flex-direction: row;
+  padding: 5px;
+  background: var(--colour-fg);
+  border-radius: 17px;
+}
+.app-page-header > .previous:hover, .app-page-header > .next:hover {
+  background: var(--colour-bg);
 }

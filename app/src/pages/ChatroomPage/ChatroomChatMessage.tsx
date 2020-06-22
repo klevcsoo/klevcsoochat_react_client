@@ -17,25 +17,24 @@ const ChatroomChatMessage = (props: ChatMessage) => {
 
   return (
     <React.Fragment>
-      <div className={`chatroompage-chatmessage ${outgoing ? 'outgoing' : 'incoming'}`}>
-        <h2>{authorName} <span>{formatChatSentDate(props.sent)}</span></h2>
+      <div className={ `chatroompage-chatmessage ${outgoing ? 'outgoing' : 'incoming'}` }>
+        { !outgoing ? <h2>{ authorName } <span>{ formatChatSentDate(props.sent) }</span></h2> : null }
         <div>
-          <div></div>
-          {props.type === 'text' ? <p>{props.content}</p> : (
-            <img src={props.content} alt={`Küldte: ${authorName}`} onLoad={() => {
+          { props.type === 'text' ? <p>{ props.content }</p> : (
+            <img src={ props.content } alt={ `Küldte: ${authorName}` } onLoad={ () => {
               window.scrollTo(0, document.body.scrollHeight);
-            }} onClick={() => setImageOpened(true)} />
-          )}
+            } } onClick={ () => setImageOpened(true) } />
+          ) }
         </div>
       </div>
-      {props.type !== 'image' ? null : (
-        <div className={`chatroompage-chatmessage-openedimage${imageOpened ? ' opened acrylic-transparent' : ''}`}
-          onClick={() => setImageOpened(false)}>
-          <img src={props.content} alt={`Küldte: ${authorName}`} onLoad={() => {
+      { props.type !== 'image' ? null : (
+        <div className={ `chatroompage-chatmessage-openedimage${imageOpened ? ' opened acrylic-transparent' : ''}` }
+          onClick={ () => setImageOpened(false) }>
+          <img src={ props.content } alt={ `Küldte: ${authorName}` } onLoad={ () => {
             window.scrollTo(0, document.body.scrollHeight);
-          }} />
+          } } />
         </div>
-      )}
+      ) }
     </React.Fragment>
   );
 };

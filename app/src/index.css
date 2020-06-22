@@ -1,14 +1,14 @@
 :root {
-  --colour-bg: #ffffff;
-  --colour-fg: #ebebeb;
+  --colour-bg: #e8eef4;
+  --colour-fg: #ffffff;
   --colour-text: #505050;
-  --colour-warn: #F53F4B;
-  --colour-fallback: #F36A5B;
+  --colour-warn: #f53f4b;
+  --colour-fallback: #5b86e5;
 
-  --gradient-primary: linear-gradient(135deg, #F6914C, #EF426A);
+  --gradient-primary: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%);
 
-  --shadow-fg: 0 5px 18px #D1D9E6;
-  --shadow-primary: 0 5px 18px #F36A5B88;
+  --shadow-fg: none;
+  --shadow-primary: none;
 }
 
 * {
@@ -46,9 +46,9 @@ code {
 .app-small-header {
   margin: 0;
   text-align: center;
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Barlow', sans-serif;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
 }
 
 .acrylic-transparent {
