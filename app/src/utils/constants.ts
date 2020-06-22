@@ -1,5 +1,6 @@
 export const routes = {
   HOME: '/',
+  DASHBOARD: '/dashboard',
   ACCOUNT_SETTINGS: '/account',
   CREATE_CHATROOM: '/create-chatroom',
   CHATROOM: '/chatroom/:id',

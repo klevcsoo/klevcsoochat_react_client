@@ -24,6 +24,7 @@ export function initializeFirebase() {
   app.auth().onAuthStateChanged((user) => {
     if (user) {
       console.log(`Signed in as ${user.uid}`);
+      (window as any).logout = () => logout(); //Debug, but can be left in there for production
 
       if (window.location.hostname !== 'localhost') {
         const connectionsRef = app.database().ref(`/users/${user.uid}/info/connections`);
