@@ -10,6 +10,13 @@
   --shadow-fg: none;
   --shadow-primary: none;
 }
+@media(prefers-color-scheme: dark) {
+  :root {
+    --colour-bg: #252525;
+    --colour-fg: #000000;
+    --colour-text: #ffffff;
+  }
+}
 
 * {
   box-sizing: border-box;
@@ -59,5 +66,15 @@ code {
 @-moz-document url-prefix() {
   .acrylic-transparent {
     background: rgba(255, 255, 255, 0.7);
+  }
+}
+@media(prefers-color-scheme: dark) {
+  .acrylic-transparent {
+    background: rgba(0, 0, 0, 0.3);
+  }
+  @-moz-document url-prefix() {
+    .acrylic-transparent {
+      background: rgba(0, 0, 0, 0.7);
+    }
   }
 }

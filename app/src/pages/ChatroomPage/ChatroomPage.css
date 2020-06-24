@@ -96,12 +96,17 @@
   grid-row: 2 / span 1; grid-column: 1 / span 1;
   background: var(--colour-text);
 }
+@media(prefers-color-scheme: dark) {
+  .chatroompage-chatmessage.incoming > div {
+    background: var(--colour-fg);
+  }
+}
 .chatroompage-chatmessage > div > p {
   grid-row: 2 / span 1;
   margin: 5px 15px;
   font-size: 18px;
   font-weight: 400;
-  color: var(--colour-fg);
+  color: white;
 }
 .chatroompage-chatmessage.outgoing > div > p {
   text-align: end;
