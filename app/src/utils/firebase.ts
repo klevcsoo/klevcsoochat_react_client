@@ -183,7 +183,7 @@ export function onNewMessage(roomId: string, callback: (message: ChatMessage) =>
   const cached = getCachedMessages(roomId);
   if (!!cached) for (const mid of Object.keys(cached)) callback(cached[ mid ]);
 
-  const ref = app.database().ref(`/chats/${roomId}/messages`).limitToLast(100);
+  const ref = app.database().ref(`/chats/${roomId}/messages`);
   const handler = (snapshot: app.database.DataSnapshot) => {
     const m = snapshot.val() as ChatMessage;
     if (!!cached && !!cached[ String(snapshot.key) ]) return;
