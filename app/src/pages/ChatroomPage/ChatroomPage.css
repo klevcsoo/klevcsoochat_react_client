@@ -22,7 +22,7 @@
   cursor: pointer;
   transition: none;
 }
-.chatroompage-messagebar * {
+.chatroompage-messagebar > div * {
   transition: none !important;
 }
 .chatroompage-messagebar > div.toggle.off { background: var(--colour-bg); }
