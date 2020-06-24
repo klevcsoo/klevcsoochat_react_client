@@ -150,6 +150,10 @@ export async function sendChatroomRequest(roomId: string) {
   });
 }
 
+export async function updateChatroomMetadata(rid: string, data: { photo: string, name: string; }): Promise<void> {
+  return app.database().ref(`/chats/${rid}/metadata`).update(data);
+}
+
 export async function respondToRequest(approved: boolean, uid: string, rid: string) {
   const ref = app.database().ref(`/users/${uid}`);
 

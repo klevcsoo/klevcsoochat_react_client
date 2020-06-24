@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ChatroomSettingsPage.css';
 import { useRouteMatch } from 'react-router-dom';
-import { useChatroomMetadata, onChatroomMember, onChatroomRequest, leaveChatroom } from '../../utils/firebase';
+import { useChatroomMetadata, onChatroomMember, onChatroomRequest, leaveChatroom, updateChatroomMetadata } from '../../utils/firebase';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import AppPageHeader from '../../components/AppPageHeader/AppPageHeader';
 import AppCard from '../../components/AppCard/AppCard';
@@ -9,10 +9,17 @@ import AppInput from '../../components/AppInput/AppInput';
 import AppButton from '../../components/AppButton/AppButton';
 import AppUserCard from '../../components/AppCard/AppUserCard';
 import AppRequestCard from '../../components/AppCard/AppRequestCard';
+import { useAppNotification } from '../../components/AppNotification/AppNotifiaction';
 
 const ChatroomSettingsPage = () => {
   const roomId = (useRouteMatch().params as any).id;
   const [ metadata, metadataLoading ] = useChatroomMetadata(roomId);
+  const [ ChatroomUpdateError, showError ] = useAppNotification({
+    type: 'error', persistent: false
+  });
+  const [ ChatroomUpdateSuccess, showSuccess ] = useAppNotification({
+    type: 'info', persistent: false
+  });
 
   const [ members, setMembers ] = useState<string[]>([]);
   const [ requests, setRequests ] = useState<string[] | null>([]);
@@ -33,6 +40,8 @@ const ChatroomSettingsPage = () => {
 
   return metadataLoading ? <LoadingOverlay /> : !metadata ? null : (
     <div className="chatroomsettingspage-container">
+      <ChatroomUpdateError />
+      <ChatroomUpdateSuccess />
       <AppPageHeader title="Szoba beállításai" previous={ { icon: 'chat' } } />
       <p style={ { fontWeight: 300 } }>
         <b>Szoba azonosítója:</b> { roomId } <br />
@@ -57,7 +66,12 @@ const ChatroomSettingsPage = () => {
         <AppInput placeholder="Szoba kép link" text={ roomPhoto } onTextChanged={ (text) => setRoomPhoto(text) } />
         <AppInput placeholder="Szoba neve" text={ roomName } onTextChanged={ (text) => setRoomName(text) } />
         <AppButton text="Adatok módosítása" type="primary" onClick={ () => {
-          setUpdatingData(true);
+          setUpdatingData(true); updateChatroomMetadata(roomId, { photo: roomPhoto, name: roomName }).then(() => {
+            setUpdatingData(false); showSuccess('Adatok frissítve');
+          }).catch((err) => {
+            setUpdatingData(false); showError('Hiba történt frissítéskor');
+            console.error(err);
+          });
         } } loading={ updatingData } />
       </AppCard>
       <AppCard>
