@@ -10,6 +10,13 @@
   --shadow-fg: none;
   --shadow-primary: none;
 }
+@media(prefers-color-scheme: dark) {
+  :root {
+    --colour-bg: #252525;
+    --colour-fg: #000000;
+    --colour-text: #ffffff;
+  }
+}
 
 * {
   box-sizing: border-box;
@@ -56,8 +63,16 @@ code {
   -webkit-backdrop-filter: blur(30px) saturate(180%);
   background: rgba(255, 255, 255, 0.3);
 }
-@-moz-document url-prefix() {
+@supports (not (backdrop-filter: none;)) or (not (-webkit-backdrop-filter: none;)) {
+  .acrylic-transparent { background: rgba(255, 255, 255, 0.8); } 
+}
+@media(prefers-color-scheme: dark) {
   .acrylic-transparent {
-    background: rgba(255, 255, 255, 0.7);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(30px) saturate(180%);
+    -webkit-backdrop-filter: blur(30px) saturate(180%);
+  }
+  @supports (not (backdrop-filter: none;)) or (not (-webkit-backdrop-filter: none;)) {
+    .acrylic-transparent { background: rgba(0, 0, 0, 0.8); }
   }
 }

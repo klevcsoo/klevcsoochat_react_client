@@ -87,7 +87,7 @@
   background: var(--colour-warn);
 }
 .app-button.warning .text {
-  color: var(--colour-fg);
+  color: white;
 }
 
 .app-button:not(.secondary) > div > div:nth-child(1) svg {
