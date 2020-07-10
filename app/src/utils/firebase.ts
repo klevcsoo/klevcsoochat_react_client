@@ -1,6 +1,7 @@
 import { regex } from './constants';
 import app from 'firebase/app';
-import 'firebase/auth'; import 'firebase/database'; import 'firebase/functions';
+import 'firebase/auth'; import 'firebase/database';
+import 'firebase/functions'; import 'firebase/storage';
 import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
 import { useState, useEffect } from 'react';
 import { ChatroomMetadata, ChatMessage, AuthUserInfoUI } from './interfaces';
@@ -90,6 +91,11 @@ export function onUserRequests(callback: (roomId: (string | null)[]) => void) {
 
 export async function getRoomID(code: string) {
   return String((await app.database().ref(`/customcodes/${code}`).once('value')).val());
+}
+
+export async function uploadAccountPhoto(photo: File): Promise<string> {
+  const photoRef = app.storage().ref(`/users/${getUID()}/photo`);
+  await photoRef.put(photo); return String(await photoRef.getDownloadURL());
 }
 
 export async function updateUserProfile(photo: string, username: string, pass: { old: string, new: string; }) {
