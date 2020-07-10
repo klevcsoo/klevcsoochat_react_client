@@ -87,7 +87,7 @@
   background: var(--colour-warn);
 }
 .app-button.warning .text {
-  color: var(--colour-fg);
+  color: white;
 }
 
 .app-button:not(.secondary) > div > div:nth-child(1) svg {
@@ -105,3 +105,11 @@
   justify-content: center;
   align-items: center;
 }
+
+/* SAFARI ONLY */
+@media not all and (min-resolution:.001dpcm)
+{ @supports (-webkit-appearance:none) {
+  .app-bottom-attached-button {
+    padding-bottom: 34px;
+  }
+}}

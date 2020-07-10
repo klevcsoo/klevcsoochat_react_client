@@ -6,6 +6,16 @@
     filter: blur(30px) saturate(120%)
   }
 }
+@media(prefers-color-scheme: dark) {
+  @keyframes init-bg-img-blur {
+    from {
+      filter: none;
+    }
+    to {
+      filter: blur(30px) saturate(120%) brightness(40%);
+    }
+  }
+}
 
 .homepage-container {
   position: fixed;
