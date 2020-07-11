@@ -1,3 +1,4 @@
+import imageCompression from 'browser-image-compression';
 import { ChatMessage } from './interfaces';
 import { getUID } from './firebase';
 import { targetResolution } from './constants';
@@ -50,4 +51,14 @@ export function initializeResizeHandler() {
   if (window.matchMedia('(display-mode: standalone)').matches || (window.navigator as any).standalone === true) {
     resize(); window.onresize = resize;
   }
+}
+
+export async function compressImageForUpload(image: File): Promise<File> {
+  const compressedImage = imageCompression(image, {
+    maxSizeMB: 4, useWebWorker: true
+  });
+  const out: any = compressedImage;
+  out.lastDateModified = new Date();
+  out.name = new Date().getTime();
+  return out as File;
 }
