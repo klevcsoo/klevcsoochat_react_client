@@ -95,7 +95,7 @@ export async function getRoomID(code: string) {
 
 export async function uploadAccountPhoto(photo: File): Promise<string> {
   const photoRef = app.storage().ref(`/users/${getUID()}/photo`);
-  await photoRef.put(photo); return String(await photoRef.getDownloadURL());
+  await photoRef.put(await compressImageForUpload(photo)); return String(await photoRef.getDownloadURL());
 }
 
 export async function updateUserProfile(photo: string, username: string, pass: { old: string, new: string; }) {
