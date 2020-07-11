@@ -5,7 +5,7 @@ import 'firebase/functions'; import 'firebase/storage';
 import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
 import { useState, useEffect } from 'react';
 import { ChatroomMetadata, ChatMessage, AuthUserInfoUI } from './interfaces';
-import { onMessageNotification } from './functions';
+import { onMessageNotification, compressImageForUpload } from './functions';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLXTi7stlDNk1yGBXhS68N0_1TJeNxVNk",
@@ -95,7 +95,7 @@ export async function getRoomID(code: string) {
 
 export async function uploadAccountPhoto(photo: File): Promise<string> {
   const photoRef = app.storage().ref(`/users/${getUID()}/photo`);
-  await photoRef.put(photo); return String(await photoRef.getDownloadURL());
+  await photoRef.put(await compressImageForUpload(photo)); return String(await photoRef.getDownloadURL());
 }
 
 export async function updateUserProfile(photo: string, username: string, pass: { old: string, new: string; }) {
@@ -171,6 +171,11 @@ export async function respondToRequest(approved: boolean, uid: string, rid: stri
 
 export async function leaveChatroom(rid: string) {
   await app.database().ref(`/user/${getAuthUser().uid}/chatrooms/${rid}`).remove();
+}
+
+export async function uploadChatImage(image: File): Promise<string> {
+  const imgRef = app.storage().ref(`/users/${getUID()}/messages/${new Date().getTime()}`);
+  await imgRef.put(await compressImageForUpload(image)); return String(await imgRef.getDownloadURL());
 }
 
 export async function sendChatMessage(message: { type: 'text' | 'image', content: string; }, roomId: string) {
