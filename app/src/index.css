@@ -1,20 +1,21 @@
 :root {
   --colour-bg: #e8eef4;
   --colour-fg: #ffffff;
-  --colour-text: #505050;
+  --colour-text: #2c2c2e;
   --colour-warn: #f53f4b;
-  --colour-fallback: #5b86e5;
-
-  --gradient-primary: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%);
+  --colour-fallback: #007aff;
 
   --shadow-fg: none;
   --shadow-primary: none;
+
+  --value-border-radius: 10px;
 }
 @media(prefers-color-scheme: dark) {
   :root {
     --colour-bg: #252525;
     --colour-fg: #000000;
     --colour-text: #ffffff;
+    --colour-fallback: #0a84ff;
   }
 }
 

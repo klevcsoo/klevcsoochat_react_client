@@ -14,7 +14,7 @@
   grid-template-rows: 1fr;
 
   background-attachment: fixed;
-  border: none; border-radius: 25px;
+  border: none; border-radius: var(--value-border-radius);
   cursor: pointer;
 }
 .app-button:active {
@@ -69,7 +69,7 @@
 }
 
 .app-button.primary {
-  background: var(--gradient-primary);
+  background: var(--colour-fallback);
   border: none;
 }
 .app-button.primary .text {
