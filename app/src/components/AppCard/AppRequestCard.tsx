@@ -12,7 +12,7 @@ const AppRequestCard = (props: { uid: string, rid: string, reducedMargin?: boole
 
   return !userLoading && !user ? null : (
     <div className="app-card" style={ {
-      margin: `${props.reducedMargin ? '10' : '30'}px auto`
+      margin: `${ props.reducedMargin ? '10' : '30' }px auto`
     } }>
       { userLoading ? <LoadingSpinner /> : !user ? null : (
         <React.Fragment>
@@ -20,7 +20,7 @@ const AppRequestCard = (props: { uid: string, rid: string, reducedMargin?: boole
             <img src={ user.photo } alt={ user.username } onError={ (event) => {
               event.currentTarget.src = defaultAccountPhoto;
             } } className={ user.online ? 'online' : 'offline' } />
-            <h2 className="app-small-header">{ user.username ? user.username : user.email }</h2>
+            <h2 className="app-small-header">{ user.username }</h2>
             <h3>{ getOnlineStatusText(user.online, user.lastOnline) }</h3>
           </div>
           <AppButton text="Elfogadás" type="secondary" onClick={ () => {

@@ -267,7 +267,6 @@ export function useUserInfoUI(uid: string): [ AuthUserInfoUI | null, boolean ] {
   useEffect(() => {
     app.database().ref(`/users/${ uid }/info`).on('value', (snapshot) => {
       setUser({
-        email: snapshot.child('email').val(),
         lastOnline: snapshot.child('lastOnline').val(),
         online: snapshot.child('connections').exists() ? true : false,
         photo: snapshot.child('photo').val(),

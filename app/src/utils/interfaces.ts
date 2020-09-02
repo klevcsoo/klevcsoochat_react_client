@@ -24,9 +24,8 @@ export interface AppNotificatonData {
 }
 
 export interface AuthUserInfoUI {
-  online: boolean,
-  lastOnline: number,
-  photo: string,
-  username?: string,
-  email: string;
+  online: boolean;
+  lastOnline: number;
+  photo: string;
+  username: string;
 }
