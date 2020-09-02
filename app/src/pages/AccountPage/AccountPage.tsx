@@ -24,7 +24,6 @@ const AccountPage = () => {
   });
 
   const [ photoURL, setPhotoURL ] = useState('');
-  const [ username, setUsername ] = useState('');
   const [ password, setPassword ] = useState({ old: '', new: '' });
   const [ updatingData, setUpdatingData ] = useState(false);
   const [ uploadingPhoto, setUploadingPhoto ] = useState(false);
@@ -59,7 +58,6 @@ const AccountPage = () => {
     }
 
     if (!!user?.photoURL) setPhotoURL(user.photoURL);
-    if (!!user?.displayName) setUsername(user.displayName);
   }, [ userLoading, user, history ]);
 
   return (
@@ -82,12 +80,6 @@ const AccountPage = () => {
             <AppButton type="primary" text="Képfeltöltés" onClick={ () => uploadPhoto() } loading={ uploadingPhoto } />
           </AppCard>
           <AppCard>
-            <h1 className="app-small-header">Felhasználónév</h1>
-            <AppInput placeholder="Felhasználónév" text={ username } onTextChanged={ (text) => {
-              setUsername(text);
-            } } />
-          </AppCard>
-          <AppCard>
             <h1 className="app-small-header">Jelszó módosítása</h1>
             <AppInput placeholder="Jelenlegi jelszó" text={ password.old } onTextChanged={ (text) => {
               setPassword({ old: text, new: password.new });
@@ -98,7 +90,7 @@ const AccountPage = () => {
           </AppCard>
           <AppBottomAttachedButton text="Adatok frissítése" onClick={ () => {
             setUpdatingData(true);
-            updateUserProfile(photoURL, username, password).then(() => {
+            updateUserProfile(photoURL, password).then(() => {
               setUpdatingData(false); showUpdated('Adatok frissítve');
             });
           } } loading={ updatingData } />

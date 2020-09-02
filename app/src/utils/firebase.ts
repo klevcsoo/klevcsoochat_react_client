@@ -104,16 +104,14 @@ export async function uploadAccountPhoto(photo: File): Promise<string> {
   await photoRef.put(await compressImageForUpload(photo)); return String(await photoRef.getDownloadURL());
 }
 
-export async function updateUserProfile(photo: string, username: string, pass: { old: string, new: string; }) {
+export async function updateUserProfile(photo: string, pass: { old: string, new: string; }) {
   const user = getAuthUser();
 
   await user.updateProfile({
-    displayName: !!username ? username : user.displayName,
     photoURL: !!photo ? photo : user.photoURL
   });
 
   await app.database().ref(`/users/${ user.uid }/info`).update({
-    username: !!username ? username : user.displayName,
     photo: !!photo ? photo : user.photoURL
   });
 
