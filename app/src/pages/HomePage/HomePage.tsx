@@ -67,7 +67,7 @@ const HomePage = () => {
               <form>
                 <AppInput placeholder="Felhasználónév" text={ loginUsername } onTextChanged={ (text) => setLoginUsername(text) } />
                 <AppInput placeholder="Jelszó" text={ loginPass } onTextChanged={ (text) => setLoginPass(text) }
-                  onSubmit={ loginHandler } />
+                  onSubmit={ loginHandler } password />
               </form>
               <AppButton text="Bejelentkezés" type="secondary" onClick={ loginHandler } loading={ loggingIn } />
             </div>
