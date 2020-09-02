@@ -18,7 +18,7 @@ exports.registerUser = functions.https.onCall(async ({ username, password }, con
   }
 
   const uid = generateUID();
-  await admin.database().ref(`/users/${ username }`).set({
+  await admin.database().ref(`/users/${ uid }`).set({
     info: {
       lastOnline: admin.database.ServerValue.TIMESTAMP,
       username: username,
