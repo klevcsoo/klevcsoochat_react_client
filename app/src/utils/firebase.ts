@@ -24,17 +24,17 @@ export function initializeFirebase() {
 
   app.auth().onAuthStateChanged((user) => {
     if (user) {
-      console.log(`Signed in as ${user.uid}`);
+      console.log(`Signed in as ${ user.uid }`);
       (window as any).logout = () => logout(); //Debug, but can be left in there for production
 
       if (window.location.hostname !== 'localhost') {
-        const connectionsRef = app.database().ref(`/users/${user.uid}/info/connections`);
-        const lastOnlineRef = app.database().ref(`/users/${user.uid}/info/lastOnline`);
+        const connectionsRef = app.database().ref(`/users/${ user.uid }/info/connections`);
+        const lastOnlineRef = app.database().ref(`/users/${ user.uid }/info/lastOnline`);
         app.database().ref('.info/connected').on('value', (snapshot) => {
           if (!!snapshot.val()) {
             const con = connectionsRef.push();
             con.onDisconnect().remove();
-            con.set(`${deviceType}-${osName}-${browserName.replace(/ /g, '_')}-${browserVersion}`);
+            con.set(`${ deviceType }-${ osName }-${ browserName.replace(/ /g, '_') }-${ browserVersion }`);
             lastOnlineRef.onDisconnect().set(app.database.ServerValue.TIMESTAMP);
           }
         });
@@ -54,13 +54,14 @@ export function getUID() {
   return getAuthUser().uid;
 }
 
-export async function signUp(email: string, password: string) {
-  await app.auth().createUserWithEmailAndPassword(email, password);
+export async function signUp(username: string, password: string) {
+  const token = (await app.functions().httpsCallable('registerUser')({ username: username, password: password })).data.loginToken;
+  await app.auth().signInWithCustomToken(token);
 }
 
-export async function login(email: string, password: string) {
-  const cred = app.auth.EmailAuthProvider.credential(email, password);
-  await app.auth().signInWithCredential(cred);
+export async function login(username: string, password: string) {
+  const token = (await app.functions().httpsCallable('requestToken')({ username: username, password: password })).data.loginToken;
+  await app.auth().signInWithCustomToken(token);
 }
 
 export async function logout() {
@@ -68,7 +69,7 @@ export async function logout() {
 }
 
 export function onUserChatrooms(callback: (roomId: (string | null)[]) => void) {
-  const chatroomsRef = app.database().ref(`/users/${getAuthUser().uid}/chatrooms`);
+  const chatroomsRef = app.database().ref(`/users/${ getAuthUser().uid }/chatrooms`);
   const handler = (snapshot: app.database.DataSnapshot) => {
     if (!snapshot.exists()) callback([ null ]);
     else callback(Object.keys(snapshot.val()));
@@ -79,7 +80,7 @@ export function onUserChatrooms(callback: (roomId: (string | null)[]) => void) {
 }
 
 export function onUserRequests(callback: (roomId: (string | null)[]) => void) {
-  const requestsRef = app.database().ref(`/users/${getAuthUser().uid}/requests`);
+  const requestsRef = app.database().ref(`/users/${ getAuthUser().uid }/requests`);
   const handler = (snapshot: app.database.DataSnapshot) => {
     if (!snapshot.exists()) callback([ null ]);
     else callback(Object.keys(snapshot.val()));
@@ -90,11 +91,11 @@ export function onUserRequests(callback: (roomId: (string | null)[]) => void) {
 }
 
 export async function getRoomID(code: string) {
-  return String((await app.database().ref(`/customcodes/${code}`).once('value')).val());
+  return String((await app.database().ref(`/customcodes/${ code }`).once('value')).val());
 }
 
 export async function uploadAccountPhoto(photo: File): Promise<string> {
-  const photoRef = app.storage().ref(`/users/${getUID()}/photo`);
+  const photoRef = app.storage().ref(`/users/${ getUID() }/photo`);
   await photoRef.put(await compressImageForUpload(photo)); return String(await photoRef.getDownloadURL());
 }
 
@@ -106,7 +107,7 @@ export async function updateUserProfile(photo: string, username: string, pass: {
     photoURL: !!photo ? photo : user.photoURL
   });
 
-  await app.database().ref(`/users/${user.uid}/info`).update({
+  await app.database().ref(`/users/${ user.uid }/info`).update({
     username: !!username ? username : user.displayName,
     photo: !!photo ? photo : user.photoURL
   });
@@ -131,7 +132,7 @@ export async function createChatroom(name: string, code: string, photo: string) 
     console.log(err); throw Error(err);
   });
 
-  await app.database().ref(`/users/${getAuthUser().uid}/chatrooms`).update({
+  await app.database().ref(`/users/${ getAuthUser().uid }/chatrooms`).update({
     [ id ]: app.database.ServerValue.TIMESTAMP
   });
   return id;
@@ -141,40 +142,40 @@ export async function sendChatroomRequest(roomId: string) {
   const user = getAuthUser();
 
   try {
-    if ((await app.database().ref(`/chats/${roomId}/members/${user.uid}`).once('value')).exists()) {
+    if ((await app.database().ref(`/chats/${ roomId }/members/${ user.uid }`).once('value')).exists()) {
       throw Error('Ebben a szobában már benne vagy');
     }
   } catch { }
 
   let rid = roomId;
   if (rid[ 0 ] !== '-') {
-    rid = (await app.database().ref(`/customcodes/${roomId}`).once('value')).val();
+    rid = (await app.database().ref(`/customcodes/${ roomId }`).once('value')).val();
   }
 
-  await app.database().ref(`/users/${getAuthUser().uid}/requests`).update({
+  await app.database().ref(`/users/${ getAuthUser().uid }/requests`).update({
     [ rid ]: app.database.ServerValue.TIMESTAMP
   });
 }
 
 export async function updateChatroomMetadata(rid: string, data: { photo: string, name: string; }): Promise<void> {
-  return app.database().ref(`/chats/${rid}/metadata`).update(data);
+  return app.database().ref(`/chats/${ rid }/metadata`).update(data);
 }
 
 export async function respondToRequest(approved: boolean, uid: string, rid: string) {
-  const ref = app.database().ref(`/users/${uid}`);
+  const ref = app.database().ref(`/users/${ uid }`);
 
   if (approved) {
-    await ref.child(`requests/${rid}`).remove();
+    await ref.child(`requests/${ rid }`).remove();
     await ref.child('chatrooms').update({ [ rid ]: app.database.ServerValue.TIMESTAMP });
-  } else await ref.child(`requests/${rid}`).remove();
+  } else await ref.child(`requests/${ rid }`).remove();
 }
 
 export async function leaveChatroom(rid: string) {
-  await app.database().ref(`/user/${getAuthUser().uid}/chatrooms/${rid}`).remove();
+  await app.database().ref(`/user/${ getAuthUser().uid }/chatrooms/${ rid }`).remove();
 }
 
 export async function uploadChatImage(image: File): Promise<string> {
-  const imgRef = app.storage().ref(`/users/${getUID()}/messages/${new Date().getTime()}`);
+  const imgRef = app.storage().ref(`/users/${ getUID() }/messages/${ new Date().getTime() }`);
   await imgRef.put(await compressImageForUpload(image)); return String(await imgRef.getDownloadURL());
 }
 
@@ -182,7 +183,7 @@ export async function sendChatMessage(message: { type: 'text' | 'image', content
   const user = getAuthUser();
   if (message.content.length === 0 || message.content.match(regex.WHITESPACE)) return;
 
-  await app.database().ref(`/chats/${roomId}/messages`).push({
+  await app.database().ref(`/chats/${ roomId }/messages`).push({
     author: { id: user.uid, name: user.displayName },
     sent: app.database.ServerValue.TIMESTAMP,
     type: message.type,
@@ -194,7 +195,7 @@ export function onNewMessage(roomId: string, callback: (message: ChatMessage) =>
   const cached = getCachedMessages(roomId);
   if (!!cached) for (const mid of Object.keys(cached)) callback(cached[ mid ]);
 
-  const ref = app.database().ref(`/chats/${roomId}/messages`);
+  const ref = app.database().ref(`/chats/${ roomId }/messages`);
   const handler = (snapshot: app.database.DataSnapshot) => {
     const m = snapshot.val() as ChatMessage;
     if (!!cached && !!cached[ String(snapshot.key) ]) return;
@@ -207,13 +208,13 @@ export function onNewMessage(roomId: string, callback: (message: ChatMessage) =>
 }
 
 export async function setTypingStatus(isTyping: boolean, rid: string) {
-  await app.database().ref(`/chats/${rid}/typing`).update({
+  await app.database().ref(`/chats/${ rid }/typing`).update({
     [ getAuthUser().uid ]: isTyping || null
   });
 }
 
 export function onMemberTyping(rid: string, callback: (uids: string[]) => void) {
-  const ref = app.database().ref(`/chats/${rid}/typing`);
+  const ref = app.database().ref(`/chats/${ rid }/typing`);
   const handler = (snapshot: app.database.DataSnapshot) => {
     if (!snapshot.exists()) callback([]);
     else callback(Object.keys(snapshot.val()));
@@ -224,7 +225,7 @@ export function onMemberTyping(rid: string, callback: (uids: string[]) => void) 
 }
 
 export function onChatroomMember(roomId: string, callback: (uids: string[]) => void) {
-  const ref = app.database().ref(`/chats/${roomId}/members`);
+  const ref = app.database().ref(`/chats/${ roomId }/members`);
   const handler = (snapshot: app.database.DataSnapshot) => {
     callback(Object.keys(snapshot.val()));
   };
@@ -234,7 +235,7 @@ export function onChatroomMember(roomId: string, callback: (uids: string[]) => v
 }
 
 export function onChatroomRequest(roomId: string, callback: (uids: string[] | null) => void) {
-  const ref = app.database().ref(`/chats/${roomId}/requests`);
+  const ref = app.database().ref(`/chats/${ roomId }/requests`);
   const handler = (snapshot: app.database.DataSnapshot) => {
     if (!snapshot.exists()) { callback(null); return; }
     callback(Object.keys(snapshot.val()));
@@ -264,7 +265,7 @@ export function useUserInfoUI(uid: string): [ AuthUserInfoUI | null, boolean ] {
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
-    app.database().ref(`/users/${uid}/info`).on('value', (snapshot) => {
+    app.database().ref(`/users/${ uid }/info`).on('value', (snapshot) => {
       setUser({
         email: snapshot.child('email').val(),
         lastOnline: snapshot.child('lastOnline').val(),
@@ -284,7 +285,7 @@ export function useChatroomMetadata(id: string): [ ChatroomMetadata | null, bool
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
-    app.database().ref(`/chats/${id}/metadata`).on('value', (snapshot) => {
+    app.database().ref(`/chats/${ id }/metadata`).on('value', (snapshot) => {
       setMetadata({ ...snapshot.val(), id: id }); setLoading(false);
     });
   }, [ id ]);
