@@ -22,6 +22,7 @@ exports.registerUser = functions.https.onCall(async ({ username, password }, con
     info: {
       lastOnline: admin.database.ServerValue.TIMESTAMP,
       username: username,
+      photo: defaultAccountPhoto
     },
     password: password
   });
