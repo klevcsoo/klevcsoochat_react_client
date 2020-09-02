@@ -59,10 +59,12 @@
 }
 .app-button:hover {
   transform: translateY(-2px);
+  border-bottom: 2px solid var(--colour-text) !important;
 }
 .app-button:active {
   transform: none;
   background-color: var(--colour-text);
+  border-bottom: none !important;
 }
 .app-button:active .text {
   color: var(--colour-fg);

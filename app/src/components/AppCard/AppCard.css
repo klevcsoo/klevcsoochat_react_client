@@ -6,12 +6,6 @@
   background: var(--colour-fg);
   border-radius: var(--value-border-radius);
 }
-.app-card:hover {
-  transform: translateY(-4px);
-}
-.app-card:active {
-  transform: none;
-}
 
 .app-user-card {
   display: grid; column-gap: 10px;
