@@ -5,10 +5,18 @@ import { ReactComponent as AppLogo } from '../../assets/app-logo.svg';
 import AppInput from '../../components/AppInput/AppInput';
 import AppButton from '../../components/AppButton/AppButton';
 import { useAppNotification } from '../../components/AppNotification/AppNotifiaction';
+import AppCard from '../../components/AppCard/AppCard';
+import { useHistory } from 'react-router-dom';
+import { routes } from '../../utils/constants';
 
 const HomePage = () => {
-  const [ email, setEmail ] = useState('');
-  const [ pass, setPass ] = useState('');
+  const history = useHistory();
+
+  const [ regEmail, setRegEmail ] = useState('');
+  const [ regUsername, setRegUsername ] = useState('');
+  const [ regPass, setRegPass ] = useState('');
+  const [ loginEmail, setLoginEmail ] = useState('');
+  const [ loginPass, setLoginPass ] = useState('');
   const [ loggingIn, setLoggingIn ] = useState(false);
   const [ LoginFailedNotification, showNotification ] = useAppNotification({
     persistent: false,
@@ -19,31 +27,39 @@ const HomePage = () => {
     <React.Fragment>
       <LoginFailedNotification />
       <div className={ `homepage-container` }>
-        <img src={ require('../../assets/home-bg.jpg') } alt="background" className="acrylic-transparent" />
         <AppLogo />
         <div className="homepage-login-panel">
-          <form>
-            <AppInput placeholder="E-mail" text={ email } onTextChanged={ (text) => setEmail(text) } type="email" />
-            <AppInput placeholder="Jelszó" text={ pass } onTextChanged={ (text) => setPass(text) } type="password" />
-          </form>
-          <AppButton text="Regisztráció" type="primary" onClick={ () => {
-            setLoggingIn(true);
-            signUp(email, pass).then(() => setLoggingIn(false)).catch((err) => {
-              setLoggingIn(false); console.error(err);
-              showNotification(getErrMessage(err.code));
-            });
-          } } loading={ loggingIn } />
-          <div className="homepage-login-panel-divider">
-            <div></div><div></div>
-            <span className="app-small-header">vagy</span>
-          </div>
-          <AppButton text="Bejelentkezés" type="secondary" onClick={ () => {
-            setLoggingIn(true);
-            login(email, pass).then(() => setLoggingIn(false)).catch((err) => {
-              setLoggingIn(false); console.error(err);
-              showNotification(getErrMessage(err.code));
-            });
-          } } loading={ loggingIn } />
+          <AppCard>
+            <div>
+              <form>
+                <AppInput placeholder="E-mail" text={ regEmail } onTextChanged={ (text) => setRegEmail(text) } type="email" />
+                <AppInput placeholder="Felhasználónév" text={ regUsername } onTextChanged={ (text) => setRegUsername(text) } type="text" />
+                <AppInput placeholder="Jelszó" text={ regPass } onTextChanged={ (text) => setRegPass(text) } type="password" />
+              </form>
+              <AppButton text="Regisztráció" type="primary" onClick={ () => {
+                setLoggingIn(true);
+                signUp(regEmail, regPass).then(() => setLoggingIn(false)).catch((err) => {
+                  setLoggingIn(false); console.error(err);
+                  showNotification(getErrMessage(err.code));
+                });
+              } } loading={ loggingIn } />
+            </div>
+          </AppCard>
+          <AppCard>
+            <div>
+              <form>
+                <AppInput placeholder="E-mail" text={ loginEmail } onTextChanged={ (text) => setLoginEmail(text) } type="email" />
+                <AppInput placeholder="Jelszó" text={ loginPass } onTextChanged={ (text) => setLoginPass(text) } type="password" />
+              </form>
+              <AppButton text="Bejelentkezés" type="secondary" onClick={ () => {
+                setLoggingIn(true);
+                login(loginEmail, loginPass).then(() => history.push(routes.DASHBOARD)).catch((err) => {
+                  setLoggingIn(false); console.error(err);
+                  showNotification(getErrMessage(err.code));
+                });
+              } } loading={ loggingIn } />
+            </div>
+          </AppCard>
         </div>
       </div>
     </React.Fragment>

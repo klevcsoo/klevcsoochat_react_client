@@ -36,7 +36,6 @@ const DashBoardPage = () => {
 
   return (
     <React.Fragment>
-      <img src={ require('../../assets/home-bg.jpg') } alt="background" className="dashboard-bg" />
       <div className="dashboard-container">
         <AppLogo />
         <div style={ { height: 30 } }></div>

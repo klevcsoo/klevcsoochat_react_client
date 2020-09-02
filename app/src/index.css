@@ -21,7 +21,7 @@
 
 * {
   box-sizing: border-box;
-  transition: 200ms ease-out all;
+  transition: 200ms cubic-bezier(0.175, 0.885, 0.32, 1.275) all;
 }
 *:focus {
   outline: none;
@@ -44,11 +44,6 @@ body {
   color: var(--colour-text);
   text-align: center;
   font-size: 18px;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
 }
 
 .app-small-header {

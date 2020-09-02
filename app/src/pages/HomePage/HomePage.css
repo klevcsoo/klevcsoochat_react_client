@@ -1,33 +1,8 @@
-@keyframes init-bg-img-blur {
-  from {
-    filter: none;
-  }
-  to {
-    filter: blur(30px) saturate(120%)
-  }
-}
-@media(prefers-color-scheme: dark) {
-  @keyframes init-bg-img-blur {
-    from {
-      filter: none;
-    }
-    to {
-      filter: blur(30px) saturate(120%) brightness(40%);
-    }
-  }
-}
-
 .homepage-container {
   position: fixed;
   top: 0; left: 0;
   bottom: 0; right: 0;
   overflow: hidden;
-}
-.homepage-container > img {
-  width: 100vw; height: 100vh;
-  object-fit: cover;
-  object-position: center;
-  animation: init-bg-img-blur 2000ms ease-out forwards;
 }
 .homepage-container > svg {
   position: fixed;
@@ -38,6 +13,14 @@
   width: 100%;
   position: fixed; top: 50%;
   transform: translateY(-50%);
+
+  display: grid;
+  grid-template: min-content min-content / 1fr;
+}
+@media(min-width: 680px) {
+  .homepage-container > .homepage-login-panel {
+    grid-template: min-content / 1fr 1fr;
+  }
 }
 
 .homepage-login-panel-divider {
