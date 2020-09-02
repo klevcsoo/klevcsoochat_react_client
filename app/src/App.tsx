@@ -18,16 +18,18 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path={ routes.HOME }>
-          { userLoading ? <LoadingOverlay /> : !user ? <HomePage /> : <Redirect to={ routes.DASHBOARD } /> }
-        </Route>
+        <Route exact path={ routes.HOME } component={ HomePage } />
         <Route path={ routes.DASHBOARD }>
-          { userLoading ? <LoadingOverlay /> : !!user ? <DashBoardPage /> : <Redirect to={ routes.HOME } /> }
+          { userLoading ? <LoadingOverlay /> : !user ? <Redirect to={ routes.HOME } /> : (
+            <React.Fragment>
+              <Route exact path={ routes.DASHBOARD } component={ DashBoardPage } />
+              <Route exact path={ routes.ACCOUNT_SETTINGS } component={ AccountPage } />
+              <Route exact path={ routes.CREATE_CHATROOM } component={ CreateChatroomPage } />
+              <Route exact path={ routes.CHATROOM } component={ ChatroomPage } />
+              <Route exact path={ routes.CHATROOM_SETTINGS } component={ ChatroomSettingsPage } />
+            </React.Fragment>
+          ) }
         </Route>
-        <Route path={ routes.ACCOUNT_SETTINGS } component={ AccountPage } />
-        <Route path={ routes.CREATE_CHATROOM } component={ CreateChatroomPage } />
-        <Route exact path={ routes.CHATROOM } component={ ChatroomPage } />
-        <Route path={ routes.CHATROOM_SETTINGS } component={ ChatroomSettingsPage } />
       </Switch>
     </BrowserRouter>
   );

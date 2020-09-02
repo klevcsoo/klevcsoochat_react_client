@@ -1,10 +1,10 @@
 export const routes = {
   HOME: '/',
   DASHBOARD: '/dashboard',
-  ACCOUNT_SETTINGS: '/account',
-  CREATE_CHATROOM: '/create-chatroom',
-  CHATROOM: '/chatroom/:id',
-  CHATROOM_SETTINGS: '/chatroom/:id/settings'
+  ACCOUNT_SETTINGS: '/dashboard/account',
+  CREATE_CHATROOM: '/dashboard/create-chatroom',
+  CHATROOM: '/dashboard/chatroom/:id',
+  CHATROOM_SETTINGS: '/dashboard/chatroom/:id/settings'
 };
 
 export const regex = {
