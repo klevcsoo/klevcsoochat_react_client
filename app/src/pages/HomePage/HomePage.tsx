@@ -54,6 +54,7 @@ const HomePage = () => {
             <div>
               <form>
                 <AppInput placeholder="Felhasználónév" text={ regUsername } onTextChanged={ (text) => setRegUsername(text) } />
+                <p className="description">Ezt nem tudod megváltoztatni később.</p>
                 <AppInput placeholder="Jelszó" text={ regPass } onTextChanged={ (text) => setRegPass(text) }
                   password error={ !canRegister } />
                 <AppInput placeholder="Jelszó mégegyszer" text={ regPass2 } onTextChanged={ (text) => setRegPass2(text) }

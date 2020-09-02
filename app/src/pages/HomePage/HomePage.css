@@ -22,6 +22,13 @@
     grid-template: min-content / 1fr 1fr;
   }
 }
+.homepage-container > .homepage-login-panel p.description {
+  padding: 0 10px; margin: 0;
+
+  text-align: start;
+  font-size: 12px;
+  font-weight: 400;
+}
 
 .homepage-login-panel-divider {
   width: 300px; display: block;
