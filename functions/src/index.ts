@@ -39,14 +39,14 @@ exports.requestToken = functions.https.onCall(async ({ username, password }, con
   if (!!context.auth) throw new HttpsError('failed-precondition', 'Már be vagy jelentkezve');
   if (!username || !password) throw new HttpsError('invalid-argument', 'Hiányos adatok');
 
-  const uid = (await admin.database().ref('/users').orderByChild('info/username').equalTo(username).once('value')).key;
-  if (!uid) throw new HttpsError('not-found', 'Hibás felhasználónév');
+  const uidSnapshot = (await admin.database().ref('/users/').orderByChild('info/username').equalTo(username).once('value'));
+  let uid = ''; uidSnapshot.forEach((s) => { uid = s.key as string; });
+  if (!uid || typeof (uid) !== 'string') throw new HttpsError('not-found', 'Hibás felhasználónév');
 
-  if ((await admin.database().ref(`users/${ uid }/password`).once('value')).val() !== password) {
-    throw new HttpsError('internal', 'Hibás jelszó');
-  }
+  const userPass = (await admin.database().ref(`users/${ uid }/password`).once('value')).val();
+  if (userPass !== password) throw new HttpsError('internal', 'Hibás jelszó');
 
-  return { loginToken: admin.auth().createCustomToken(uid) };
+  return { loginToken: await admin.auth().createCustomToken(uid) };
 });
 
 exports.createChatroom = functions.https.onCall(async ({ code, name, photo }, context) => {

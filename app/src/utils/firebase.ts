@@ -22,6 +22,11 @@ const firebaseConfig = {
 export function initializeFirebase() {
   if (app.apps.length === 0) app.initializeApp(firebaseConfig);
 
+  if ((!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && !!(window as any).emulateFunctions) {
+    console.log('DEVELOPER ENVIRONMENT');
+    app.functions().useFunctionsEmulator('http://localhost:5001');
+  }
+
   app.auth().onAuthStateChanged((user) => {
     if (user) {
       console.log(`Signed in as ${ user.uid }`);
