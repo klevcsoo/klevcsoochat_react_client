@@ -4,7 +4,8 @@
   margin: 5px auto; padding: 0 10px;
 
   background: var(--colour-bg);
-  border: none; border-radius: var(--value-border-radius);
+  border: 2px solid transparent;
+  border-radius: var(--value-border-radius);
 
   color: var(--colour-text);
   font-size: 18px;
@@ -18,5 +19,9 @@
   user-select: none;
 }
 .app-input:focus {
-  background: var(--colour-fg);
+  border: 2px solid var(--colour-fallback);
+}
+
+.app-input.error {
+  border: 2px solid var(--colour-warn) !important;
 }

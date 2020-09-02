@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './HomePage.css';
 import { signUp, login } from '../../utils/firebase';
 import { ReactComponent as AppLogo } from '../../assets/app-logo.svg';
@@ -12,16 +12,37 @@ import { routes } from '../../utils/constants';
 const HomePage = () => {
   const history = useHistory();
 
-  const [ regEmail, setRegEmail ] = useState('');
   const [ regUsername, setRegUsername ] = useState('');
   const [ regPass, setRegPass ] = useState('');
-  const [ loginEmail, setLoginEmail ] = useState('');
+  const [ regPass2, setRegPass2 ] = useState('');
+  const [ loginUsername, setLoginUsername ] = useState('');
   const [ loginPass, setLoginPass ] = useState('');
+
+  const [ canRegister, setCanRegister ] = useState(false);
   const [ loggingIn, setLoggingIn ] = useState(false);
   const [ LoginFailedNotification, showNotification ] = useAppNotification({
     persistent: false,
     type: "error"
   });
+
+  const registerHandler = () => {
+    if (!canRegister) return;
+    setLoggingIn(true); signUp(regUsername, regPass).then(() => history.push(routes.DASHBOARD)).catch((err) => {
+      setLoggingIn(false); console.error(err);
+      showNotification(getErrMessage(err.code));
+    });
+  };
+
+  const loginHandler = () => {
+    setLoggingIn(true); login(loginUsername, loginPass).then(() => history.push(routes.DASHBOARD)).catch((err) => {
+      setLoggingIn(false); console.error(err);
+      showNotification(getErrMessage(err.code));
+    });
+  };
+
+  useEffect(() => {
+    setCanRegister(regPass === regPass2);
+  }, [ regPass, regPass2 ]);
 
   return (
     <React.Fragment>
@@ -32,32 +53,23 @@ const HomePage = () => {
           <AppCard>
             <div>
               <form>
-                <AppInput placeholder="E-mail" text={ regEmail } onTextChanged={ (text) => setRegEmail(text) } type="email" />
-                <AppInput placeholder="Felhasználónév" text={ regUsername } onTextChanged={ (text) => setRegUsername(text) } type="text" />
-                <AppInput placeholder="Jelszó" text={ regPass } onTextChanged={ (text) => setRegPass(text) } type="password" />
+                <AppInput placeholder="Felhasználónév" text={ regUsername } onTextChanged={ (text) => setRegUsername(text) } />
+                <AppInput placeholder="Jelszó" text={ regPass } onTextChanged={ (text) => setRegPass(text) }
+                  password error={ !canRegister } />
+                <AppInput placeholder="Jelszó mégegyszer" text={ regPass2 } onTextChanged={ (text) => setRegPass2(text) }
+                  password error={ !canRegister } onSubmit={ registerHandler } />
               </form>
-              <AppButton text="Regisztráció" type="primary" onClick={ () => {
-                setLoggingIn(true);
-                signUp(regEmail, regPass).then(() => setLoggingIn(false)).catch((err) => {
-                  setLoggingIn(false); console.error(err);
-                  showNotification(getErrMessage(err.code));
-                });
-              } } loading={ loggingIn } />
+              <AppButton text="Regisztráció" type="primary" onClick={ registerHandler } loading={ loggingIn } />
             </div>
           </AppCard>
           <AppCard>
             <div>
               <form>
-                <AppInput placeholder="E-mail" text={ loginEmail } onTextChanged={ (text) => setLoginEmail(text) } type="email" />
-                <AppInput placeholder="Jelszó" text={ loginPass } onTextChanged={ (text) => setLoginPass(text) } type="password" />
+                <AppInput placeholder="Felhasználónév" text={ loginUsername } onTextChanged={ (text) => setLoginUsername(text) } />
+                <AppInput placeholder="Jelszó" text={ loginPass } onTextChanged={ (text) => setLoginPass(text) }
+                  onSubmit={ loginHandler } />
               </form>
-              <AppButton text="Bejelentkezés" type="secondary" onClick={ () => {
-                setLoggingIn(true);
-                login(loginEmail, loginPass).then(() => history.push(routes.DASHBOARD)).catch((err) => {
-                  setLoggingIn(false); console.error(err);
-                  showNotification(getErrMessage(err.code));
-                });
-              } } loading={ loggingIn } />
+              <AppButton text="Bejelentkezés" type="secondary" onClick={ loginHandler } loading={ loggingIn } />
             </div>
           </AppCard>
         </div>

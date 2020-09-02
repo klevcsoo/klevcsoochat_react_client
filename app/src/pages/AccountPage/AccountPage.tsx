@@ -91,7 +91,7 @@ const AccountPage = () => {
             <h1 className="app-small-header">Jelszó módosítása</h1>
             <AppInput placeholder="Jelenlegi jelszó" text={ password.old } onTextChanged={ (text) => {
               setPassword({ old: text, new: password.new });
-            } } type="password" />
+            } } password />
             <AppInput placeholder="Új jelszó" text={ password.new } onTextChanged={ (text) => {
               setPassword({ old: password.old, new: text });
             } } />

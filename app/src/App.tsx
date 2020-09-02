@@ -18,7 +18,9 @@ function App() {
   return (
     <BrowserRouter>
       <Switch>
-        <Route exact path={ routes.HOME } component={ HomePage } />
+        <Route exact path={ routes.HOME }>
+          { userLoading ? <LoadingOverlay /> : !!user ? <Redirect to={ routes.DASHBOARD } /> : <HomePage /> }
+        </Route>
         <Route path={ routes.DASHBOARD }>
           { userLoading ? <LoadingOverlay /> : !user ? <Redirect to={ routes.HOME } /> : (
             <React.Fragment>
