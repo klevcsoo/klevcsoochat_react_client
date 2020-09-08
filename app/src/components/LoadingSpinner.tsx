@@ -5,7 +5,7 @@ const LoadingSpinner = () => {
   return (
     <div style={ {
       width: 40, height: 40,
-      fill: 'black',
+      fill: 'var(--colour-text)',
       margin: '5px auto',
       transform: 'scale(0.8)'
     } }>
