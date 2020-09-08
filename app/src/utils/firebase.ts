@@ -189,7 +189,7 @@ export async function sendChatMessage(message: { type: 'text' | 'image', content
   await app.database().ref(`/chats/${ roomId }/messages`).push({
     author: { id: user.uid, name: user.displayName },
     sent: app.database.ServerValue.TIMESTAMP,
-    type: message.type,
+    type: message.content.startsWith('data:image/') ? 'image' : message.type,
     content: message.content
   }).catch((err) => { throw Error(err); });
 }
