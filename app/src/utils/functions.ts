@@ -13,7 +13,7 @@ export function getOnlineStatusText(online: boolean, lastOnline: number) {
   if (seconds >= 3600) offlineSince = { time: seconds / 3600, text: 'órája' };
   if (seconds >= (86400 * 2)) offlineSince = { time: seconds / (86400 * 2), text: 'napja' };
 
-  return `legutóbb online ${Math.round(offlineSince.time)} ${offlineSince.text}`;
+  return `legutóbb online ${ Math.round(offlineSince.time) } ${ offlineSince.text }`;
 }
 
 export function formatChatSentDate(sent: number): string {
@@ -25,12 +25,12 @@ export function formatChatSentDate(sent: number): string {
 export function initializeNotifications() {
   if (!('Notification' in window)) return;
   if (Notification.permission === 'granted' || Notification.permission === 'denied') {
-    console.log(`Notification permission is already ${Notification.permission}`);
+    console.log(`Notification permission is already ${ Notification.permission }`);
     return;
   }
 
   Notification.requestPermission().then((permission) => {
-    console.log(`Notification permission is ${permission}`);
+    console.log(`Notification permission is ${ permission }`);
   });
 }
 
@@ -61,4 +61,9 @@ export async function compressImageForUpload(image: File): Promise<File> {
   out.lastDateModified = new Date();
   out.name = new Date().getTime();
   return out as File;
+}
+
+export function scrollToLatestMessage() {
+  // TODO: only scroll to bottom, if user is already at the bottom
+  window.scrollTo(0, document.body.scrollHeight);
 }

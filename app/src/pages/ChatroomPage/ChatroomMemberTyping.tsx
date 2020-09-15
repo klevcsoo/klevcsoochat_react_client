@@ -1,6 +1,7 @@
 import React from 'react';
 import './ChatroomPage.css';
 import { useUserInfoUI, getUID } from '../../utils/firebase';
+import { scrollToLatestMessage } from '../../utils/functions';
 
 const ChatroomMemberTyping = (props: { uid: string; }) => {
   const [ user, userloading ] = useUserInfoUI(props.uid);
@@ -8,7 +9,7 @@ const ChatroomMemberTyping = (props: { uid: string; }) => {
   return userloading || !user || props.uid === getUID() ? null : (
     <div className="chatroompage-member-typing">
       <img src={ user.photo } onLoad={ () => {
-        window.scrollTo(0, document.body.scrollHeight);
+        scrollToLatestMessage();
       } } alt={ user.username } />
       <p><b>{ user.username }</b> éppen ír...</p>
     </div>

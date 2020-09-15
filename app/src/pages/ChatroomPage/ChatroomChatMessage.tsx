@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ChatroomPage.css';
 import { ChatMessage } from '../../utils/interfaces';
 import { getUID } from '../../utils/firebase';
-import { formatChatSentDate } from '../../utils/functions';
+import { formatChatSentDate, scrollToLatestMessage } from '../../utils/functions';
 
 const ChatroomChatMessage = (props: ChatMessage) => {
   const [ imageOpen, setImageOpen ] = useState(false);
@@ -33,7 +33,7 @@ const ChatroomChatMessage = (props: ChatMessage) => {
         } }>
           { props.type === 'text' ? <p>{ props.content }</p> : (
             <img src={ props.content } alt={ `Küldte: ${ authorName }` } onLoad={ () => {
-              window.scrollTo(0, document.body.scrollHeight);
+              scrollToLatestMessage();
             } } onClick={ () => setImageOpen(true) } />
           ) }
         </div>
@@ -42,7 +42,7 @@ const ChatroomChatMessage = (props: ChatMessage) => {
         <div className={ `chatroompage-chatmessage-openedimage${ imageOpen ? ' opened acrylic-transparent' : '' }` }
           onClick={ () => setImageOpen(false) }>
           <img src={ props.content } alt={ `Küldte: ${ authorName }` } onLoad={ () => {
-            window.scrollTo(0, document.body.scrollHeight);
+            scrollToLatestMessage();
           } } />
         </div>
       ) }
