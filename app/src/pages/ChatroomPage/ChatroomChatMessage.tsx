@@ -21,15 +21,15 @@ const ChatroomChatMessage = (props: ChatMessage) => {
       <div className={ `chatroompage-chatmessage ${ outgoing ? 'outgoing' : 'incoming' }` }>
         { !outgoing ? <h2>{ authorName } <span>{ formatChatSentDate(props.sent) }</span></h2> : null }
         { !reactionsOpen ? null : (
-          <div className="chatroompage-chatmessage-reactions">
+          <span className="chatroompage-chatmessage-reactions">
             <span role="img" aria-label="heart">❤</span>
             <span role="img" aria-label="laugh">😂</span>
             <span role="img" aria-label="sad">😢</span>
             <span role="img" aria-label="suprised">😮</span>
-          </div>
+          </span>
         ) }
-        <div onClick={ (event) => {
-          if (event.nativeEvent.which === 3) setReationsOpen(!reactionsOpen);
+        <div onContextMenu={ (event) => {
+          event.preventDefault(); setReationsOpen(!reactionsOpen);
         } }>
           { props.type === 'text' ? <p>{ props.content }</p> : (
             <img src={ props.content } alt={ `Küldte: ${ authorName }` } onLoad={ () => {

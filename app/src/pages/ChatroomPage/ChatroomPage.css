@@ -173,6 +173,17 @@
   font-size: 16px;
 }
 
+.chatroompage-chatmessage-reactions {
+  display: grid;
+  grid-template: 1fr / repeat(5, 1fr);
+
+  position: relative;
+  top: -20px; left: 0;
+  width: 100px; height: 20px;
+
+  background: var(--colour-fg);
+}
+
 @media(max-width: 800px) {
   .chatroompage-chatmessage > div {
     max-width: 80vw;
