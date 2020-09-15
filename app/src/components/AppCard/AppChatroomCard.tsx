@@ -10,11 +10,11 @@ const AppChatroomCard = (props: { id: string, reducedMargin?: boolean; request?:
   const [ metadata, metadataLoading ] = useChatroomMetadata(props.id);
 
   return !metadataLoading && !metadata ? null : (
-    <div className="app-card" style={ {
-      margin: `${props.reducedMargin ? '10' : '30'}px auto`
+    <div className="app-card interactable" style={ {
+      margin: `${ props.reducedMargin ? '10' : '30' }px auto`
     } } onClick={ () => { if (!props.request) history.push(routes.CHATROOM.replace(':id', props.id)); } }>
       { metadataLoading ? <LoadingSpinner /> : !metadata ? null : (
-        <div className={ `app-user-card chatroom${props.request ? ' request' : ''}` }>
+        <div className={ `app-user-card chatroom${ props.request ? ' request' : '' }` }>
           <img src={ metadata.photo } alt={ metadata.name } onError={ (event) => {
             event.currentTarget.src = defaultChatroomPhoto;
           } } />

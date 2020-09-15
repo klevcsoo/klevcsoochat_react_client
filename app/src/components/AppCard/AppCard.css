@@ -6,6 +6,14 @@
   background: var(--colour-fg);
   border-radius: var(--value-border-radius);
 }
+.app-card.interactable:hover {
+  transform: translateY(-2px);
+  border-bottom: 2px solid var(--colour-text) !important;
+}
+.app-card.interactable:active {
+  transform: none;
+  border-bottom: none !important;
+}
 
 .app-user-card {
   display: grid; column-gap: 10px;
