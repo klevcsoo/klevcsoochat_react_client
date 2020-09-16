@@ -174,14 +174,27 @@
 }
 
 .chatroompage-chatmessage-reactions {
-  display: grid;
-  grid-template: 1fr / repeat(5, 1fr);
+  display: grid; place-items: center;
+  grid-template: 40px / repeat(5, 40px);
 
-  position: relative;
-  top: -20px; left: 0;
-  width: 100px; height: 20px;
+  position: fixed;
+  top: 0; left: 0;
+  width: 220px; height: 60px;
+
+  padding: 10px;
 
   background: var(--colour-fg);
+  border-radius: 30px;
+}
+.chatroompage-chatmessage-reactions > span {
+  font-size: 28px; width: 40px; height: 40px;
+  user-select: none; cursor: pointer;
+}
+.chatroompage-chatmessage-reactions > span:hover {
+  transform: scale(1.2);
+}
+.chatroompage-chatmessage-reactions > span:active {
+  transform: scale(2);
 }
 
 @media(max-width: 800px) {

@@ -21,7 +21,7 @@ export interface ChatMessage {
 export interface ChatReaction {
   timestamp: number;
   uid: string;
-  reaction: 'heart' | 'laugh' | 'sad' | 'suprised';
+  reaction: 'heart' | 'laugh' | 'sad' | 'suprised' | 'like';
 }
 
 export interface AppNotificatonData {
