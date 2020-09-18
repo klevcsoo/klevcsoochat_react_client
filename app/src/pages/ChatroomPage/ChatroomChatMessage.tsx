@@ -6,7 +6,7 @@ import { formatChatSentDate, scrollToLatestMessage } from '../../utils/functions
 
 const ChatroomChatMessage = (props: ChatMessage) => {
   const [ imageOpen, setImageOpen ] = useState(false);
-  const [ reactionsOpen, setReationsOpen ] = useState(false);
+  const [ reactionsOpen, setReactionsOpen ] = useState(false);
   const [ reactionsPos, setReactionsPos ] = useState<[ number, number ]>([ 0, 0 ]);
 
   useEffect(() => {
@@ -15,7 +15,7 @@ const ChatroomChatMessage = (props: ChatMessage) => {
   }, [ imageOpen ]);
 
   useEffect(() => {
-    const handler = () => setReationsOpen(false);
+    const handler = () => setReactionsOpen(false);
     if (reactionsOpen) document.documentElement.addEventListener('click', handler);
     else document.documentElement.removeEventListener('click', handler);
   }, [ reactionsOpen ]);
@@ -29,7 +29,7 @@ const ChatroomChatMessage = (props: ChatMessage) => {
         { !outgoing ? <h2>{ authorName } <span>{ formatChatSentDate(props.sent) }</span></h2> : null }
         { !reactionsOpen ? null : (
           <span className="chatroompage-chatmessage-reactions" onClick={ () => {
-            setTimeout(() => setReationsOpen(false), 1500);
+            setTimeout(() => setReactionsOpen(false), 1500);
           } } style={ {
             top: `${ reactionsPos[ 1 ] }%`, left: `${ reactionsPos[ 0 ] }%`
           } }>
@@ -45,7 +45,7 @@ const ChatroomChatMessage = (props: ChatMessage) => {
           setReactionsPos([
             (event.clientX / document.documentElement.clientWidth) * 100,
             (event.clientY / document.documentElement.clientHeight) * 100
-          ]); setReationsOpen(true);
+          ]); setReactionsOpen(true);
         } }>
           { props.type === 'text' ? <p>{ props.content }</p> : (
             <img src={ props.content } alt={ `Küldte: ${ authorName }` } onLoad={ () => {
