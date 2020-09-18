@@ -14,7 +14,7 @@ const ChatroomPage = () => {
 
   useEffect(() => {
     return () => { setTypingStatus(false, roomId); };
-  }, []);
+  }, [ roomId ]);
 
   return metadataLoading ? <LoadingOverlay /> : !metadata ? null : (
     <div className="chatroompage-container">

@@ -9,16 +9,23 @@ const ChatroomChatMessage = (props: ChatMessage) => {
   const [ reactionsOpen, setReactionsOpen ] = useState(false);
   const [ reactionsPos, setReactionsPos ] = useState<[ number, number ]>([ 0, 0 ]);
 
+  const rHandler = (event: React.MouseEvent) => {
+    event.stopPropagation();
+    const id = event.currentTarget.id;
+    console.log(id);
+    // setTimeout(() => setReactionsOpen(false), 1500);
+  };
+
   useEffect(() => {
     if (imageOpen) document.body.style.overflowY = 'hidden';
     else document.body.style.overflowY = 'scroll';
   }, [ imageOpen ]);
 
   useEffect(() => {
-    const handler = () => setReactionsOpen(false);
-    if (reactionsOpen) document.documentElement.addEventListener('click', handler);
-    else document.documentElement.removeEventListener('click', handler);
-  }, [ reactionsOpen ]);
+    document.documentElement.onclick = () => {
+      setReactionsOpen(false);
+    };
+  }, []);
 
   const outgoing = props.author.id === getUID();
   const authorName = !!props.author.name ? props.author.name : props.author.id;
@@ -28,16 +35,14 @@ const ChatroomChatMessage = (props: ChatMessage) => {
       <div className={ `chatroompage-chatmessage ${ outgoing ? 'outgoing' : 'incoming' }` }>
         { !outgoing ? <h2>{ authorName } <span>{ formatChatSentDate(props.sent) }</span></h2> : null }
         { !reactionsOpen ? null : (
-          <span className="chatroompage-chatmessage-reactions" onClick={ () => {
-            setTimeout(() => setReactionsOpen(false), 1500);
-          } } style={ {
+          <span className="chatroompage-chatmessage-reactions" style={ {
             top: `${ reactionsPos[ 1 ] }%`, left: `${ reactionsPos[ 0 ] }%`
-          } }>
-            <span role="img" aria-label="heart">❤️</span>
-            <span role="img" aria-label="laugh">😂</span>
-            <span role="img" aria-label="sad">😢</span>
-            <span role="img" aria-label="suprised">😮</span>
-            <span role="img" aria-label="like">👍</span>
+          } } onClick={ (event) => event.stopPropagation() }>
+            <span id="r-heart" role="img" aria-label="heart" onClick={ (e) => rHandler(e) }>❤️</span>
+            <span id="r-laugh" role="img" aria-label="laugh" onClick={ (e) => rHandler(e) }>😂</span>
+            <span id="r-sad" role="img" aria-label="sad" onClick={ (e) => rHandler(e) }>😢</span>
+            <span id="r-suprised" role="img" aria-label="suprised" onClick={ (e) => rHandler(e) }>😮</span>
+            <span id="r-like" role="img" aria-label="like" onClick={ (e) => rHandler(e) }>👍</span>
           </span>
         ) }
         <div onContextMenu={ (event) => {
