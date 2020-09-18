@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import './ChatroomPage.css';
 import AppPageHeader from '../../components/AppPageHeader/AppPageHeader';
-import { useChatroomMetadata } from '../../utils/firebase';
+import { setTypingStatus, useChatroomMetadata } from '../../utils/firebase';
 import { useRouteMatch } from 'react-router-dom';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import { routes } from '../../utils/constants';
@@ -11,6 +11,10 @@ import ChatroomMessageList from './ChatroomMessageList';
 const ChatroomPage = () => {
   const roomId = (useRouteMatch().params as any).id;
   const [ metadata, metadataLoading ] = useChatroomMetadata(roomId);
+
+  useEffect(() => {
+    return () => { setTypingStatus(false, roomId); };
+  }, []);
 
   return metadataLoading ? <LoadingOverlay /> : !metadata ? null : (
     <div className="chatroompage-container">
