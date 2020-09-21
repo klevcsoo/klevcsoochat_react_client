@@ -23,9 +23,6 @@ const ChatroomChatMessage = (props: ChatMessage & {
     <React.Fragment>
       <div className={ `chatroompage-chatmessage ${ outgoing ? 'outgoing' : 'incoming' }` }>
         { !outgoing ? <h2>{ authorName } <span>{ formatChatSentDate(props.sent) }</span></h2> : null }
-        { reactions.length === 0 ? null : (
-          <span>{ reactions.map((r) => r.reaction as string) }</span>
-        ) }
         <div onContextMenu={ (event) => {
           event.preventDefault();
           let x = event.clientX;
@@ -49,6 +46,11 @@ const ChatroomChatMessage = (props: ChatMessage & {
             scrollToLatestMessage();
           } } />
         </div>
+      ) }
+      { reactions.length === 0 ? null : (
+        <div className="chatroompage-chatmessage-reactionlist" style={ {
+          float: outgoing ? 'right' : 'left'
+        } }>{ reactions.map((r) => r.reaction as string) }</div>
       ) }
     </React.Fragment>
   );

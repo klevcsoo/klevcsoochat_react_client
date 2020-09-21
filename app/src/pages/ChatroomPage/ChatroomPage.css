@@ -149,6 +149,20 @@
   max-width: 80vw; max-height: 80vh;
 }
 
+.chatroompage-chatmessage-reactionlist {
+  width: auto; height: 25px;
+  line-height: 25px; font-size: 22px;
+  padding: 0 16px;
+
+  position: relative;
+  top: -10px; left: 0;
+
+  cursor: pointer;
+}
+.chatroompage-chatmessage-reactionlist:hover {
+  transform: scale(1.5);
+}
+
 .chatroompage-member-typing {
   width: auto; height: auto;
   padding: 5px 20px;
