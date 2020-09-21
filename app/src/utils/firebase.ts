@@ -304,6 +304,21 @@ export function useChatroomMetadata(id: string): [ ChatroomMetadata | null, bool
 
   return [ metadata, loading ];
 }
+
+export function useChatMessageReactions(rid: string, mid: string): (ChatReaction & { uid: string; })[] {
+  const [ reactions, setReactions ] = useState<(ChatReaction & { uid: string; })[]>([]);
+
+  useEffect(() => {
+    const ref = app.database().ref(`/chats/${ rid }/messages/${ mid }/reactions`);
+    const handler = (snapshot: app.database.DataSnapshot) => {
+      setReactions([ ...reactions, { ...snapshot.val() as ChatReaction, uid: String(snapshot.key) } ]);
+    };
+    ref.on('child_changed', handler);
+    return () => { ref.off('child_changed', handler); };
+  }, []);
+
+  return reactions;
+}
 // ---------- HOOKS ----------
 
 // ---------- CACHING ----------

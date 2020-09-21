@@ -24,7 +24,7 @@ const ChatroomMessageList = (props: {
   return (
     <div className="chatroompage-messagelist" id="msglist">
       { messageList.map((m, i) => (
-        <ChatroomChatMessage { ...m } key={ i } onReact={ (x, y) => props.onReact(m.mid, x, y) } />
+        <ChatroomChatMessage { ...m } rid={ props.roomId } key={ i } onReact={ (x, y) => props.onReact(m.mid, x, y) } />
       )) }
     </div>
   );

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import './ChatroomPage.css';
 import { ChatMessage } from '../../utils/interfaces';
-import { getUID } from '../../utils/firebase';
+import { getUID, useChatMessageReactions } from '../../utils/firebase';
 import { formatChatSentDate, scrollToLatestMessage } from '../../utils/functions';
 
 const ChatroomChatMessage = (props: ChatMessage & {
   onReact: (x: number, y: number) => void;
+  rid: string;
 }) => {
+  const reactions = useChatMessageReactions(props.rid, props.mid);
   const [ imageOpen, setImageOpen ] = useState(false);
 
   useEffect(() => {
