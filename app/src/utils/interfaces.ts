@@ -1,3 +1,5 @@
+import { ChatReaction } from "./types";
+
 export interface ChatroomMetadata {
   id: string;
   name: string;
@@ -17,11 +19,6 @@ export interface ChatMessage {
   type: 'text' | 'image';
   content: string;
   reactions?: ChatReaction[];
-}
-
-export interface ChatReaction {
-  timestamp: number;
-  reaction: 'heart' | 'laugh' | 'sad' | 'suprised' | 'like';
 }
 
 export interface AppNotificatonData {

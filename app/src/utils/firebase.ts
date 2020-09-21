@@ -4,8 +4,9 @@ import 'firebase/auth'; import 'firebase/database';
 import 'firebase/functions'; import 'firebase/storage';
 import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
 import { useState, useEffect } from 'react';
-import { ChatroomMetadata, ChatMessage, AuthUserInfoUI, ChatReaction } from './interfaces';
+import { ChatroomMetadata, ChatMessage, AuthUserInfoUI } from './interfaces';
 import { onMessageNotification, compressImageForUpload } from './functions';
+import { ChatReaction } from './types';
 
 const firebaseConfig = {
   apiKey: "AIzaSyBLXTi7stlDNk1yGBXhS68N0_1TJeNxVNk",
@@ -212,12 +213,17 @@ export function onNewMessage(roomId: string, callback: (message: ChatMessage) =>
 }
 
 export async function reactToMessage(rid: string, mid: string, elemId: string) {
-  const reaction: ChatReaction = {
-    timestamp: new Date().getTime(),
-    reaction: elemId.replace('r-', '') as ("heart" | "laugh" | "sad" | "suprised" | "like")
-  };
+  let r: ChatReaction;
+  switch (elemId) {
+    case 'r-heart': r = '❤️'; break;
+    case 'r-laugh': r = '😂'; break;
+    case 'r-sad': r = '😢'; break;
+    case 'r-suprised': r = '😮'; break;
+    case 'r-like': r = '👍'; break;
+    default: throw new Error('Invalid emoji');
+  }
 
-  await app.database().ref(`/chats/${ rid }/messages/${ mid }/reactions/${ getUID() }`).set(reaction);
+  await app.database().ref(`/chats/${ rid }/messages/${ mid }/reactions/${ getUID() }`).set(r);
 }
 
 export async function setTypingStatus(isTyping: boolean, rid: string) {
@@ -305,17 +311,20 @@ export function useChatroomMetadata(id: string): [ ChatroomMetadata | null, bool
   return [ metadata, loading ];
 }
 
-export function useChatMessageReactions(rid: string, mid: string): (ChatReaction & { uid: string; })[] {
-  const [ reactions, setReactions ] = useState<(ChatReaction & { uid: string; })[]>([]);
+export function useChatMessageReactions(rid: string, mid: string): { reaction: ChatReaction, uid: string; }[] {
+  const [ reactions, setReactions ] = useState<{ reaction: ChatReaction, uid: string; }[]>([]);
 
   useEffect(() => {
     const ref = app.database().ref(`/chats/${ rid }/messages/${ mid }/reactions`);
     const handler = (snapshot: app.database.DataSnapshot) => {
-      setReactions([ ...reactions, { ...snapshot.val() as ChatReaction, uid: String(snapshot.key) } ]);
+      let rs: { reaction: ChatReaction, uid: string; }[] = [];
+      snapshot.forEach((rSnap) => {
+        rs.push({ reaction: rSnap.val() as ChatReaction, uid: String(rSnap.key) });
+      }); setReactions(rs);
     };
-    ref.on('child_changed', handler);
-    return () => { ref.off('child_changed', handler); };
-  }, []);
+    ref.on('value', handler);
+    return () => { ref.off('value', handler); };
+  }, [ rid, mid ]);
 
   return reactions;
 }
