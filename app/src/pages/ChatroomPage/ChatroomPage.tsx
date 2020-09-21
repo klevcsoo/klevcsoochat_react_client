@@ -20,9 +20,7 @@ const ChatroomPage = () => {
     event.stopPropagation();
     const id = event.currentTarget.id;
     if (!reactionMid) return;
-    reactToMessage(roomId, reactionMid, id).then(() => {
-      console.log(`Reacted to ${ reactionMid } with ${ id }`);
-    }).catch((err) => console.error(err.message));
+    reactToMessage(roomId, reactionMid, id).catch((err) => console.error(err.message));
     setReactionsOpen(false);
   };
 

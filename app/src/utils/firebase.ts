@@ -213,6 +213,8 @@ export function onNewMessage(roomId: string, callback: (message: ChatMessage) =>
 }
 
 export async function reactToMessage(rid: string, mid: string, elemId: string) {
+  const ref = app.database().ref(`/chats/${ rid }/messages/${ mid }/reactions/${ getUID() }`);
+
   let r: ChatReaction;
   switch (elemId) {
     case 'r-heart': r = '❤️'; break;
@@ -223,7 +225,8 @@ export async function reactToMessage(rid: string, mid: string, elemId: string) {
     default: throw new Error('Invalid emoji');
   }
 
-  await app.database().ref(`/chats/${ rid }/messages/${ mid }/reactions/${ getUID() }`).set(r);
+  if ((await ref.once('value')).val() as ChatReaction === r) ref.remove();
+  else ref.set(r);
 }
 
 export async function setTypingStatus(isTyping: boolean, rid: string) {
