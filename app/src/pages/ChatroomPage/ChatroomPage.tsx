@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './ChatroomPage.css';
 import AppPageHeader from '../../components/AppPageHeader/AppPageHeader';
-import { setTypingStatus, useChatroomMetadata } from '../../utils/firebase';
+import { setTypingStatus, useChatroomMetadata, reactToMessage } from '../../utils/firebase';
 import { useRouteMatch } from 'react-router-dom';
 import LoadingOverlay from '../../components/LoadingOverlay';
 import { routes } from '../../utils/constants';
@@ -18,9 +18,12 @@ const ChatroomPage = () => {
 
   const rHandler = (event: React.MouseEvent) => {
     event.stopPropagation();
-    console.log(`Reacted to ${ reactionMid } with ${ event.currentTarget.id }`);
-    // TODO: Send reaction
-    setTimeout(() => setReactionsOpen(false), 100);
+    const id = event.currentTarget.id;
+    if (!reactionMid) return;
+    reactToMessage(roomId, reactionMid, id).then(() => {
+      console.log(`Reacted to ${ reactionMid } with ${ id }`);
+    }).catch((err) => console.error(err.message));
+    setReactionsOpen(false);
   };
 
   useEffect(() => {

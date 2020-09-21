@@ -4,7 +4,7 @@ import 'firebase/auth'; import 'firebase/database';
 import 'firebase/functions'; import 'firebase/storage';
 import { deviceType, osName, browserName, browserVersion } from 'react-device-detect';
 import { useState, useEffect } from 'react';
-import { ChatroomMetadata, ChatMessage, AuthUserInfoUI } from './interfaces';
+import { ChatroomMetadata, ChatMessage, AuthUserInfoUI, ChatReaction } from './interfaces';
 import { onMessageNotification, compressImageForUpload } from './functions';
 
 const firebaseConfig = {
@@ -209,6 +209,15 @@ export function onNewMessage(roomId: string, callback: (message: ChatMessage) =>
 
   ref.on('child_added', handler);
   return () => ref.off('child_added', handler);
+}
+
+export async function reactToMessage(rid: string, mid: string, elemId: string) {
+  const reaction: ChatReaction = {
+    timestamp: new Date().getTime(),
+    reaction: elemId.replace('r-', '') as ("heart" | "laugh" | "sad" | "suprised" | "like")
+  };
+
+  await app.database().ref(`/chats/${ rid }/messages/${ mid }/reactions/${ getUID() }`).set(reaction);
 }
 
 export async function setTypingStatus(isTyping: boolean, rid: string) {
