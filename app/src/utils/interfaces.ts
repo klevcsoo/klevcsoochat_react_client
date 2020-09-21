@@ -8,6 +8,7 @@ export interface ChatroomMetadata {
 }
 
 export interface ChatMessage {
+  mid: string;
   author: {
     id: string;
     name: string | null;

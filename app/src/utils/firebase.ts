@@ -201,9 +201,10 @@ export function onNewMessage(roomId: string, callback: (message: ChatMessage) =>
   const ref = app.database().ref(`/chats/${ roomId }/messages`).limitToLast(100);
   const handler = (snapshot: app.database.DataSnapshot) => {
     const m = snapshot.val() as ChatMessage;
-    if (!!cached && !!cached[ String(snapshot.key) ]) return;
+    m.mid = String(snapshot.key);
+    if (!!cached && !!cached[ m.mid ]) return;
     callback(m); onMessageNotification(m);
-    addMessageToCache(roomId, String(snapshot.key), m);
+    addMessageToCache(roomId, m.mid, m);
   };
 
   ref.on('child_added', handler);
