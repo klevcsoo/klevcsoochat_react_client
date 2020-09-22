@@ -287,14 +287,18 @@ export function useUserInfoUI(uid: string): [ AuthUserInfoUI | null, boolean ] {
   const [ loading, setLoading ] = useState(true);
 
   useEffect(() => {
+    const cached = getCachedUserInfo(uid);
+    if (!!cached) { setUser(cached); setLoading(false); }
+
     app.database().ref(`/users/${ uid }/info`).on('value', (snapshot) => {
-      setUser({
+      const info = {
         lastOnline: snapshot.child('lastOnline').val(),
         online: snapshot.child('connections').exists() ? true : false,
         photo: snapshot.child('photo').val(),
         username: snapshot.child('username').val()
-      });
-      setLoading(false);
+      };
+      addUserInfoToCache(uid, info);
+      setUser(info); setLoading(false);
     });
   }, [ uid ]);
 
@@ -343,7 +347,29 @@ function addMessageToCache(rid: string, mid: string, message: ChatMessage) {
   if (!cachedMessages[ rid ]) cachedMessages[ rid ] = { [ mid ]: message };
   else cachedMessages[ rid ][ mid ] = message;
 }
+
+const cachedUserInfo: { [ uid: string ]: AuthUserInfoUI; } = {};
+function getCachedUserInfo(uid: string) {
+  if (!cachedUserInfo[ uid ]) return;
+  else return cachedUserInfo[ uid ];
+}
+function addUserInfoToCache(uid: string, info: AuthUserInfoUI) {
+  cachedUserInfo[ uid ] = info;
+  window.localStorage.setItem('cachedUserInfo', JSON.stringify(cachedUserInfo));
+}
+
+export function initializeCache() {
+  let info: any = window.localStorage.getItem('cachedUserInfo');
+  if (!!info) {
+    info = JSON.parse(info);
+    Object.keys(info).forEach((uid) => {
+      cachedUserInfo[ uid ] = info[ uid ] as AuthUserInfoUI;
+    });
+  }
+}
+
 ; (window as any).displayCache = () => {
   console.log('Cached messages:', cachedMessages);
+  console.log('Cached user info:', cachedUserInfo);
 };
 // ---------- CACHING ----------
