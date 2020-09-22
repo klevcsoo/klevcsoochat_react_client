@@ -125,3 +125,21 @@ exports.onUserRequestsChange = functions.database.ref('/users/{user_id}/requests
       return admin.database().ref(`/chats/${ rid }/requests/${ uid }`).remove();
     }
   });
+
+exports.onChatroomMessage = functions.database.ref(`/chats/{rid}/messages/{mid}`)
+  .onCreate(async (snapshot, context) => {
+    const MAX_MESSAGE_COUNT = 100;
+    const msgSnap = await snapshot.ref.parent?.once('value');
+
+    if (!msgSnap) return;
+    if (msgSnap.numChildren() >= MAX_MESSAGE_COUNT) {
+      let childCount = 0; const msgs: any = {};
+      msgSnap.forEach((child) => {
+        if (++childCount <= msgSnap.numChildren() - MAX_MESSAGE_COUNT) {
+          msgs[ String(child.key) ] = null;
+        }
+      });
+      await snapshot.ref.parent?.update(msgs);
+      console.log(Object.keys(msgs));
+    }
+  });
