@@ -8,6 +8,8 @@ import { ChatroomMetadata, ChatMessage, AuthUserInfoUI } from './interfaces';
 import { onMessageNotification, compressImageForUpload } from './functions';
 import { ChatReaction } from './types';
 
+const devenv = window.location.hostname === 'localhost' && !!window.localStorage.getItem('emulate');
+
 const firebaseConfig = {
   apiKey: "AIzaSyBLXTi7stlDNk1yGBXhS68N0_1TJeNxVNk",
   authDomain: "klevcsoochat.firebaseapp.com",
@@ -23,7 +25,7 @@ const firebaseConfig = {
 export function initializeFirebase() {
   if (app.apps.length === 0) app.initializeApp(firebaseConfig);
 
-  if ((!process.env.NODE_ENV || process.env.NODE_ENV === 'development') && !!(window as any).emulateFunctions) {
+  if (devenv) {
     console.log('DEVELOPER ENVIRONMENT');
     app.functions().useFunctionsEmulator('http://localhost:5001');
   }
