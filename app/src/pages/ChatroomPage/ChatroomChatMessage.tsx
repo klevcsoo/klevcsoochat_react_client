@@ -9,7 +9,7 @@ const ChatroomChatMessage = (props: ChatMessage & {
   rid: string;
 }) => {
   const reactions = useChatMessageReactions(props.rid, props.mid);
-  const [ author, authorLoading ] = useUserInfoUI(props.author.id);
+  const author = useUserInfoUI(props.author.id)[ 0 ];
   const [ imageOpen, setImageOpen ] = useState(false);
 
   useEffect(() => {
