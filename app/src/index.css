@@ -59,7 +59,7 @@ body {
   -webkit-backdrop-filter: blur(30px) saturate(180%);
   background: rgba(255, 255, 255, 0.3);
 }
-@supports (not (backdrop-filter: none;)) or (not (-webkit-backdrop-filter: none;)) {
+@supports not (backdrop-filter: none) {
   .acrylic-transparent { background: rgba(255, 255, 255, 0.8); } 
 }
 @media(prefers-color-scheme: dark) {

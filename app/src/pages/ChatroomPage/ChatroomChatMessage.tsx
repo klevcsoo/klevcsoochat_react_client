@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ChatroomPage.css';
 import { ChatMessage } from '../../utils/interfaces';
-import { getUID, useChatMessageReactions } from '../../utils/firebase';
+import { getUID, useChatMessageReactions, useUserInfoUI } from '../../utils/firebase';
 import { formatChatSentDate, scrollToLatestMessage } from '../../utils/functions';
 
 const ChatroomChatMessage = (props: ChatMessage & {
@@ -9,6 +9,7 @@ const ChatroomChatMessage = (props: ChatMessage & {
   rid: string;
 }) => {
   const reactions = useChatMessageReactions(props.rid, props.mid);
+  const [ author, authorLoading ] = useUserInfoUI(props.author.id);
   const [ imageOpen, setImageOpen ] = useState(false);
 
   useEffect(() => {
@@ -22,7 +23,12 @@ const ChatroomChatMessage = (props: ChatMessage & {
   return (
     <React.Fragment>
       <div className={ `chatroompage-chatmessage ${ outgoing ? 'outgoing' : 'incoming' }` }>
-        { !outgoing ? <h2>{ authorName } <span>{ formatChatSentDate(props.sent) }</span></h2> : null }
+        { outgoing ? null : (
+          <React.Fragment>
+            <h2>{ authorName } <span>{ formatChatSentDate(props.sent) }</span></h2>
+            <img src={ author?.photo } alt={ author?.username } />
+          </React.Fragment>
+        ) }
         <div onContextMenu={ (event) => {
           event.preventDefault();
           let x = event.clientX;
@@ -49,7 +55,8 @@ const ChatroomChatMessage = (props: ChatMessage & {
       ) }
       { reactions.length === 0 ? null : (
         <div className="chatroompage-chatmessage-reactionlist" style={ {
-          float: outgoing ? 'right' : 'left'
+          float: outgoing ? 'right' : 'left',
+          padding: outgoing ? '0 20px' : '0 70px'
         } }>{ reactions.map((r) => r.reaction as string) }</div>
       ) }
     </React.Fragment>
