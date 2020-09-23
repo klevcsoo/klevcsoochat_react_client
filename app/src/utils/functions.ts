@@ -18,7 +18,7 @@ export function getOnlineStatusText(online: boolean, lastOnline: number) {
 
 export function formatChatSentDate(sent: number): string {
   const d = new Date(sent);
-  if (d.getTime() < (new Date().getTime() - 86400000)) return d.toLocaleString();
+  if (d.getTime() < (new Date().getTime() - 43200000)) return d.toLocaleString();
   else return d.toLocaleTimeString();
 }
 
