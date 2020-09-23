@@ -56,7 +56,7 @@ const ChatroomChatMessage = (props: ChatMessage & {
       { reactions.length === 0 ? null : (
         <div className="chatroompage-chatmessage-reactionlist" style={ {
           float: outgoing ? 'right' : 'left',
-          padding: outgoing ? '0 20px' : '0 70px'
+          margin: outgoing ? '0 20px' : '0 70px'
         } }>{ reactions.map((r) => r.reaction as string) }</div>
       ) }
     </React.Fragment>
