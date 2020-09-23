@@ -7,14 +7,14 @@ import { initializeNotifications, initializeResizeHandler } from './utils/functi
 
 console.log('----- KLEVCSOOCHAT ------');
 
+initializeFirebase();
+initializeNotifications();
+initializeResizeHandler();
+initializeCache();
+
 ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
-
-initializeFirebase();
-initializeNotifications();
-initializeResizeHandler();
-initializeCache();
