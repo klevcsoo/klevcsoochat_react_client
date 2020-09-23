@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './ChatroomPage.css';
 import { ChatMessage } from '../../utils/interfaces';
-import { getUID, useChatMessageReactions, useUserInfoUI } from '../../utils/firebase';
+import { getUID, useChatMessageReactions, useUserInfoUI, getCachedUserInfo } from '../../utils/firebase';
 import { formatChatSentDate, scrollToLatestMessage } from '../../utils/functions';
 
 const ChatroomChatMessage = (props: ChatMessage & {
@@ -11,6 +11,7 @@ const ChatroomChatMessage = (props: ChatMessage & {
   const reactions = useChatMessageReactions(props.rid, props.mid);
   const author = useUserInfoUI(props.author.id)[ 0 ];
   const [ imageOpen, setImageOpen ] = useState(false);
+  const [ reactionsTooltip, setReactionsTooltip ] = useState(false);
 
   useEffect(() => {
     if (imageOpen) document.body.style.overflowY = 'hidden';
@@ -57,7 +58,16 @@ const ChatroomChatMessage = (props: ChatMessage & {
         <div className="chatroompage-chatmessage-reactionlist" style={ {
           float: outgoing ? 'right' : 'left',
           margin: outgoing ? '0 20px' : '0 70px'
+        } } onMouseEnter={ () => {
+          setReactionsTooltip(true);
+        } } onMouseLeave={ () => {
+          setReactionsTooltip(false);
         } }>{ reactions.map((r) => r.reaction as string) }</div>
+      ) }
+      {!reactionsTooltip || reactions.length === 0 ? null : (
+        <div className="chatroompage-chatmessage-reactionlist-tooltip">
+          {reactions.map((r) => getCachedUserInfo(r.uid)?.username) }
+        </div>
       ) }
     </React.Fragment>
   );

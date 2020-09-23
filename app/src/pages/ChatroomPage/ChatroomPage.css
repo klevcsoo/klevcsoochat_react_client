@@ -170,6 +170,18 @@
   transform: scale(1.5);
 }
 
+.chatroompage-chatmessage-reactionlist-tooltip {
+  width: min-content; height: 40px;
+
+  position: fixed;
+  bottom: 12%; left: 50%;
+  transform: translateX(-50%);
+
+  font-size: 18px;
+  font-weight: 600;
+  color: white;
+}
+
 .chatroompage-member-typing {
   width: auto; height: auto;
   padding: 5px 20px;

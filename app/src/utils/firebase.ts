@@ -351,7 +351,7 @@ function addMessageToCache(rid: string, mid: string, message: ChatMessage) {
 }
 
 const cachedUserInfo: { [ uid: string ]: AuthUserInfoUI; } = {};
-function getCachedUserInfo(uid: string) {
+export function getCachedUserInfo(uid: string) {
   if (!cachedUserInfo[ uid ]) return;
   else return cachedUserInfo[ uid ];
 }
