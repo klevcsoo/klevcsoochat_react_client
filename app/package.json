@@ -14,7 +14,7 @@
     "@types/react-dom": "^16.9.7",
     "@types/react-router-dom": "^5.1.5",
     "browser-image-compression": "^1.0.12",
-    "firebase": "^7.14.2",
+    "firebase": "^7.23.0",
     "react": "^16.13.1",
     "react-device-detect": "^1.12.1",
     "react-dom": "^16.13.1",
